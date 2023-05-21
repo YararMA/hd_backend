@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form name="registrationForm" th:action="@{/registration}" th:method="POST" th:object="${registrationForm}">
+  <div class="mb-3">
+    <div th:if="${param.logout}" class="alert alert-success">
+      Вы вышли из системы.
+    </div>
+    <div th:if="${userExists}" th:text="${userExists}" class="alert alert-error">
+    </div>
+  </div>
+  <div class="mb-3">
+    <label for="exampleInputUserName" class="form-label"> Имя пользователя</label>
+    <input type="text" th:field="*{username}"  class="form-control"  th:classappend="${userExists} ? 'is-invalid'" id="exampleInputUserName" >
+    <div id="validationServerUsernameFeedback" class="invalid-feedback">
+      Пожалуйста, выберите имя пользователя.
+    </div>
+    <div th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>
+  </div>
+  <div class="mb-3">
+    <label for="exampleInputPassword1" class="form-label">Пароль</label>
+    <input type="password" th:field="*{password}" class="form-control " id="exampleInputPassword1">
+    <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+  </div>
+  <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
+</form>
+</body>
+</html>
