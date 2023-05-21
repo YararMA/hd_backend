@@ -1,0 +1,13 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/hd_db
+    username: postgres
+    password: postgres
+
+  jpa:
+    show-sql: true
+
+  flyway:
+    baselineOnMigrate: true
+    validateOnMigrate: false
+    locations: classpath:db/migration
