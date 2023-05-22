@@ -1,5 +1,6 @@
 package com.github.dlism.backend.controllers;
 
+import com.github.dlism.backend.dto.UserDto;
 import com.github.dlism.backend.models.User;
 import com.github.dlism.backend.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,14 +24,19 @@ public class MainController {
 
     @GetMapping("/registration")
     public String registrationPage(Model model) {
-        model.addAttribute("registrationForm", new User());
+        model.addAttribute("registrationForm", new UserDto());
         return "registration";
     }
 
     @PostMapping("/registration")
-    public String registration(@ModelAttribute("registrationForm") User user, Model model) {
+    public String registration(@ModelAttribute("registrationForm") UserDto userDto, Model model) {
 
-        if (!userService.createUser(user)) {
+        if(!userDto.getPassword().equals(userDto.getPasswordConfirmation())){
+            model.addAttribute("passIsNotConfirm", "Пароли не совпадают!");
+            return "registration";
+        }
+
+        if (!userService.createUser(userDto)) {
             model.addAttribute("userExists", "Пользовател уже существует!");
             return "registration";
         }

@@ -1,5 +1,6 @@
 package com.github.dlism.backend.services;
 
+import com.github.dlism.backend.dto.UserDto;
 import com.github.dlism.backend.models.Role;
 import com.github.dlism.backend.models.User;
 import com.github.dlism.backend.repositories.UserRepository;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
+import java.util.HashSet;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -27,7 +29,11 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public boolean createUser(User user) {
+    public boolean createUser(UserDto userDto) {
+
+        User user = new User();
+        user.setUsername(userDto.getUsername());
+        user.setPassword(userDto.getPassword());
 
         if (userRepository.existsByUsername(user.getUsername())) {
             return false;
