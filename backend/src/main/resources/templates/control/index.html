@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <meta th:replace="~{template-part/header :: header}">
+</head>
+<body>
+<div th:replace="~{template-part/menu :: menu}"></div>
+<div class="container">
+  <div class="row">
+    <div class="col-sm-3">
+      <nav class="nav flex-column border border-dark">
+        <a class="nav-link" href="#">Пользователи</a>
+        <a class="nav-link" href="#">Организации</a>
+      </nav>
+    </div>
+    <div class="col-sm-9">
+
+      <div class="row">
+      <div class="col-sm-4">
+        <div class="card bg-light mb-3" style="max-width: 18rem;">
+          <div class="card-header">Количество пользователей</div>
+          <div class="card-body">
+            <h5 class="card-title" th:text="${userCount}">0</h5>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-4">
+      <div class="card bg-light mb-3" style="max-width: 18rem;">
+        <div class="card-header">Количество организации</div>
+        <div class="card-body">
+          <h5 class="card-title" th:text="${organizationCount}">0</h5>
+        </div>
+      </div>
+      </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+</body>
+</html>

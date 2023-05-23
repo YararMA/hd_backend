@@ -63,4 +63,8 @@ public class UserService implements UserDetailsService {
                 .map(organization -> true)
                 .orElse(false);
     }
+
+    public long count() {
+        return userRepository.count();
+    }
 }

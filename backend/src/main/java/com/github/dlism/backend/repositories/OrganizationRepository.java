@@ -15,4 +15,6 @@ public interface OrganizationRepository extends JpaRepository<Organization, Long
 
     @Query("select u.organization from User u where u.id = ?1")
     Optional<Organization> findOrganizationByUserId(Long userId);
+
+    long count();
 }

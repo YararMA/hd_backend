@@ -48,4 +48,8 @@ public class OrganizationService {
                 })
                 .orElse(null);
     }
+
+    public long count() {
+        return organizationRepository.count();
+    }
 }
