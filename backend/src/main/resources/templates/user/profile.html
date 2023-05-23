@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <meta th:replace="~{template-part/header :: header}">
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="card">
+            <div class="card-header" >
+                Профиль пользователя
+            </div>
+            <div class="card-body">
+                <h5 class="card-title" th:text="${user.getUsername()}"></h5>
+                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                <a href="/user/profile/edit" class="btn btn-primary">Редактировать</a>
+                <a href="/organization/create" class="btn btn-primary">Создать организацию</a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

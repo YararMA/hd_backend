@@ -1,6 +1,7 @@
 package com.github.dlism.backend.controllers;
 
 import com.github.dlism.backend.dto.OrganizationDto;
+import com.github.dlism.backend.dto.UserDto;
 import com.github.dlism.backend.models.User;
 import com.github.dlism.backend.services.OrganizationService;
 import com.github.dlism.backend.services.UserService;
@@ -28,7 +29,6 @@ public class OrganizationController {
         if (userService.hasOrganization(user)) {
             //TODO Если организация уже создана то перенаправить на страницу редактирования организации
             model.addAttribute("organizationExists", "Организация уже создана!");
-            return "forms/organization";
         }
 
         model.addAttribute("organizationForm", new OrganizationDto());
