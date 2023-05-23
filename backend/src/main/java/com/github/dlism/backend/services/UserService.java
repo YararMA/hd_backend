@@ -14,11 +14,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Optional;
 
 @Service
 public class UserService implements UserDetailsService {
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
+
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -31,6 +33,7 @@ public class UserService implements UserDetailsService {
     @Transactional
     public boolean createUser(UserDto userDto) {
 
+        //TODO использовать маппер
         User user = new User();
         user.setUsername(userDto.getUsername());
         user.setPassword(userDto.getPassword());
@@ -49,5 +52,14 @@ public class UserService implements UserDetailsService {
         }
 
         return true;
+    }
+
+    public boolean hasOrganization(User user) {
+        Optional<User> userFromDB = userRepository.findByUsername(user.getUsername());
+
+        return userFromDB
+                .flatMap(u -> Optional.ofNullable(u.getOrganization()))
+                .map(organization -> true)
+                .orElse(false);
     }
 }
