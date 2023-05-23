@@ -47,4 +47,13 @@ public class OrganizationController {
         }
         return "forms/organization";
     }
+
+    @GetMapping("/profile")
+    public String profile(@AuthenticationPrincipal User user, Model model){
+        OrganizationDto organization = organizationService.searchOrganization(user);
+
+        model.addAttribute("organization", organization);
+
+        return "organization/profile";
+    }
 }
