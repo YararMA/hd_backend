@@ -23,19 +23,24 @@ public class OrganizationController {
     private UserService userService;
 
     @GetMapping("/create")
-    public String index(Model model) {
+    public String index(@AuthenticationPrincipal User user, Model model) {
+
+        if (userService.hasOrganization(user)) {
+            //TODO Если организация уже создана то перенаправить на страницу редактирования организации
+            model.addAttribute("organizationExists", "Организация уже создана!");
+            return "forms/organization";
+        }
+
         model.addAttribute("organizationForm", new OrganizationDto());
         return "forms/organization";
     }
 
     @PostMapping("/create")
-    public String create(@AuthenticationPrincipal User user, @ModelAttribute("organizationForm") OrganizationDto organizationDto, Model model) {
+    public String create(
+            @AuthenticationPrincipal User user,
+            @ModelAttribute("organizationForm") OrganizationDto organizationDto,
+            Model model) {
 
-        if(userService.hasOrganization(user)){
-            //TODO Если организация уже создана то перенаправить на страницу редактирования организации
-            model.addAttribute("organizationExists", "Организация уже создана!");
-            return "forms/organization";
-        }
         if (!organizationService.create(organizationDto, user)) {
             model.addAttribute("organizationExists", "Организация с такой названием уже существует!");
             return "forms/organization";
