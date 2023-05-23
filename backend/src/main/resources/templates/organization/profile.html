@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <meta th:replace="~{template-part/header :: header}">
+</head>
+<body>
+<div class="container">
+  <div class="row">
+    <div class="card">
+      <div class="card-header" >
+        Страница организации
+      </div>
+      <div class="card-body">
+        <h5 class="card-title" th:text="${organization.getName()}"></h5>
+        <p class="card-text" th:text="${organization.getDescription()}"></p>
+        <a href="/user/profile/edit" class="btn btn-primary">Редактировать организацию</a>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

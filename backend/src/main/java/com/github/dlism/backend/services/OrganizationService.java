@@ -8,6 +8,8 @@ import com.github.dlism.backend.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class OrganizationService {
 
@@ -23,7 +25,7 @@ public class OrganizationService {
         organization.setName(organizationDto.getName());
         organization.setDescription(organizationDto.getDescription());
 
-        if(organizationRepository.existsByName(organization.getName())){
+        if (organizationRepository.existsByName(organization.getName())) {
             return false;
         }
 
@@ -33,5 +35,17 @@ public class OrganizationService {
         userRepository.save(user);
 
         return true;
+    }
+
+    public OrganizationDto searchOrganization(User user) {
+        Optional<Organization> organization = organizationRepository.findOrganizationByUserId(user.getId());
+
+        return organization.map(o -> {
+                    OrganizationDto dto = new OrganizationDto();
+                    dto.setName(o.getName());
+                    dto.setDescription(o.getDescription());
+                    return dto;
+                })
+                .orElse(null);
     }
 }

@@ -1,7 +1,6 @@
 package com.github.dlism.backend.controllers;
 
 import com.github.dlism.backend.dto.OrganizationDto;
-import com.github.dlism.backend.dto.UserDto;
 import com.github.dlism.backend.models.User;
 import com.github.dlism.backend.services.OrganizationService;
 import com.github.dlism.backend.services.UserService;
@@ -46,5 +45,14 @@ public class OrganizationController {
             return "forms/organization";
         }
         return "forms/organization";
+    }
+
+    @GetMapping("/profile")
+    public String profile(@AuthenticationPrincipal User user, Model model) {
+        OrganizationDto organization = organizationService.searchOrganization(user);
+
+        model.addAttribute("organization", organization);
+
+        return "organization/profile";
     }
 }

@@ -1,5 +1,6 @@
 package com.github.dlism.backend.services;
 
+import com.github.dlism.backend.dto.OrganizationDto;
 import com.github.dlism.backend.dto.UserDto;
 import com.github.dlism.backend.models.Role;
 import com.github.dlism.backend.models.User;
