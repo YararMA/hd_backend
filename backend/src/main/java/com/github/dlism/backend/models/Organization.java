@@ -11,4 +11,6 @@ public class Organization {
     @Column(unique = true)
     private String name;
     private String description;
+    @Column(columnDefinition = "boolean default false")
+    private boolean active;
 }
