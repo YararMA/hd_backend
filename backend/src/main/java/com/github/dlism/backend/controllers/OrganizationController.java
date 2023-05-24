@@ -44,14 +44,18 @@ public class OrganizationController {
             model.addAttribute("organizationExists", "Организация с такой названием уже существует!");
             return "forms/organization";
         }
-        return "forms/organization";
+        return "redirect:/organization";
     }
 
     @GetMapping("")
     public String profile(@AuthenticationPrincipal User user, Model model) {
         OrganizationDto organization = organizationService.searchOrganization(user);
 
-        model.addAttribute("organization", organization);
+        if(organization!=null) {
+            model.addAttribute("organization", organization);
+        } else {
+          return "redirect:/organization/create";
+        }
 
         return "organization/profile";
     }

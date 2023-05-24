@@ -28,6 +28,8 @@ public class SecurityConfiguration {
                         .requestMatchers("/","/registration","/login","/static/**").permitAll()
                         .requestMatchers("/control").hasRole("ADMIN")
                         .requestMatchers("/control/**").hasRole("ADMIN")
+                        .requestMatchers("/organization").hasRole("ORGANIZER")
+                        .requestMatchers("/organization/**").hasRole("ORGANIZER")
                         .anyRequest().authenticated()
                 )
                 .formLogin()
