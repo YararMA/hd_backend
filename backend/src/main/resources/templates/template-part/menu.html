@@ -17,11 +17,14 @@
 
     <div class="navbar-nav">
       <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
-          <a class="nav-link" href="/user/profile">Профиль пользователя</a>
+        <li class="nav-item active" sec:authorize="isAuthenticated()">
+          <a class="nav-link" href="/user/profile" th:text="${#authentication.name}">Профиль пользователя</a>
         </li>
-        <li class="nav-item active">
-          <a class="nav-link" href="/logout">Выйти</a>
+        <li class="nav-item active" sec:authorize="isAuthenticated()">
+          <a class="nav-link" href="/logout" >Выйти</a>
+        </li>
+        <li class="nav-item active" sec:authorize="!isAuthenticated()">
+          <a class="nav-link" href="/login" >Войти</a>
         </li>
       </ul>
     </div>
