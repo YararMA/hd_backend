@@ -7,7 +7,6 @@ public class OrganizationPojo {
     private Long id;
     private String name;
     private boolean active;
-
     private String description;
 
     public OrganizationPojo(Long id, String name, String description, boolean active) {

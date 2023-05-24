@@ -62,7 +62,7 @@ public class OrganizationService {
     public void active(Long id) {
 
         Optional<Organization> organization = organizationRepository.findById(id);
-        organization.map(o ->{
+        organization.map(o -> {
             o.setActive(!o.isActive());
             return o;
         });

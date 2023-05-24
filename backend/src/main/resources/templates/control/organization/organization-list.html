@@ -27,7 +27,10 @@
                     <th scope="row" th:text="${organization.getId()}"></th>
                     <td th:text="${organization.getName()}"></td>
                     <td th:text="${organization.getDescription()}"></td>
-                    <td th:text="${organization.isActive()}"></td>
+                    <td>
+                        <span th:if="${organization.isActive()}">Да</span>
+                        <span th:unless="${organization.isActive()}">Нет</span>
+                    </td>
                     <td>
                         <form th:action="@{/control/organizations/active}" th:method="POST">
                             <input name="id" type="hidden" th:value="${organization.getId()}">
