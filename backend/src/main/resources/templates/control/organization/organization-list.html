@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <meta th:replace="~{template-part/header :: header}">
+</head>
+<body>
+<div th:replace="~{template-part/menu :: menu}"></div>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <h6 class="display-6">Все организации</h6>
+            <table class="table">
+                <thead class="thead-dark">
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Названия</th>
+                    <th scope="col">Описания</th>
+                    <th scope="col">Активность</th>
+                    <th scope="col">Активировать/Заблокировать</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="organization: ${organizations}">
+                    <th scope="row" th:text="${organization.getId()}"></th>
+                    <td th:text="${organization.getName()}"></td>
+                    <td th:text="${organization.getDescription()}"></td>
+                    <td th:text="${organization.isActive()}"></td>
+                    <td>
+                        <form th:action="@{/control/organizations/active}" th:method="POST">
+                            <input name="id" type="hidden" th:value="${organization.getId()}">
+                            <input type="submit" value="Активировать">
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>

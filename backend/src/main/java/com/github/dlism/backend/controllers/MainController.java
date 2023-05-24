@@ -30,7 +30,7 @@ public class MainController {
     @PostMapping("/registration")
     public String registration(@ModelAttribute("registrationForm") UserDto userDto, Model model) {
 
-        if(!userDto.getPassword().equals(userDto.getPasswordConfirmation())){
+        if (!userDto.getPassword().equals(userDto.getPasswordConfirmation())) {
             model.addAttribute("passIsNotConfirm", "Пароли не совпадают!");
             return "forms/registration";
         }
@@ -41,5 +41,10 @@ public class MainController {
         }
 
         return "redirect:login";
+    }
+
+    @GetMapping("/access-exception")
+    public String accessException() {
+        return "exceptions/access-exception";
     }
 }

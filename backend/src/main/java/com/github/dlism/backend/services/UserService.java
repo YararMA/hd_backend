@@ -4,6 +4,7 @@ import com.github.dlism.backend.dto.OrganizationDto;
 import com.github.dlism.backend.dto.UserDto;
 import com.github.dlism.backend.models.Role;
 import com.github.dlism.backend.models.User;
+import com.github.dlism.backend.pojo.UserPojo;
 import com.github.dlism.backend.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -44,7 +46,7 @@ public class UserService implements UserDetailsService {
         }
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRoles(Collections.singleton(Role.USER));
+        user.setRoles(Collections.singleton(Role.ROLE_USER));
 
         try {
             userRepository.save(user);
@@ -66,5 +68,9 @@ public class UserService implements UserDetailsService {
 
     public long count() {
         return userRepository.count();
+    }
+
+    public List<UserPojo> getAllUsers() {
+        return userRepository.all();
     }
 }
