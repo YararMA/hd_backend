@@ -73,4 +73,25 @@ public class UserService implements UserDetailsService {
     public List<UserPojo> getAllUsers() {
         return userRepository.all();
     }
+
+    public boolean updateUser(User user, UserDto userDto) {
+
+        Optional<User> userFromDb = userRepository.findByUsername(userDto.getUsername());
+
+        if(userFromDb.get().getId() != user.getId()){
+            return false;
+        }
+
+        //TODO использовать маппер
+        user.setUsername(userDto.getUsername());
+        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+
+        try {
+            userRepository.save(user);
+        } catch (Exception e) {
+            throw new RuntimeException("Error occurred while saving user", e);
+        }
+
+        return true;
+    }
 }

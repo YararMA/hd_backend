@@ -51,10 +51,10 @@ public class OrganizationController {
     public String profile(@AuthenticationPrincipal User user, Model model) {
         OrganizationDto organization = organizationService.searchOrganization(user);
 
-        if(organization!=null) {
+        if (organization != null) {
             model.addAttribute("organization", organization);
         } else {
-          return "redirect:/organization/create";
+            return "redirect:/organization/create";
         }
 
         return "organization/profile";

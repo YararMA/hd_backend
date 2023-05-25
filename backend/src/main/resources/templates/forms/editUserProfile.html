@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <meta th:replace="~{template-part/header :: header}">
+</head>
+<body>
+<div th:replace="~{template-part/menu :: menu}"></div>
+<div class="container">
+    <div class="row d-flex justify-content-center">
+        <div class="col-6 ">
+            <h2>Редактировать профиль</h2>
+            <form name="registrationForm" th:action="@{/user/profile/edit}" th:method="POST" th:object="${user}">
+                <div class="mb-3">
+                    <div th:if="${userExists}" th:text="${userExists}" class="alert alert-error">
+                    </div>
+                    <div th:if="${updateSuccess}" th:text="${updateSuccess}" class="alert alert-success">
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputUserName" class="form-label"> Имя пользователя</label>
+                    <input type="text" th:field="*{username}" class="form-control"
+                           th:classappend="${userExists} ? 'is-invalid'" id="exampleInputUserName">
+                    <div id="validationServerUsernameFeedback" class="invalid-feedback">
+                        Пожалуйста, выберите имя пользователя.
+                    </div>
+                    <div th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputPassword1" class="form-label">Пароль</label>
+                    <input type="password" th:field="*{password}" class="form-control " id="exampleInputPassword1">
+                    <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputPassword2" class="form-label">Подтверждение пароля</label>
+                    <input type="password" th:field="*{passwordConfirmation}" class="form-control "
+                           th:classappend="${passIsNotConfirm} ? 'is-invalid'" id="exampleInputPassword2">
+                    <div id="validationPass" class="invalid-feedback">
+                        Пароли не совподают
+                    </div>
+                    <div th:if="${#fields.hasErrors('passwordConfirmation')}" th:errors="*{passwordConfirmation}"></div>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Обновить</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

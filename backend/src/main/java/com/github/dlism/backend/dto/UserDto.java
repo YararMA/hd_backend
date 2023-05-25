@@ -1,6 +1,7 @@
 package com.github.dlism.backend.dto;
 
 import jakarta.persistence.Transient;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -8,6 +9,7 @@ import lombok.ToString;
 @Data
 @ToString
 @NoArgsConstructor
+@AllArgsConstructor
 public class UserDto {
     private String username;
     @Transient
@@ -15,7 +17,8 @@ public class UserDto {
     @Transient
     private String passwordConfirmation;
 
-    public UserDto(String username){
-        this.username=username;
+    public UserDto(String username) {
+        this.username = username;
     }
+
 }
