@@ -7,6 +7,7 @@ import com.github.dlism.backend.pojo.OrganizationPojo;
 import com.github.dlism.backend.repositories.OrganizationRepository;
 import com.github.dlism.backend.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -40,7 +41,7 @@ public class OrganizationService {
     }
 
     public OrganizationDto searchOrganization(User user) {
-        Optional<Organization> organization = organizationRepository.findOrganizationByUserId(user.getId());
+        Optional<Organization> organization = organizationRepository.findByUserId(user.getId());
 
         return organization.map(o -> {
                     OrganizationDto dto = new OrganizationDto();
@@ -68,5 +69,23 @@ public class OrganizationService {
         });
 
         organization.ifPresent(value -> organizationRepository.save(value));
+    }
+
+    public Organization update(User user, OrganizationDto organizationDto) {
+        Optional<Organization> organization = organizationRepository.findByUserId(user.getId());
+
+        Organization updatedOrganization = organization.orElseThrow(() -> new IllegalArgumentException("Organization not found"));
+
+        updatedOrganization.setName(organizationDto.getName());
+        updatedOrganization.setDescription(organizationDto.getDescription());
+
+        try {
+            updatedOrganization = organizationRepository.save(updatedOrganization);
+        } catch (DataIntegrityViolationException e) {
+            // Обработка исключения или выброс собственного исключения
+            e.printStackTrace();
+        }
+
+        return updatedOrganization;
     }
 }

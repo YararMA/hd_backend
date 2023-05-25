@@ -18,7 +18,7 @@
     <div class="navbar-nav">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item active" sec:authorize="isAuthenticated()">
-          <a class="nav-link" href="/user/profile" th:text="${#authentication.name}">Профиль пользователя</a>
+          <a class="nav-link" href="/user" th:text="${#authentication.name}">Профиль пользователя</a>
         </li>
         <li class="nav-item active" sec:authorize="isAuthenticated()">
           <a class="nav-link" href="/logout" >Выйти</a>

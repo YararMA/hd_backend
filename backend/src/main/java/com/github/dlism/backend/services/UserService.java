@@ -1,6 +1,5 @@
 package com.github.dlism.backend.services;
 
-import com.github.dlism.backend.dto.OrganizationDto;
 import com.github.dlism.backend.dto.UserDto;
 import com.github.dlism.backend.models.Role;
 import com.github.dlism.backend.models.User;
@@ -15,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -74,7 +72,7 @@ public class UserService implements UserDetailsService {
         return userRepository.all();
     }
 
-    public boolean updateUser(User user, UserDto userDto) {
+    public boolean update(User user, UserDto userDto) {
 
         Optional<User> userFromDb = userRepository.findByUsername(userDto.getUsername());
 

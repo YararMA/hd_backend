@@ -22,6 +22,19 @@ public class OrganizationController {
     @Autowired
     private UserService userService;
 
+    @GetMapping("")
+    public String profile(@AuthenticationPrincipal User user, Model model) {
+        OrganizationDto organization = organizationService.searchOrganization(user);
+
+        if (organization != null) {
+            model.addAttribute("organization", organization);
+        } else {
+            return "redirect:/organization/create";
+        }
+
+        return "organization/profile";
+    }
+
     @GetMapping("/create")
     public String index(@AuthenticationPrincipal User user, Model model) {
 
@@ -47,16 +60,21 @@ public class OrganizationController {
         return "redirect:/organization";
     }
 
-    @GetMapping("")
-    public String profile(@AuthenticationPrincipal User user, Model model) {
-        OrganizationDto organization = organizationService.searchOrganization(user);
+    @GetMapping("/edit")
+    public String editForm(@AuthenticationPrincipal User user, Model model) {
+        model.addAttribute("organizationForm", organizationService.searchOrganization(user));
+        return "forms/editOrganizationProfile";
+    }
 
-        if (organization != null) {
-            model.addAttribute("organization", organization);
-        } else {
-            return "redirect:/organization/create";
-        }
+    @PostMapping("/edit")
+    public String edit(
+            @AuthenticationPrincipal User user,
+            @ModelAttribute("organizationForm") OrganizationDto organizationDto,
+            Model model) {
 
-        return "organization/profile";
+        organizationService.update(user, organizationDto);
+        model.addAttribute("organizationCreateSuccess", "Организация успешно обновлена");
+
+        return "forms/editOrganizationProfile";
     }
 }

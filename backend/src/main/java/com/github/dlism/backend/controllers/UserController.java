@@ -19,13 +19,13 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/profile")
+    @GetMapping("")
     public String index(@AuthenticationPrincipal User user, Model model) {
         model.addAttribute("user", user);
         return "user/profile";
     }
 
-    @GetMapping("/profile/edit")
+    @GetMapping("/edit")
     public String editForm(@AuthenticationPrincipal User user, Model model) {
         UserDto userDto = new UserDto(user.getUsername(), user.getPassword(), null);
 
@@ -33,7 +33,7 @@ public class UserController {
         return "forms/editUserProfile";
     }
 
-    @PostMapping("/profile/edit")
+    @PostMapping("/edit")
     public String edit(@AuthenticationPrincipal User user, @ModelAttribute("user") UserDto userDto, Model model) {
 
         if (!userDto.getPassword().equals(userDto.getPasswordConfirmation())) {
@@ -41,7 +41,7 @@ public class UserController {
             return "forms/editUserProfile";
         }
 
-        if (userService.updateUser(user, userDto)) {
+        if (userService.update(user, userDto)) {
             model.addAttribute("updateSuccess", "Данные успешно обновлены");
         } else {
             model.addAttribute("userExists", "Пользовател уже существует!");
