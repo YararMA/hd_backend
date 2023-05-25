@@ -1,6 +1,7 @@
 package com.github.dlism.backend.services;
 
 import com.github.dlism.backend.dto.OrganizationDto;
+import com.github.dlism.backend.exceptions.DuplicateRecordException;
 import com.github.dlism.backend.models.Organization;
 import com.github.dlism.backend.models.User;
 import com.github.dlism.backend.pojo.OrganizationPojo;
@@ -82,8 +83,7 @@ public class OrganizationService {
         try {
             updatedOrganization = organizationRepository.save(updatedOrganization);
         } catch (DataIntegrityViolationException e) {
-            // Обработка исключения или выброс собственного исключения
-            e.printStackTrace();
+            throw new DuplicateRecordException("Организация уже существует!");
         }
 
         return updatedOrganization;
