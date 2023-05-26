@@ -87,4 +87,8 @@ public class OrganizationService {
 
         return updatedOrganization;
     }
+
+    public Organization getById(Long id) {
+        return organizationRepository.findById(id).orElseThrow();
+    }
 }
