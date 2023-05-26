@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <meta th:replace="~{template-part/header :: header}">
+</head>
+<body>
+<div th:replace="~{template-part/menu :: menu}"></div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-4" th:each="organization: ${organizations}">
+            <div class="card border-secondary mb-3" >
+                <div class="card-header" th:text="${organization.getName()}">Header</div>
+                <div class="card-body text-secondary">
+                    <p class="card-text" th:text="${organization.getDescription()}">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    <a href="#" class="btn btn-primary">Присоединиться</a>
+                    <a href="#" class="card-link m-lg-4">Посмотреть</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

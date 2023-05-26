@@ -35,7 +35,7 @@ public class ControlController {
     @GetMapping("/organizations")
     public String organizationList(Model model) {
         model.addAttribute("organizations", organizationService.getAllOrganizations());
-        return "control/organization/organization-list";
+        return "control/organization/list";
     }
 
     @PostMapping("/organizations/active")

@@ -83,4 +83,5 @@ public class OrganizationController {
         }
         return "forms/editOrganizationProfile";
     }
+
 }
