@@ -1,6 +1,7 @@
 package com.github.dlism.backend.controllers;
 
 import com.github.dlism.backend.dto.UserDto;
+import com.github.dlism.backend.exceptions.DuplicateRecordException;
 import com.github.dlism.backend.models.User;
 import com.github.dlism.backend.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,10 +42,11 @@ public class UserController {
             return "forms/editUserProfile";
         }
 
-        if (userService.update(user, userDto)) {
+        try {
+            model.addAttribute("user", userService.update(user, userDto));
             model.addAttribute("updateSuccess", "Данные успешно обновлены");
-        } else {
-            model.addAttribute("userExists", "Пользовател уже существует!");
+        } catch (DuplicateRecordException e) {
+            model.addAttribute("userExists", e.getMessage());
         }
 
         return "forms/editUserProfile";

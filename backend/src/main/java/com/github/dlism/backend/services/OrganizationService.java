@@ -23,22 +23,21 @@ public class OrganizationService {
     @Autowired
     private UserRepository userRepository;
 
-    public boolean create(OrganizationDto organizationDto, User user) {
+    public Organization create(OrganizationDto organizationDto, User user) {
+
         //TODO использовать маппер
         Organization organization = new Organization();
         organization.setName(organizationDto.getName());
         organization.setDescription(organizationDto.getDescription());
 
-        if (organizationRepository.existsByName(organization.getName())) {
-            return false;
+        try {
+            organization = organizationRepository.save(organization);
+            user.setOrganization(organization);
+            userRepository.save(user);
+        } catch (DataIntegrityViolationException e) {
+            throw new DuplicateRecordException("Организация уже существует!");
         }
-
-        //TODO Уменьшит количество запросов
-        Organization organizationFromDB = organizationRepository.save(organization);
-        user.setOrganization(organizationFromDB);
-        userRepository.save(user);
-
-        return true;
+        return organization;
     }
 
     public OrganizationDto searchOrganization(User user) {
@@ -69,7 +68,7 @@ public class OrganizationService {
             return o;
         });
 
-        organization.ifPresent(value -> organizationRepository.save(value));
+        organization.ifPresent(o -> organizationRepository.save(o));
     }
 
     public Organization update(User user, OrganizationDto organizationDto) {

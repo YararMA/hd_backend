@@ -1,6 +1,7 @@
 package com.github.dlism.backend.controllers;
 
 import com.github.dlism.backend.dto.UserDto;
+import com.github.dlism.backend.exceptions.DuplicateRecordException;
 import com.github.dlism.backend.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -35,8 +36,10 @@ public class MainController {
             return "forms/registration";
         }
 
-        if (!userService.createUser(userDto)) {
-            model.addAttribute("userExists", "Пользовател уже существует!");
+        try {
+            userService.createUser(userDto);
+        } catch (DuplicateRecordException e) {
+            model.addAttribute("userExists", e.getMessage());
             return "forms/registration";
         }
 

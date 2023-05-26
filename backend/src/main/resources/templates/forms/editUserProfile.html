@@ -11,9 +11,9 @@
     <div class="row d-flex justify-content-center">
         <div class="col-6 ">
             <h2>Редактировать профиль</h2>
-            <form name="registrationForm" th:action="@{/user/profile/edit}" th:method="POST" th:object="${user}">
+            <form name="registrationForm" th:action="@{/user/edit}" th:method="POST" th:object="${user}">
                 <div class="mb-3">
-                    <div th:if="${userExists}" th:text="${userExists}" class="alert alert-error">
+                    <div th:if="${userExists}" th:text="${userExists}" class="alert alert-danger">
                     </div>
                     <div th:if="${updateSuccess}" th:text="${updateSuccess}" class="alert alert-success">
                     </div>

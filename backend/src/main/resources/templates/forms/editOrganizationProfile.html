@@ -14,7 +14,7 @@
             <form name="registrationForm" th:action="@{/organization/edit}" th:method="POST"
                   th:object="${organizationForm}">
                 <div class="mb-3">
-                    <div th:if="${organizationExists}" th:text="${organizationExists}" class="alert alert-error">
+                    <div th:if="${organizationExists}" th:text="${organizationExists}" class="alert alert-danger">
                     </div>
                     <div th:if="${organizationCreateSuccess}" th:text="${organizationCreateSuccess}" class="alert alert-success">
                     </div>

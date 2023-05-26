@@ -32,7 +32,6 @@ public class OrganizationController {
         } else {
             return "redirect:/organization/create";
         }
-
         return "organization/profile";
     }
 
@@ -40,8 +39,9 @@ public class OrganizationController {
     public String index(@AuthenticationPrincipal User user, Model model) {
 
         if (userService.hasOrganization(user)) {
-            //TODO Если организация уже создана то перенаправить на страницу редактирования организации
             model.addAttribute("organizationExists", "Организация уже создана!");
+            return "redirect:/organization";
+
         }
 
         model.addAttribute("organizationForm", new OrganizationDto());
@@ -54,8 +54,10 @@ public class OrganizationController {
             @ModelAttribute("organizationForm") OrganizationDto organizationDto,
             Model model) {
 
-        if (!organizationService.create(organizationDto, user)) {
-            model.addAttribute("organizationExists", "Организация с такой названием уже существует!");
+        try {
+            organizationService.create(organizationDto, user);
+        } catch (DuplicateRecordException e) {
+            model.addAttribute("organizationExists", e.getMessage());
             return "forms/organization";
         }
         return "redirect:/organization";
@@ -74,13 +76,11 @@ public class OrganizationController {
             Model model) {
 
         try {
-            organizationService.update(user, organizationDto);
+            model.addAttribute("organizationForm", organizationService.update(user, organizationDto));
             model.addAttribute("organizationCreateSuccess", "Организация успешно обновлена");
         } catch (DuplicateRecordException e) {
             model.addAttribute("organizationExists", e.getMessage());
         }
-
-
         return "forms/editOrganizationProfile";
     }
 }
