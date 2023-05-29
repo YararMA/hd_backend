@@ -33,7 +33,7 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public User createUser(UserDto userDto) {
+    public void createUser(UserDto userDto) throws DuplicateRecordException{
 
         //TODO использовать маппер
         User user = new User();
@@ -43,12 +43,11 @@ public class UserService implements UserDetailsService {
         user.setRoles(Collections.singleton(Role.ROLE_USER));
 
         try {
-            user = userRepository.save(user);
+            userRepository.save(user);
         } catch (DataIntegrityViolationException e) {
             throw new DuplicateRecordException("Пользовател с таким именим уже существует");
         }
 
-        return user;
     }
 
     public boolean hasOrganization(User user) {
@@ -65,7 +64,7 @@ public class UserService implements UserDetailsService {
         return userRepository.all();
     }
 
-    public User update(User user, UserDto userDto) {
+    public User update(User user, UserDto userDto) throws DuplicateRecordException{
 
         //TODO использовать маппер
         user.setUsername(userDto.getUsername());

@@ -23,7 +23,7 @@ public class OrganizationService {
     @Autowired
     private UserRepository userRepository;
 
-    public Organization create(OrganizationDto organizationDto, User user) {
+    public void create(OrganizationDto organizationDto, User user) throws DuplicateRecordException{
 
         //TODO использовать маппер
         Organization organization = new Organization();
@@ -37,7 +37,6 @@ public class OrganizationService {
         } catch (DataIntegrityViolationException e) {
             throw new DuplicateRecordException("Организация уже существует!");
         }
-        return organization;
     }
 
     public OrganizationDto searchOrganization(User user) {
@@ -71,7 +70,7 @@ public class OrganizationService {
         organization.ifPresent(o -> organizationRepository.save(o));
     }
 
-    public Organization update(User user, OrganizationDto organizationDto) {
+    public Organization update(User user, OrganizationDto organizationDto) throws DuplicateRecordException{
         Optional<Organization> organization = organizationRepository.findByUserId(user.getId());
 
         Organization updatedOrganization = organization.orElseThrow(() -> new IllegalArgumentException("Organization not found"));
