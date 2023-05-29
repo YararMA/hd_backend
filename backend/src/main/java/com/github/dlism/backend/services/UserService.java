@@ -33,7 +33,11 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public void createUser(UserDto userDto) throws DuplicateRecordException{
+    public void createUser(UserDto userDto) throws DuplicateRecordException, IllegalArgumentException{
+
+        if (!userDto.getPassword().equals(userDto.getPasswordConfirmation())) {
+            throw new IllegalArgumentException("Пароль и подтверждение пароля не совпадают!");
+        }
 
         //TODO использовать маппер
         User user = new User();
@@ -64,8 +68,11 @@ public class UserService implements UserDetailsService {
         return userRepository.all();
     }
 
-    public User update(User user, UserDto userDto) throws DuplicateRecordException{
+    public User update(User user, UserDto userDto) throws DuplicateRecordException, IllegalArgumentException{
 
+        if (!userDto.getPassword().equals(userDto.getPasswordConfirmation())) {
+            throw new IllegalArgumentException("Пароль и подтверждение пароля не совпадают!");
+        }
         //TODO использовать маппер
         user.setUsername(userDto.getUsername());
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));

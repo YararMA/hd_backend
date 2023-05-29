@@ -43,16 +43,13 @@ public class MainController {
 
     @PostMapping("/registration")
     public String registration(@ModelAttribute("registrationForm") UserDto userDto, Model model) {
-
-        if (!userDto.getPassword().equals(userDto.getPasswordConfirmation())) {
-            model.addAttribute("passIsNotConfirm", "Пароли не совпадают!");
-            return "forms/registration";
-        }
-
         try {
             userService.createUser(userDto);
         } catch (DuplicateRecordException e) {
             model.addAttribute("userExists", e.getMessage());
+            return "forms/registration";
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("passIsNotConfirm", e.getMessage());
             return "forms/registration";
         }
 

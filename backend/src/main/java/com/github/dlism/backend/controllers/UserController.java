@@ -36,17 +36,14 @@ public class UserController {
 
     @PostMapping("/edit")
     public String edit(@AuthenticationPrincipal User user, @ModelAttribute("user") UserDto userDto, Model model) {
-
-        if (!userDto.getPassword().equals(userDto.getPasswordConfirmation())) {
-            model.addAttribute("passIsNotConfirm", "Пароли не совпадают!");
-            return "forms/editUserProfile";
-        }
-
         try {
             model.addAttribute("user", userService.update(user, userDto));
             model.addAttribute("updateSuccess", "Данные успешно обновлены");
         } catch (DuplicateRecordException e) {
             model.addAttribute("userExists", e.getMessage());
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("passIsNotConfirm", e.getMessage());
+            return "forms/editUserProfile";
         }
 
         return "forms/editUserProfile";
