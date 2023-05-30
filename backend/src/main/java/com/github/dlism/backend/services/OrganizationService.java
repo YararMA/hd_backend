@@ -29,10 +29,10 @@ public class OrganizationService {
         Organization organization = new Organization();
         organization.setName(organizationDto.getName());
         organization.setDescription(organizationDto.getDescription());
+        organization.setAuth(user);
 
+        user.setOrganization(organization);
         try {
-            organization = organizationRepository.save(organization);
-            user.setOrganization(organization);
             userRepository.save(user);
         } catch (DataIntegrityViolationException e) {
             throw new DuplicateRecordException("Организация уже существует!");
