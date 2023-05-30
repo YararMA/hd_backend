@@ -11,7 +11,6 @@ import java.util.Optional;
 
 @Repository
 public interface OrganizationRepository extends JpaRepository<Organization, Long> {
-    Optional<Organization> findByName(String name);
 
     @Query("select u.organization from User u where u.id = ?1")
     Optional<Organization> findByUserId(Long userId);
@@ -19,5 +18,8 @@ public interface OrganizationRepository extends JpaRepository<Organization, Long
     long count();
 
     @Query("select new com.github.dlism.backend.pojo.OrganizationPojo(o.id, o.name, o.description, o.active) from Organization o")
-    List<OrganizationPojo> all();
+    List<OrganizationPojo> getAll();
+
+    @Query("select new com.github.dlism.backend.pojo.OrganizationPojo(o.id, o.name, o.description, o.active) from Organization o where o.active=true ")
+    List<OrganizationPojo> getAllActive();
 }

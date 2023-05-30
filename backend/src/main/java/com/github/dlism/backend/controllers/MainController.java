@@ -25,7 +25,7 @@ public class MainController {
 
     @GetMapping("/organization-list")
     public String organizationList(Model model) {
-        model.addAttribute("organizations", organizationService.getAllOrganizations());
+        model.addAttribute("organizations", organizationService.getAllActiveOrganizations());
         return "organization/list";
     }
 

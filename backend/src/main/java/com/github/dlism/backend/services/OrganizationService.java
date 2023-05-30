@@ -56,9 +56,12 @@ public class OrganizationService {
     }
 
     public List<OrganizationPojo> getAllOrganizations() {
-        return organizationRepository.all();
+        return organizationRepository.getAll();
     }
 
+    public List<OrganizationPojo> getAllActiveOrganizations() {
+        return organizationRepository.getAllActive();
+    }
     public void active(Long id) {
 
         Optional<Organization> organization = organizationRepository.findById(id);
