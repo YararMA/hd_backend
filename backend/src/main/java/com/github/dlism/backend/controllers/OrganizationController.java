@@ -5,10 +5,12 @@ import com.github.dlism.backend.exceptions.DuplicateRecordException;
 import com.github.dlism.backend.models.User;
 import com.github.dlism.backend.services.OrganizationService;
 import com.github.dlism.backend.services.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -51,8 +53,13 @@ public class OrganizationController {
     @PostMapping("/create")
     public String create(
             @AuthenticationPrincipal User user,
-            @ModelAttribute("organizationForm") OrganizationDto organizationDto,
+            @Valid @ModelAttribute("organizationForm") OrganizationDto organizationDto,
+            BindingResult bindingResult,
             Model model) {
+
+        if (bindingResult.hasErrors()) {
+            return "forms/organization";
+        }
 
         try {
             organizationService.create(organizationDto, user);

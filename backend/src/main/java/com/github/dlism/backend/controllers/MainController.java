@@ -4,9 +4,11 @@ import com.github.dlism.backend.dto.UserDto;
 import com.github.dlism.backend.exceptions.DuplicateRecordException;
 import com.github.dlism.backend.services.OrganizationService;
 import com.github.dlism.backend.services.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -42,7 +44,11 @@ public class MainController {
     }
 
     @PostMapping("/registration")
-    public String registration(@ModelAttribute("registrationForm") UserDto userDto, Model model) {
+    public String registration(@Valid @ModelAttribute("registrationForm") UserDto userDto, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            return "forms/registration";
+        }
+
         try {
             userService.createUser(userDto);
         } catch (DuplicateRecordException e) {
