@@ -80,7 +80,7 @@ public class OrganizationService {
 
         Organization updatedOrganization = organizationRepository
                                             .findByUserId(user.getId())
-                                            .orElseThrow(() -> new IllegalArgumentException("Organization not found"));
+                                            .orElseThrow(() -> new IllegalArgumentException("Организация не найдена"));
 
         updatedOrganization.setName(organizationDto.getName());
         updatedOrganization.setDescription(organizationDto.getDescription());
@@ -94,7 +94,28 @@ public class OrganizationService {
         return updatedOrganization;
     }
 
+    public Organization update(Long organizationId, OrganizationDto organizationDto){
+
+        Organization organization =
+                organizationRepository
+                        .findById(organizationId)
+                        .orElseThrow(()->new IllegalArgumentException("Организация не найдена"));
+
+        organization.setName(organizationDto.getName());
+        organization.setDescription(organizationDto.getDescription());
+
+        try {
+            organization = organizationRepository.save(organization);
+        } catch (DataIntegrityViolationException e) {
+            throw new DuplicateRecordException("Организация уже существует!");
+        }
+
+        return organization;
+    }
+
     public Organization getById(Long id) {
-        return organizationRepository.findById(id).orElseThrow();
+        return organizationRepository
+                .findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Организация не найдена"));
     }
 }

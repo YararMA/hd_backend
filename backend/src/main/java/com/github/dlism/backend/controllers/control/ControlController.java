@@ -1,14 +1,12 @@
 package com.github.dlism.backend.controllers.control;
 
+import com.github.dlism.backend.dto.OrganizationDto;
 import com.github.dlism.backend.services.OrganizationService;
 import com.github.dlism.backend.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/control")
@@ -42,5 +40,21 @@ public class ControlController {
     public String activeOrganization(@RequestParam("id") Long id){
         organizationService.active(id);
         return "redirect:/control/organizations";
+    }
+
+    @GetMapping("/organizations/edit/{id}")
+    public String editOrganization(@PathVariable Long id, Model model){
+        model.addAttribute("organization", organizationService.getById(id));
+        return "control/organization/edit";
+    }
+
+    @PostMapping("/organizations/edit/{id}")
+    public String editOrganization(
+            @PathVariable Long id,
+            Model model,
+            @ModelAttribute("organization") OrganizationDto organizationDto){
+
+        model.addAttribute("organization", organizationService.update(id, organizationDto));
+        return "control/organization/edit";
     }
 }

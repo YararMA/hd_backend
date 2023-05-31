@@ -19,6 +19,7 @@
                     <th scope="col">Описания</th>
                     <th scope="col">Активность</th>
                     <th scope="col">Активировать/Заблокировать</th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -33,9 +34,10 @@
                     <td>
                         <form th:action="@{/control/organizations/active}" th:method="POST">
                             <input name="id" type="hidden" th:value="${organization.getId()}">
-                            <input type="submit" value="Активировать">
+                            <input type="submit" th:value="${organization.isActive() ? 'Деактивировать' : 'Активировать'}">
                         </form>
                     </td>
+                    <td><a th:href="@{/control/organizations/edit/{id}(id=${organization.getId()})}">Редактировать</a></td>
                 </tr>
                 </tbody>
             </table>
