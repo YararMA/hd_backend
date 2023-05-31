@@ -2,6 +2,7 @@ package com.github.dlism.backend.services;
 
 import com.github.dlism.backend.dto.UserDto;
 import com.github.dlism.backend.exceptions.DuplicateRecordException;
+import com.github.dlism.backend.mappers.UserMapper;
 import com.github.dlism.backend.models.Role;
 import com.github.dlism.backend.models.User;
 import com.github.dlism.backend.pojo.UserPojo;
@@ -68,12 +69,11 @@ public class UserService implements UserDetailsService {
         return userRepository.all();
     }
 
-    public User update(User user, UserDto userDto) throws DuplicateRecordException, IllegalArgumentException{
+    public UserDto update(User user, UserDto userDto) throws DuplicateRecordException, IllegalArgumentException{
 
         if (!userDto.getPassword().equals(userDto.getPasswordConfirmation())) {
             throw new IllegalArgumentException("Пароль и подтверждение пароля не совпадают!");
         }
-        //TODO использовать маппер
         user.setUsername(userDto.getUsername());
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
 
@@ -83,6 +83,6 @@ public class UserService implements UserDetailsService {
             throw new DuplicateRecordException("Пользовател с таким именим уже существует");
         }
 
-        return user;
+        return UserMapper.INSTANCE.entityToDto(user);
     }
 }

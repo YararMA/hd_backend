@@ -10,6 +10,7 @@ import com.github.dlism.backend.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,6 +24,7 @@ public class OrganizationService {
     @Autowired
     private UserRepository userRepository;
 
+    @Transactional
     public void create(OrganizationDto organizationDto, User user) throws DuplicateRecordException{
 
         //TODO использовать маппер
@@ -62,6 +64,7 @@ public class OrganizationService {
     public List<OrganizationPojo> getAllActiveOrganizations() {
         return organizationRepository.getAllActive();
     }
+
     public void active(Long id) {
 
         Optional<Organization> organization = organizationRepository.findById(id);
@@ -74,9 +77,10 @@ public class OrganizationService {
     }
 
     public Organization update(User user, OrganizationDto organizationDto) throws DuplicateRecordException{
-        Optional<Organization> organization = organizationRepository.findByUserId(user.getId());
 
-        Organization updatedOrganization = organization.orElseThrow(() -> new IllegalArgumentException("Organization not found"));
+        Organization updatedOrganization = organizationRepository
+                                            .findByUserId(user.getId())
+                                            .orElseThrow(() -> new IllegalArgumentException("Organization not found"));
 
         updatedOrganization.setName(organizationDto.getName());
         updatedOrganization.setDescription(organizationDto.getDescription());

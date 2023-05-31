@@ -85,7 +85,7 @@ public class OrganizationController {
         try {
             model.addAttribute("organizationForm", organizationService.update(user, organizationDto));
             model.addAttribute("organizationCreateSuccess", "Организация успешно обновлена");
-        } catch (DuplicateRecordException e) {
+        } catch (DuplicateRecordException | IllegalArgumentException e) {
             model.addAttribute("organizationExists", e.getMessage());
         }
         return "forms/editOrganizationProfile";

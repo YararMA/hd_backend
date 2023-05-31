@@ -14,8 +14,6 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByUsername(String username);
 
-    boolean existsByUsername(String username);
-
     long count();
     @Query("select new com.github.dlism.backend.pojo.UserPojo(u.id, u.username) from User u")
     List<UserPojo> all();

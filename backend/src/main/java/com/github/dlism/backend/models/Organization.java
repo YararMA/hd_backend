@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.hibernate.annotations.Cascade;
 
 @Entity
 @Table(name = "organization")
@@ -25,6 +24,6 @@ public class Organization {
     private boolean active;
 
     @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "owner_id")
     private User auth;
 }

@@ -2,6 +2,7 @@ package com.github.dlism.backend.controllers;
 
 import com.github.dlism.backend.dto.UserDto;
 import com.github.dlism.backend.exceptions.DuplicateRecordException;
+import com.github.dlism.backend.mappers.UserMapper;
 import com.github.dlism.backend.models.User;
 import com.github.dlism.backend.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,14 +29,13 @@ public class UserController {
 
     @GetMapping("/edit")
     public String editForm(@AuthenticationPrincipal User user, Model model) {
-        UserDto userDto = new UserDto(user.getUsername(), user.getPassword(), null);
-
-        model.addAttribute("user", userDto);
+        model.addAttribute("user", UserMapper.INSTANCE.entityToDto(user));
         return "forms/editUserProfile";
     }
 
     @PostMapping("/edit")
     public String edit(@AuthenticationPrincipal User user, @ModelAttribute("user") UserDto userDto, Model model) {
+
         try {
             model.addAttribute("user", userService.update(user, userDto));
             model.addAttribute("updateSuccess", "Данные успешно обновлены");
