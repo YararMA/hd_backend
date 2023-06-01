@@ -3,6 +3,7 @@ package com.github.dlism.backend.controllers;
 import com.github.dlism.backend.dto.UserDto;
 import com.github.dlism.backend.exceptions.DuplicateRecordException;
 import com.github.dlism.backend.services.OrganizationService;
+import com.github.dlism.backend.services.ProduceService;
 import com.github.dlism.backend.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +21,11 @@ public class MainController {
     @Autowired
     private OrganizationService organizationService;
 
+    @Autowired
+    private ProduceService produceService;
     @GetMapping("")
     public String index() {
+        produceService.produceAnswer("Ali");
         return "index";
     }
 

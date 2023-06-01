@@ -13,3 +13,9 @@ spring:
     baselineOnMigrate: true
     validateOnMigrate: false
     locations: classpath:db/migration
+
+  rabbitmq:
+    host: localhost
+    port: 8084
+    username: guest
+    password: guest
