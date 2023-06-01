@@ -16,6 +16,6 @@ spring:
 
   rabbitmq:
     host: localhost
-    port: 8084
-    username: guest
-    password: guest
+    port: 5672
+    username: user
+    password: 1111
