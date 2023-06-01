@@ -3,7 +3,7 @@ version: "3.0"
 services:
   postgres:
     image: postgres:14-alpine
-    container_name: postgres_hd
+    container_name: hd_postgres
     environment:
       POSTGRES_DB: "hd_db"
       POSTGRES_USER: "postgres"
@@ -12,3 +12,9 @@ services:
       - .:/var/data
     ports:
       - "5432:5432"
+
+  rabbitmq:
+    image: rabbitmq:3.10.7-management
+    container_name: hd_rabbitmq
+    ports:
+      - 8084:15672
