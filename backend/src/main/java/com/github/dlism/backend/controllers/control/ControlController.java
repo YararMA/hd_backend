@@ -57,4 +57,11 @@ public class ControlController {
         model.addAttribute("organization", organizationService.update(id, organizationDto));
         return "control/organization/edit";
     }
+
+    @GetMapping("/organizations/{id}")
+    public String organizationView(@PathVariable Long id, Model model){
+        model.addAttribute("organization", organizationService.getById(id));
+
+        return "control/organization/view";
+    }
 }
