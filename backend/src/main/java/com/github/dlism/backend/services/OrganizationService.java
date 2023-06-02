@@ -2,6 +2,7 @@ package com.github.dlism.backend.services;
 
 import com.github.dlism.backend.dto.OrganizationDto;
 import com.github.dlism.backend.exceptions.DuplicateRecordException;
+import com.github.dlism.backend.mappers.OrganizationMapper;
 import com.github.dlism.backend.models.Organization;
 import com.github.dlism.backend.models.User;
 import com.github.dlism.backend.pojo.OrganizationPojo;
@@ -27,13 +28,10 @@ public class OrganizationService {
     @Transactional
     public void create(OrganizationDto organizationDto, User user) throws DuplicateRecordException{
 
-        //TODO использовать маппер
-        Organization organization = new Organization();
-        organization.setName(organizationDto.getName());
-        organization.setDescription(organizationDto.getDescription());
+        Organization organization = OrganizationMapper.INSTANCE.dtoToEntity(organizationDto);
         organization.setAuth(user);
-
         user.setOrganization(organization);
+
         try {
             userRepository.save(user);
         } catch (DataIntegrityViolationException e) {
@@ -44,13 +42,9 @@ public class OrganizationService {
     public OrganizationDto searchOrganization(User user) {
         Optional<Organization> organization = organizationRepository.findByUserId(user.getId());
 
-        return organization.map(o -> {
-                    OrganizationDto dto = new OrganizationDto();
-                    dto.setName(o.getName());
-                    dto.setDescription(o.getDescription());
-                    return dto;
-                })
-                .orElse(null);
+        return organization
+                .map(OrganizationMapper.INSTANCE::entityToDto)
+                .orElseThrow(() -> new IllegalArgumentException("Организация не найдена"));
     }
 
     public long count() {
@@ -76,25 +70,25 @@ public class OrganizationService {
         organization.ifPresent(o -> organizationRepository.save(o));
     }
 
-    public Organization update(User user, OrganizationDto organizationDto) throws DuplicateRecordException{
+    public OrganizationDto update(User user, OrganizationDto organizationDto) throws DuplicateRecordException{
 
-        Organization updatedOrganization = organizationRepository
+        Organization organization = organizationRepository
                                             .findByUserId(user.getId())
                                             .orElseThrow(() -> new IllegalArgumentException("Организация не найдена"));
 
-        updatedOrganization.setName(organizationDto.getName());
-        updatedOrganization.setDescription(organizationDto.getDescription());
+        organization.setName(organizationDto.getName());
+        organization.setDescription(organizationDto.getDescription());
 
         try {
-            updatedOrganization = organizationRepository.save(updatedOrganization);
+            organization = organizationRepository.save(organization);
         } catch (DataIntegrityViolationException e) {
             throw new DuplicateRecordException("Организация уже существует!");
         }
 
-        return updatedOrganization;
+        return OrganizationMapper.INSTANCE.entityToDto(organization);
     }
 
-    public Organization update(Long organizationId, OrganizationDto organizationDto){
+    public OrganizationDto update(Long organizationId, OrganizationDto organizationDto){
 
         Organization organization =
                 organizationRepository
@@ -110,7 +104,7 @@ public class OrganizationService {
             throw new DuplicateRecordException("Организация уже существует!");
         }
 
-        return organization;
+        return OrganizationMapper.INSTANCE.entityToDto(organization);
     }
 
     public Organization getById(Long id) {
