@@ -1,2 +1,14 @@
 server:
   port: 8082
+
+spring:
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: user
+    password: 1111
+
+rabbitmq:
+  queue: mail-sender
+  topic: topicNAME
+  routing_key: activation

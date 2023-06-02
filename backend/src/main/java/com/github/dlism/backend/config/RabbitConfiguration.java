@@ -6,11 +6,20 @@ import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.core.TopicExchange;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class RabbitConfiguration {
+    @Value("${rabbitmq.queue}")
+    private String queue;
+
+    @Value("${rabbitmq.topic}")
+    private String topic;
+
+    @Value("${rabbitmq.routing_key}")
+    private String routing_key;
     @Bean
     public MessageConverter jsonMessageConvertor(){
         return new Jackson2JsonMessageConverter();
@@ -18,12 +27,12 @@ public class RabbitConfiguration {
 
     @Bean
     public Queue queue(){
-        return new Queue("test");
+        return new Queue(queue);
     }
 
     @Bean
     public TopicExchange exchange(){
-        return new TopicExchange("testTopicName");
+        return new TopicExchange(topic);
     }
 
     @Bean
@@ -31,6 +40,6 @@ public class RabbitConfiguration {
         return BindingBuilder
                 .bind(queue())
                 .to(exchange())
-                .with("test_routing_key");
+                .with(routing_key);
     }
 }

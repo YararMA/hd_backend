@@ -12,6 +12,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
+
 @Controller
 @RequestMapping("/")
 public class MainController {
@@ -25,7 +27,7 @@ public class MainController {
     private ProduceService produceService;
     @GetMapping("")
     public String index() {
-        produceService.produceAnswer("Ali");
+        produceService.produceAnswer(new Date().toString());
         return "index";
     }
 
