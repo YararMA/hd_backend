@@ -6,6 +6,7 @@ import com.github.dlism.backend.services.OrganizationService;
 import com.github.dlism.backend.services.ProduceService;
 import com.github.dlism.backend.services.UserService;
 import jakarta.validation.Valid;
+import org.hibernate.validator.constraints.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,11 +24,8 @@ public class MainController {
     @Autowired
     private OrganizationService organizationService;
 
-    @Autowired
-    private ProduceService produceService;
     @GetMapping("")
     public String index() {
-        produceService.produceAnswer(new Date().toString());
         return "index";
     }
 

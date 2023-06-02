@@ -27,6 +27,9 @@ public class UserService implements UserDetailsService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private ProduceService produceService;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findByUsername(username)
@@ -49,6 +52,7 @@ public class UserService implements UserDetailsService {
 
         try {
             userRepository.save(user);
+            produceService.produceAnswer(userDto.getUsername());
         } catch (DataIntegrityViolationException e) {
             throw new DuplicateRecordException("Пользовател с таким именим уже существует");
         }

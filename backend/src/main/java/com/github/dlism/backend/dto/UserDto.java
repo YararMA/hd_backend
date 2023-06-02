@@ -1,5 +1,6 @@
 package com.github.dlism.backend.dto;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -15,7 +16,7 @@ import lombok.ToString;
 public class UserDto {
     @NotEmpty(message = "Имя пользователя не должен быть пустым")
     @Size(min = 3, max = 30, message = "Имя пользователя должно содержать от 3 до 30 символов")
-    @Pattern(regexp = "^[a-zA-Z0-9_]+$", message = "Имя пользователя может содержать только буквы, цифры и знак подчеркивания")
+    @Email(message = "Поле 'username' должно быть валидным email-адресом")
     private String username;
 
     @NotEmpty(message = "Пароль не должен быть пустым")
