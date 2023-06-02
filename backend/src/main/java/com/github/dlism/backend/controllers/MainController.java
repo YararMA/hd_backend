@@ -3,17 +3,13 @@ package com.github.dlism.backend.controllers;
 import com.github.dlism.backend.dto.UserDto;
 import com.github.dlism.backend.exceptions.DuplicateRecordException;
 import com.github.dlism.backend.services.OrganizationService;
-import com.github.dlism.backend.services.ProduceService;
 import com.github.dlism.backend.services.UserService;
 import jakarta.validation.Valid;
-import org.hibernate.validator.constraints.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Date;
 
 @Controller
 @RequestMapping("/")
@@ -54,7 +50,7 @@ public class MainController {
         }
 
         try {
-            userService.createUser(userDto);
+            userService.create(userDto);
         } catch (DuplicateRecordException e) {
             model.addAttribute("userExists", e.getMessage());
             return "forms/registration";

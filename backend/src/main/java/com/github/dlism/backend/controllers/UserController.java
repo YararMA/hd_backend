@@ -5,10 +5,12 @@ import com.github.dlism.backend.exceptions.DuplicateRecordException;
 import com.github.dlism.backend.mappers.UserMapper;
 import com.github.dlism.backend.models.User;
 import com.github.dlism.backend.services.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,7 +36,11 @@ public class UserController {
     }
 
     @PostMapping("/edit")
-    public String edit(@AuthenticationPrincipal User user, @ModelAttribute("user") UserDto userDto, Model model) {
+    public String edit(@AuthenticationPrincipal User user, @Valid @ModelAttribute("user") UserDto userDto, BindingResult bindingResult, Model model) {
+
+        if(bindingResult.hasErrors()){
+            return "forms/editUserProfile";
+        }
 
         try {
             model.addAttribute("user", userService.update(user, userDto));

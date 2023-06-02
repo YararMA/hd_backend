@@ -37,22 +37,19 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public void createUser(UserDto userDto) throws DuplicateRecordException, IllegalArgumentException{
+    public void create(UserDto userDto) throws DuplicateRecordException, IllegalArgumentException{
 
         if (!userDto.getPassword().equals(userDto.getPasswordConfirmation())) {
             throw new IllegalArgumentException("Пароль и подтверждение пароля не совпадают!");
         }
 
-        //TODO использовать маппер
-        User user = new User();
-        user.setUsername(userDto.getUsername());
-        user.setPassword(userDto.getPassword());
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        User user = UserMapper.INSTANCE.dtoToEntity(userDto);
+        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
         user.setRoles(Collections.singleton(Role.ROLE_USER));
 
         try {
             userRepository.save(user);
-            produceService.produceAnswer(userDto.getUsername());
+            produceService.produceAnswer(user.getUsername());
         } catch (DataIntegrityViolationException e) {
             throw new DuplicateRecordException("Пользовател с таким именим уже существует");
         }
