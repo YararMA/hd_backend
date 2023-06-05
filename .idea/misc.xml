@@ -7,10 +7,15 @@
         <option value="$PROJECT_DIR$/backend/pom.xml" />
         <option value="$PROJECT_DIR$/untitled/pom.xml" />
         <option value="$PROJECT_DIR$/mail-sender/pom.xml" />
+        <option value="$PROJECT_DIR$/common-rabbitmq/pom.xml" />
+        <option value="$PROJECT_DIR$/common-robbitmq/pom.xml" />
+        <option value="$PROJECT_DIR$/common-rabbit/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">
       <set>
+        <option value="$PROJECT_DIR$/common-rabbitmq/pom.xml" />
+        <option value="$PROJECT_DIR$/common-robbitmq/pom.xml" />
         <option value="$PROJECT_DIR$/untitled/pom.xml" />
       </set>
     </option>

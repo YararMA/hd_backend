@@ -21,6 +21,6 @@ spring:
     password: 1111
 
 rabbitmq:
-  queue: mail-sender
+  queue_json: mail-sender-json
   topic: topicNAME
   routing_key: activation

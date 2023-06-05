@@ -1,4 +1,4 @@
-package com.github.dlism.backend.config;
+package com.example.mailsender.config;
 
 import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;

@@ -1,6 +1,7 @@
 package com.github.dlism.backend.services.Impl;
 
 import com.github.dlism.backend.services.ProduceService;
+import com.github.dlism.model.RabbitmqDto;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,8 @@ public class ProduceServiceImpl implements ProduceService {
 
     @Override
     public void produceAnswer(String email) {
-        rabbitTemplate.convertAndSend(topic, routing_key, email);
+        RabbitmqDto rabbitmqDto = new RabbitmqDto();
+        rabbitmqDto.setEmail(email);
+        rabbitTemplate.convertAndSend(topic, routing_key, rabbitmqDto);
     }
 }
