@@ -22,9 +22,8 @@ public class ProduceServiceImpl implements ProduceService {
     }
 
     @Override
-    public void produceAnswer(String email) {
-        RabbitmqDto rabbitmqDto = new RabbitmqDto();
-        rabbitmqDto.setEmail(email);
+    public void produceAnswer(RabbitmqDto rabbitmqDto) {
+
         rabbitTemplate.convertAndSend(topic, routing_key, rabbitmqDto);
     }
 }

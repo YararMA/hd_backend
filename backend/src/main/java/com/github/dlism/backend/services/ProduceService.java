@@ -1,5 +1,7 @@
 package com.github.dlism.backend.services;
 
+import com.github.dlism.model.RabbitmqDto;
+
 public interface ProduceService {
-    void produceAnswer(String email);
+    void produceAnswer(RabbitmqDto rabbitmqDto);
 }

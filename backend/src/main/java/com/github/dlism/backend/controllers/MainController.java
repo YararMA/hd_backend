@@ -64,6 +64,16 @@ public class MainController {
 
     @GetMapping("/access-exception")
     public String accessException() {
-        return "exceptions/access-exception";
+        return "helpers/access-exception";
+    }
+
+    @GetMapping("/active/{code}")
+    public String activationUser(@PathVariable("code") String code, Model model){
+        if(userService.active(code).isPresent()){
+            model.addAttribute("message", "Ваш аккаунт успешно активировань");
+        }else {
+            model.addAttribute("message", "Не удалось активировать аккаунт");
+        }
+        return "helpers/activation-user";
     }
 }

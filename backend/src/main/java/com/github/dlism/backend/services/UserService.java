@@ -7,6 +7,7 @@ import com.github.dlism.backend.models.Role;
 import com.github.dlism.backend.models.User;
 import com.github.dlism.backend.pojo.UserPojo;
 import com.github.dlism.backend.repositories.UserRepository;
+import com.github.dlism.model.RabbitmqDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,6 +19,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -48,8 +51,10 @@ public class UserService implements UserDetailsService {
         user.setRoles(Collections.singleton(Role.ROLE_USER));
 
         try {
+            UUID code = UUID.randomUUID();
             userRepository.save(user);
-            produceService.produceAnswer(user.getUsername());
+            userRepository.saveActivationCode(code.toString(), user.getId());
+            produceService.produceAnswer(new RabbitmqDto(user.getUsername(), code));
         } catch (DataIntegrityViolationException e) {
             throw new DuplicateRecordException("Пользовател с таким именим уже существует");
         }
@@ -85,5 +90,12 @@ public class UserService implements UserDetailsService {
         }
 
         return UserMapper.INSTANCE.entityToDto(user);
+    }
+
+    public Optional<User> active(String uuid) {
+        return userRepository.getUserByActivationCode(uuid).map(user -> {
+        //user.setActivated(true);
+           return userRepository.save(user);
+        });
     }
 }

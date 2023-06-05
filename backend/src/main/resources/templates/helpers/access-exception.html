@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
     <meta th:replace="~{template-part/header :: header}">
 </head>
 <body>
+<div th:replace="~{template-part/menu :: menu}"></div>
     <div class="container">
         <h1>Ошибка доступа</h1>
         <p>У вас нету доступа к этой странице</p>
