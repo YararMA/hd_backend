@@ -1,4 +1,7 @@
 spring:
+  config:
+    import: optional:file:.env[.properties]
+
   datasource:
     url: jdbc:postgresql://localhost:5432/hd_db
     username: postgres
@@ -15,12 +18,12 @@ spring:
     locations: classpath:db/migration
 
   rabbitmq:
-    host: localhost
-    port: 5672
-    username: user
-    password: 1111
+    host: ${RABBITMQ_HOST}
+    port: ${RABBITMQ_PORT}
+    username: ${RABBITMQ_USERNAME}
+    password: ${RABBITMQ_PASSWORD}
 
 rabbitmq:
-  queue_json: mail-sender-json
-  topic: topicNAME
-  routing_key: activation
+  queue_json: ${RABBITMQ_QUEUE}
+  topic: ${RABBITMQ_TOPIC}
+  routing_key: ${RABBITMQ_ROUTING_KEY}
