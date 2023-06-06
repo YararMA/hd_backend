@@ -13,13 +13,17 @@ public class EmailSenderConfig {
 
     @Value("${spring.mail.username}")
     private String username;
+
     @Value("${spring.mail.password}")
     private String password;
+
+    @Value("${spring.mail.port}")
+    private int port;
     @Bean
     public JavaMailSender getJavaMailSender() {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
         mailSender.setHost("smtp.yandex.ru");
-        mailSender.setPort(465);
+        mailSender.setPort(port);
 
         mailSender.setUsername(username);
         mailSender.setPassword(password);

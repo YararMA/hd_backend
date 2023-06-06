@@ -17,6 +17,7 @@ spring:
     port: ${MAIL_PORT}
     username: ${MAIL_USERNAME}
     password: ${MAIL_PASSWORD}
+    activation_url: ${MAIL_ACTIVATION_URL}
 
 rabbitmq:
   queue_json: ${RABBITMQ_QUEUE}

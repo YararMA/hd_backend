@@ -19,10 +19,7 @@ public class ConsumerServiceImpl implements ConsumerService {
     @RabbitListener(queues = "${rabbitmq.queue_json}")
     @Override
     public void consume(RabbitmqDto message) {
-
         LOGGER.info(String.format("Received message ->%s", message));
-            emailSenderService.sendEmail(message.getEmail(),
-                    "Исторический диктант",
-                    "Подтвердите свой аккаунт"+message.getCode());
+        emailSenderService.sendEmail(message.getEmail(), message.getCode().toString());
     }
 }
