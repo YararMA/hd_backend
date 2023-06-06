@@ -1,12 +1,22 @@
 server:
   port: 8082
+mail:
+  debug: true
 
 spring:
+  config:
+    import: optional:file:.env[.properties]
   rabbitmq:
     host: localhost
     port: 5672
     username: user
     password: 1111
+
+  mail:
+    host: ${MAIL_HOST}
+    port: ${MAIL_PORT}
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
 
 rabbitmq:
   queue_json: mail-sender-json
