@@ -24,4 +24,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query(value = "select * from usr where id=(select user_id from user_activation_code where code=:code)", nativeQuery = true)
     Optional<User> getUserByActivationCode(@Param("code") String code);
+
+    @Modifying
+    @Query(value = "DELETE FROM user_activation_code WHERE code=:code", nativeQuery = true)
+    void deleteActivationCodeByCode(@Param("code") String code);
 }

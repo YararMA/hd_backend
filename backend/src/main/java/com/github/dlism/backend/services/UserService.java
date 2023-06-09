@@ -75,6 +75,7 @@ public class UserService implements UserDetailsService {
         return userRepository.all();
     }
 
+    @Transactional
     public UserDto update(User user, UserDto userDto) throws DuplicateRecordException, IllegalArgumentException {
 
         if (!userDto.getPassword().equals(userDto.getPasswordConfirmation())) {
@@ -92,10 +93,17 @@ public class UserService implements UserDetailsService {
         return UserMapper.INSTANCE.entityToDto(user);
     }
 
-    public Optional<User> active(String uuid) {
-        return userRepository.getUserByActivationCode(uuid).map(user -> {
+    @Transactional
+    public Optional<User> active(String activationCode) {
+        Optional<User> userOptional = userRepository.getUserByActivationCode(activationCode);
+
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
             user.setActive(true);
-            return userRepository.save(user);
-        });
+            userRepository.save(user);
+            userRepository.deleteActivationCodeByCode(activationCode);
+        }
+
+        return userOptional;
     }
 }
