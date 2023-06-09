@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.Set;
+
 @Entity
 @Table(name = "organization")
 @Setter
@@ -26,4 +28,7 @@ public class Organization {
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "owner_id")
     private User auth;
+
+    @ManyToMany(mappedBy = "subscribeOrganizations")
+    private Set<User> users;
 }

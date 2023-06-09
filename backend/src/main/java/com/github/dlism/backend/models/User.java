@@ -32,6 +32,15 @@ public class User implements UserDetails {
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     private Organization organization;
 
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "subscribing_user_organization",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "organization_id")
+    )
+    private Set<Organization> subscribeOrganizations;
+
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return getRoles();
