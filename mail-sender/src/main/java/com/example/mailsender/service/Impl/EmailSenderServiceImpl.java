@@ -25,7 +25,7 @@ public class EmailSenderServiceImpl implements EmailSenderService {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom(username);
         message.setTo(toEmail);
-        message.setSubject("Исторический диктант");
+        message.setSubject(EmailTemplate.emailSubject);
         message.setText(EmailTemplate.message(url, code));
 
         javaMailSender.send(message);
