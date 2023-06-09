@@ -3,6 +3,7 @@ package com.github.dlism.backend.services;
 import com.github.dlism.backend.dto.UserDto;
 import com.github.dlism.backend.exceptions.DuplicateRecordException;
 import com.github.dlism.backend.mappers.UserMapper;
+import com.github.dlism.backend.models.Organization;
 import com.github.dlism.backend.models.Role;
 import com.github.dlism.backend.models.User;
 import com.github.dlism.backend.pojo.UserPojo;
@@ -17,10 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -106,4 +104,15 @@ public class UserService implements UserDetailsService {
 
         return userOptional;
     }
+
+    @Transactional
+    public void subscribeToOrganization(Organization organization, User user){
+        try {
+            userRepository.joinToOrganization(user.getId(), organization.getId());
+        }catch (DataIntegrityViolationException e){
+            throw new DuplicateRecordException("Вы уже подписаны в эту организацию");
+        }
+    }
+
+
 }

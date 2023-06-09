@@ -2,6 +2,7 @@ package com.github.dlism.backend.controllers;
 
 import com.github.dlism.backend.dto.OrganizationDto;
 import com.github.dlism.backend.exceptions.DuplicateRecordException;
+import com.github.dlism.backend.models.Organization;
 import com.github.dlism.backend.models.User;
 import com.github.dlism.backend.services.OrganizationService;
 import com.github.dlism.backend.services.UserService;
@@ -11,10 +12,9 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/organization")
@@ -27,14 +27,13 @@ public class OrganizationController {
 
     @GetMapping("")
     public String profile(@AuthenticationPrincipal User user, Model model) {
-        OrganizationDto organization = organizationService.searchOrganization(user);
+        Optional<OrganizationDto> organization = organizationService.searchOrganization(user);
 
-        if (organization != null) {
+        if (organization.isPresent()) {
             model.addAttribute("organization", organization);
-        } else {
-            return "redirect:/organization/create";
+            return "organization/profile";
         }
-        return "organization/profile";
+        return "redirect:/organization/create";
     }
 
     @GetMapping("/create")
@@ -43,7 +42,6 @@ public class OrganizationController {
         if (userService.hasOrganization(user)) {
             model.addAttribute("organizationExists", "Организация уже создана!");
             return "redirect:/organization";
-
         }
 
         model.addAttribute("organizationForm", new OrganizationDto());
@@ -91,4 +89,13 @@ public class OrganizationController {
         return "forms/editOrganizationProfile";
     }
 
+    @GetMapping("/join/{organization}")
+    public String join(@PathVariable Organization organization, @AuthenticationPrincipal User user){
+        try {
+            userService.subscribeToOrganization(organization, user);
+        }catch (DuplicateRecordException e){
+            e.printStackTrace();
+        }
+        return "redirect:/organization-list";
+    }
 }

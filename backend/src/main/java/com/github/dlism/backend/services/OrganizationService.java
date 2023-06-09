@@ -39,12 +39,11 @@ public class OrganizationService {
         }
     }
 
-    public OrganizationDto searchOrganization(User user) {
+    public Optional<OrganizationDto> searchOrganization(User user) {
         Optional<Organization> organization = organizationRepository.findByUserId(user.getId());
 
         return organization
-                .map(OrganizationMapper.INSTANCE::entityToDto)
-                .orElseThrow(() -> new IllegalArgumentException("Организация не найдена"));
+                .map(OrganizationMapper.INSTANCE::entityToDto);
     }
 
     public long count() {

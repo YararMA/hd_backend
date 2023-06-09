@@ -1,5 +1,6 @@
 package com.github.dlism.backend.repositories;
 
+import com.github.dlism.backend.models.Organization;
 import com.github.dlism.backend.models.User;
 import com.github.dlism.backend.pojo.UserPojo;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
@@ -28,4 +30,11 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Modifying
     @Query(value = "DELETE FROM user_activation_code WHERE code=:code", nativeQuery = true)
     void deleteActivationCodeByCode(@Param("code") String code);
+
+    @Modifying
+    @Query(value = "insert into subscribing_user_organization (user_id, organization_id) values(:user_id, :organization_id)", nativeQuery = true)
+    void joinToOrganization(@Param("user_id") Long userId, @Param("organization_id") Long organizationId);
+
+    @Query("select subscribeOrganizations from User")
+    Set<Organization> getSubscribeOrganizations();
 }
