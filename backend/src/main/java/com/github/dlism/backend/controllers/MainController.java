@@ -2,10 +2,13 @@ package com.github.dlism.backend.controllers;
 
 import com.github.dlism.backend.dto.UserDto;
 import com.github.dlism.backend.exceptions.DuplicateRecordException;
+import com.github.dlism.backend.exceptions.OrganizationNotFoundException;
+import com.github.dlism.backend.models.User;
 import com.github.dlism.backend.services.OrganizationService;
 import com.github.dlism.backend.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -32,8 +35,14 @@ public class MainController {
     }
 
     @GetMapping("/organization-list/{id}")
-    public String organizationPage(@PathVariable Long id, Model model) {
-        model.addAttribute("organization", organizationService.getById(id));
+    public String organizationPage(@PathVariable Long id, Model model, @AuthenticationPrincipal User user) {
+        try {
+            model.addAttribute("organization", organizationService.getById(id));
+            model.addAttribute("currentUser", user);
+        } catch (OrganizationNotFoundException e) {
+            model.addAttribute("message", e.getMessage());
+            return "helpers/not-found";
+        }
         return "organization/profile";
     }
 
@@ -68,10 +77,10 @@ public class MainController {
     }
 
     @GetMapping("/active/{code}")
-    public String activationUser(@PathVariable("code") String code, Model model){
-        if(userService.active(code).isPresent()){
+    public String activationUser(@PathVariable("code") String code, Model model) {
+        if (userService.active(code).isPresent()) {
             model.addAttribute("message", "Ваш аккаунт успешно активировань");
-        }else {
+        } else {
             model.addAttribute("message", "Не удалось активировать аккаунт");
         }
         return "helpers/activation-user";

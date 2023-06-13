@@ -110,9 +110,7 @@ public class UserService implements UserDetailsService {
         try {
             userRepository.joinToOrganization(user.getId(), organization.getId());
         }catch (DataIntegrityViolationException e){
-            throw new DuplicateRecordException("Вы уже подписаны в эту организацию");
+            throw new DuplicateRecordException("Вы уже подписаны на эту организацию");
         }
     }
-
-
 }

@@ -6,6 +6,7 @@ import com.github.dlism.backend.models.Organization;
 import com.github.dlism.backend.models.User;
 import com.github.dlism.backend.services.OrganizationService;
 import com.github.dlism.backend.services.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Optional;
 
@@ -90,12 +92,15 @@ public class OrganizationController {
     }
 
     @GetMapping("/join/{organization}")
-    public String join(@PathVariable Organization organization, @AuthenticationPrincipal User user){
+    public String join(@PathVariable Organization organization,
+                       @AuthenticationPrincipal User user,
+                       RedirectAttributes redirectAttributes,
+                       HttpServletRequest request) {
         try {
             userService.subscribeToOrganization(organization, user);
-        }catch (DuplicateRecordException e){
-            e.printStackTrace();
+        } catch (DuplicateRecordException e) {
+            redirectAttributes.addFlashAttribute("message", e.getMessage());
         }
-        return "redirect:/organization-list";
+        return "redirect:" + request.getHeader("Referer");
     }
 }

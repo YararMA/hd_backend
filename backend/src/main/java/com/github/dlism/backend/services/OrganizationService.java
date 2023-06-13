@@ -2,6 +2,7 @@ package com.github.dlism.backend.services;
 
 import com.github.dlism.backend.dto.OrganizationDto;
 import com.github.dlism.backend.exceptions.DuplicateRecordException;
+import com.github.dlism.backend.exceptions.OrganizationNotFoundException;
 import com.github.dlism.backend.mappers.OrganizationMapper;
 import com.github.dlism.backend.models.Organization;
 import com.github.dlism.backend.models.User;
@@ -109,6 +110,6 @@ public class OrganizationService {
     public Organization getById(Long id) {
         return organizationRepository
                 .findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Организация не найдена"));
+                .orElseThrow(() -> new OrganizationNotFoundException("Организация не найдена"));
     }
 }

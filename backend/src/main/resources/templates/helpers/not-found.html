@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <meta th:replace="~{template-part/header :: header}">
+</head>
+<body>
+<div th:replace="~{template-part/menu :: menu}"></div>
+<div th:text="${message}"></div>
+</body>
+</html>
