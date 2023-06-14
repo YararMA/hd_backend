@@ -6,4 +6,4 @@ jobs:
     steps:
       - name: Get the repository code
         uses: actions/checkout@v3
-        run: echo Run test action
+    run: echo Run test action
