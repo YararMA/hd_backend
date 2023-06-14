@@ -1,0 +1,9 @@
+name: Test Spring bboot app
+on: push
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get the repository code
+        uses: actions/checkout@v3
+        run: echo Run test action
