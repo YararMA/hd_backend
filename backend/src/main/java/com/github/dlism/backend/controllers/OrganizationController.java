@@ -32,7 +32,7 @@ public class OrganizationController {
         Optional<OrganizationDto> organization = organizationService.searchOrganization(user);
 
         if (organization.isPresent()) {
-            model.addAttribute("organization", organization);
+            model.addAttribute("organization", organization.orElseGet(OrganizationDto::new));
             return "organization/profile";
         }
         return "redirect:/organization/create";
