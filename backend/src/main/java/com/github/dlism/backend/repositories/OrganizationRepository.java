@@ -4,6 +4,7 @@ import com.github.dlism.backend.models.Organization;
 import com.github.dlism.backend.pojo.OrganizationPojo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -22,4 +23,7 @@ public interface OrganizationRepository extends JpaRepository<Organization, Long
 
     @Query("select new com.github.dlism.backend.pojo.OrganizationPojo(o.id, o.name, o.description, o.active) from Organization o where o.active=true ")
     List<OrganizationPojo> getAllActive();
+
+    @Query(value = "select count(*) from subscribing_user_organization where organization_id=:id", nativeQuery = true)
+    String subscribersCount(@Param("id") Long id);
 }
