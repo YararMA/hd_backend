@@ -16,6 +16,7 @@
                 <div class="card-body text-secondary">
                     <p class="card-text" th:text="${organization.getDescription()}">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
                     <a th:href="@{/organization-list/{id}(id=${organization.getId()})}" class="card-link m-lg-4">Посмотреть</a>
+                    <span>Участники: <i th:text="${organization.getSubscribers()}"></i></span>
                 </div>
             </div>
         </div>

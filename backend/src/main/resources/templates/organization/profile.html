@@ -18,7 +18,6 @@
                     <h5 class="card-title" th:text="${organization.getName()}"></h5>
                     <p class="card-text" th:text="${organization.getDescription()}"></p>
                     <a th:href="@{/user/join/{id}(id=${organization.getId()})}" class="btn btn-primary">Присоединиться</a>
-                    <span>Участники: <i th:text="${subscribers}"></i></span>
             </div>
         </div>
     </div>

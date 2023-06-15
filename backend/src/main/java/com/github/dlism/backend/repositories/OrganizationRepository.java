@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Repository
@@ -26,4 +27,9 @@ public interface OrganizationRepository extends JpaRepository<Organization, Long
 
     @Query(value = "select count(*) from subscribing_user_organization where organization_id=:id", nativeQuery = true)
     String subscribersCount(@Param("id") Long id);
+
+    @Query(value = "select o.id, o.name, o.active, o.description, count(suo.user_id) as subscribers from organization o\n" +
+            "    left join subscribing_user_organization suo on o.id = suo.organization_id\n" +
+            "group by o.name, o.id", nativeQuery = true)
+    List<Map<String, Object>> getAllActiveWithSubscribers();
 }

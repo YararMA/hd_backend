@@ -14,9 +14,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class OrganizationService {
@@ -57,7 +55,20 @@ public class OrganizationService {
     }
 
     public List<OrganizationPojo> getAllActiveOrganizations() {
-        return organizationRepository.getAllActive();
+        List<Map<String, Object>> results = organizationRepository.getAllActiveWithSubscribers();
+
+        List<OrganizationPojo> organizations = new ArrayList<>();
+        for (Map<String, Object> result : results) {
+            OrganizationPojo organization = new OrganizationPojo();
+            organization.setId((Long) result.get("id"));
+            organization.setName((String) result.get("name"));
+            organization.setDescription((String) result.get("description"));
+            organization.setActive((boolean) result.get("active"));
+            organization.setSubscribers((Long) result.get("subscribers"));
+            organizations.add(organization);
+        }
+
+        return organizations;
     }
 
     public void active(Long id) {

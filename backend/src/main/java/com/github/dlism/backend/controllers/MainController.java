@@ -40,7 +40,6 @@ public class MainController {
         try {
             Organization organization = organizationService.getById(id);
             model.addAttribute("organization", organization);
-            model.addAttribute("subscribers", organization.getUsers().size());
         } catch (OrganizationNotFoundException e) {
             model.addAttribute("message", e.getMessage());
             return "helpers/not-found";
