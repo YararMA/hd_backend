@@ -6,6 +6,9 @@ import lombok.Data;
 
 @Data
 public class OrganizationDto {
+
+    private Long id;
+
     @NotEmpty(message = "Название организации не должен быть пустым")
     @Size(min = 5, max = 100, message = "Название организации должно содержать от 5 до 100 символов")
     private String name;

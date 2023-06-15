@@ -39,10 +39,10 @@ public class OrganizationController {
     }
 
     @GetMapping("/create")
-    public String index(@AuthenticationPrincipal User user, Model model) {
+    public String index(@AuthenticationPrincipal User user, Model model, RedirectAttributes redirectAttributes) {
 
         if (userService.hasOrganization(user)) {
-            model.addAttribute("organizationExists", "Организация уже создана!");
+            redirectAttributes.addFlashAttribute("organizationExists", "Организация уже создана!");
             return "redirect:/organization";
         }
 
@@ -91,16 +91,5 @@ public class OrganizationController {
         return "forms/editOrganizationProfile";
     }
 
-    @GetMapping("/join/{organization}")
-    public String join(@PathVariable Organization organization,
-                       @AuthenticationPrincipal User user,
-                       RedirectAttributes redirectAttributes,
-                       HttpServletRequest request) {
-        try {
-            userService.subscribeToOrganization(organization, user);
-        } catch (DuplicateRecordException e) {
-            redirectAttributes.addFlashAttribute("message", e.getMessage());
-        }
-        return "redirect:" + request.getHeader("Referer");
-    }
+
 }

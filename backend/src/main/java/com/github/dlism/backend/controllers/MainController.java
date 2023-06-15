@@ -3,6 +3,7 @@ package com.github.dlism.backend.controllers;
 import com.github.dlism.backend.dto.UserDto;
 import com.github.dlism.backend.exceptions.DuplicateRecordException;
 import com.github.dlism.backend.exceptions.OrganizationNotFoundException;
+import com.github.dlism.backend.models.Organization;
 import com.github.dlism.backend.models.User;
 import com.github.dlism.backend.services.OrganizationService;
 import com.github.dlism.backend.services.UserService;
@@ -37,8 +38,9 @@ public class MainController {
     @GetMapping("/organization-list/{id}")
     public String organizationPage(@PathVariable Long id, Model model, @AuthenticationPrincipal User user) {
         try {
-            model.addAttribute("organization", organizationService.getById(id));
-            model.addAttribute("currentUser", user);
+            Organization organization = organizationService.getById(id);
+            model.addAttribute("organization", organization);
+            model.addAttribute("subscribers", organization.getUsers().size());
         } catch (OrganizationNotFoundException e) {
             model.addAttribute("message", e.getMessage());
             return "helpers/not-found";
