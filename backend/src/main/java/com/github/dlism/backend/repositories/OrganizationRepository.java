@@ -29,7 +29,7 @@ public interface OrganizationRepository extends JpaRepository<Organization, Long
     String subscribersCount(@Param("id") Long id);
 
     @Query(value = "select o.id, o.name, o.active, o.description, count(suo.user_id) as subscribers from organization o\n" +
-            "    left join subscribing_user_organization suo on o.id = suo.organization_id\n" +
+            " left join subscribing_user_organization suo on o.id = suo.organization_id\n" +
             "group by o.name, o.id", nativeQuery = true)
     List<Map<String, Object>> getAllActiveWithSubscribers();
 }
