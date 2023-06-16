@@ -20,11 +20,5 @@ jobs:
         distribution: 'temurin'
         cache: maven
     - name: Build and test common-rabbit
-      run: mvn -B package --file common-rabbit/pom.xml
-      working-directory: hd_backend/common-rabbit
-    - name: Build and test backend
-      run: mvn -B package --file backend/pom.xml
-      working-directory: hd_backend/backend
-    - name: Build and test mail-service
-      run: mvn -B package --file mail-service/pom.xml
-      working-directory: hd_backend/mail-service
+      run: mvn -B package --file hd_backend/common-rabbit/pom.xml
+      working-directory: ${{ github.workspace }}
