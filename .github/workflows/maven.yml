@@ -1,10 +1,9 @@
-name: Java CI with Maven
-
+name: HD CI Maven
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "test-wf" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "test-wf" ]
 
 jobs:
   build:
@@ -12,13 +11,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Set up JDK 17
-      uses: actions/setup-java@v3
-      with:
-        java-version: '17'
-        distribution: 'temurin'
-        cache: maven
-    - name: Build and test common-rabbit
-      run: mvn -B package --file hd_backend/common-rabbit/pom.xml
-      working-directory: ${{ github.workspace }}
+      - uses: actions/checkout@v3
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+      - name: Build and test common-rabbit
+        run: mvn -B clean package install --file pom.xml
+      - name: Build and test backend
+        run: mvn -B clean package install --file backend/pom.xml
+      - name: Build and test mail service
+        run: mvn -B clean package install --file mail-sender/pom.xml
+
