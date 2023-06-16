@@ -29,6 +29,7 @@
     <bytecodeTargetLevel>
       <module name="common-rabbitmq" target="17" />
       <module name="common-robbitmq" target="1.5" />
+      <module name="hd_backend" target="1.5" />
       <module name="mail-service" target="17" />
       <module name="untitled" target="1.5" />
     </bytecodeTargetLevel>
