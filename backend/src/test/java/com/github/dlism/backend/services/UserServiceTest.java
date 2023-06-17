@@ -8,11 +8,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Optional;
 
 import static org.mockito.Mockito.when;
-
 public class UserServiceTest {
     @Mock
     private UserRepository userRepository;
