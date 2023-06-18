@@ -24,4 +24,4 @@ jobs:
           port: 22
           script: |
             cd /var/www/hd_backend/
-            git status
+            git branch
