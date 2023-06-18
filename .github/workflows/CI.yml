@@ -1,9 +1,9 @@
 name: HD CI Maven
 on:
   push:
-    branches: [ "test-wf" ]
+    branches: [ "dev" ]
   pull_request:
-    branches: [ "test-wf" ]
+    branches: [ main ]
 
 jobs:
   build-common-rabbit:

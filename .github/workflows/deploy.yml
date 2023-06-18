@@ -2,7 +2,7 @@ name: Deploy
 
 on:
   push:
-    branches: [ test-wf ]
+    branches: [ main ]
 
 jobs:
   deploy:
