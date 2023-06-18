@@ -23,5 +23,5 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
           script: |
-            cd /var/www/hd_backend/
-            ls
+            cd /var/www/
+            git clone git@github.com:YararMA/hd_backend.git
