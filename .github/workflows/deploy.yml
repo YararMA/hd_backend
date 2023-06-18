@@ -23,5 +23,5 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
           script: |
-            cd /var/www/
+            cd /var/www/hd_backend/
             GIT_SSH_COMMAND="ssh -i ~/.ssh/yarar" git pull origin main
