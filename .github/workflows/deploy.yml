@@ -24,6 +24,5 @@ jobs:
           port: 22
           script: |
             cd /var/www/hd_backend/
-            mkdir create_by_action
-#            git pull origin main
-#            git status
+            git pull origin main
+            git status
