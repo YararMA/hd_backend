@@ -1,0 +1,15 @@
+FROM maven:3.8.5-openjdk-17 AS build-rabbit
+LABEL stage=build-rabbit
+WORKDIR /common-rabbit
+COPY common-rabbit/src /common-rabbit/src
+COPY common-rabbit/pom.xml /
+RUN mvn -f /pom.xml clean install
+
+FROM maven:3.8.5-openjdk-17 AS build-backend
+LABEL stage=build-backend
+WORKDIR /backend
+COPY backend/src /backend/src
+COPY backend/pom.xml /backend/
+COPY --from=build-rabbit /common-rabbit/target /backend/common-rabbit
+WORKDIR /backend
+RUN mvn -f /backend/pom.xml clean package
