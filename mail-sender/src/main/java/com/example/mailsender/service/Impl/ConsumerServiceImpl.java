@@ -1,8 +1,8 @@
 package com.example.mailsender.service.Impl;
 
+import com.example.mailsender.dto.RabbitmqDto;
 import com.example.mailsender.service.ConsumerService;
 import com.example.mailsender.service.EmailSenderService;
-import com.github.dlism.model.RabbitmqDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;

@@ -1,7 +1,7 @@
 package com.github.dlism.backend.services.Impl;
 
+import com.github.dlism.backend.dto.RabbitmqDto;
 import com.github.dlism.backend.services.ProduceService;
-import com.github.dlism.model.RabbitmqDto;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

@@ -1,6 +1,7 @@
 package com.example.mailsender.service;
 
-import com.github.dlism.model.RabbitmqDto;
+
+import com.example.mailsender.dto.RabbitmqDto;
 
 public interface ConsumerService {
     void consume(RabbitmqDto message);
