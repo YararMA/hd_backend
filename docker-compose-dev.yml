@@ -1,6 +1,30 @@
 version: "3.0"
 
 services:
+
+  backend:
+    build:
+      context: ./backend
+    container_name: "backend"
+    depends_on:
+      - postgres
+      - rabbitmq
+    env_file:
+      - .env
+    ports:
+        - '8080:8080'
+
+  mail-service:
+    build:
+      context: ./mail-sender
+    container_name: "mail-service"
+    depends_on:
+      - rabbitmq
+    env_file:
+      - .env
+    ports:
+      - '8082:8082'
+
   postgres:
     image: postgres:14-alpine
     container_name: hd_postgres
