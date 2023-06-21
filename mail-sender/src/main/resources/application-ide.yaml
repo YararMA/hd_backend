@@ -1,7 +1,8 @@
 spring:
   rabbitmq:
-    username: ${RABBITMQ_USERNAME}
-    password: ${RABBITMQ_PASSWORD}
+    host: localhost
+    username: user
+    password: 1111
 
   mail:
     username: ${MAIL_USERNAME}
