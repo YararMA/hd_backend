@@ -48,6 +48,24 @@ public class UserService implements UserDetailsService {
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
         user.setRoles(Collections.singleton(Role.ROLE_USER));
 
+        saveUser(user);
+    }
+
+    @Transactional
+    public void createOrganizer(UserDto userDto) throws DuplicateRecordException, IllegalArgumentException {
+
+        if (!userDto.getPassword().equals(userDto.getPasswordConfirmation())) {
+            throw new IllegalArgumentException("Пароль и подтверждение пароля не совпадают!");
+        }
+
+        User user = UserMapper.INSTANCE.dtoToEntity(userDto);
+        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        user.setRoles(Collections.singleton(Role.ROLE_ORGANIZER));
+
+        saveUser(user);
+    }
+
+    private void saveUser(User user) {
         try {
             UUID code = UUID.randomUUID();
             userRepository.save(user);
@@ -56,7 +74,6 @@ public class UserService implements UserDetailsService {
         } catch (DataIntegrityViolationException e) {
             throw new DuplicateRecordException("Пользовател с таким именим уже существует");
         }
-
     }
 
     public boolean hasOrganization(User user) {
