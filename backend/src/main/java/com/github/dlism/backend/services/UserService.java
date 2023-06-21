@@ -1,5 +1,6 @@
 package com.github.dlism.backend.services;
 
+import com.github.dlism.backend.dto.RabbitmqDto;
 import com.github.dlism.backend.dto.UserDto;
 import com.github.dlism.backend.exceptions.DuplicateRecordException;
 import com.github.dlism.backend.mappers.UserMapper;
@@ -8,7 +9,6 @@ import com.github.dlism.backend.models.Role;
 import com.github.dlism.backend.models.User;
 import com.github.dlism.backend.pojo.UserPojo;
 import com.github.dlism.backend.repositories.UserRepository;
-import com.github.dlism.model.RabbitmqDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.userdetails.UserDetails;

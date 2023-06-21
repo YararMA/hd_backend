@@ -7,7 +7,7 @@ spring:
   config:
     import: optional:file:.env[.properties]
   rabbitmq:
-    host: ${RABBITMQ_HOST}
+    host: rabbitmq
     port: ${RABBITMQ_PORT}
     username: ${RABBITMQ_USERNAME}
     password: ${RABBITMQ_PASSWORD}

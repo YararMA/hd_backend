@@ -10,7 +10,6 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="common-rabbit" />
         <module name="mail-sender" />
       </profile>
       <profile name="Annotation profile for backend" enabled="true">
@@ -27,6 +26,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="common-rabbit" target="17" />
       <module name="common-rabbitmq" target="17" />
       <module name="common-robbitmq" target="1.5" />
       <module name="hd_backend" target="1.5" />
