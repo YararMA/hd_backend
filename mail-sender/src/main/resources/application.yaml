@@ -7,19 +7,12 @@ spring:
   config:
     import: optional:file:.env[.properties]
   rabbitmq:
-    host: rabbitmq
-    port: ${RABBITMQ_PORT}
-    username: ${RABBITMQ_USERNAME}
-    password: ${RABBITMQ_PASSWORD}
-
+    port: 5672
   mail:
-    host: ${MAIL_HOST}
-    port: ${MAIL_PORT}
-    username: ${MAIL_USERNAME}
-    password: ${MAIL_PASSWORD}
-    activation_url: ${MAIL_ACTIVATION_URL}
+    host: smtp.yandex.ru
+    port: 465
 
 rabbitmq:
-  queue_json: ${RABBITMQ_QUEUE}
-  topic: ${RABBITMQ_TOPIC}
-  routing_key: ${RABBITMQ_ROUTING_KEY}
+  queue_json: activation_code
+  topic: account_activation
+  routing_key: activation

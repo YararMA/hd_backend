@@ -3,6 +3,7 @@ spring:
     import: optional:file:.env[.properties]
 
   datasource:
+    url: jdbc:postgresql://localhost:5432/hd_db
     username: postgres
     password: postgres
 
@@ -17,11 +18,7 @@ spring:
     locations: classpath:db/migration
 
   rabbitmq:
-    port: 5672
+    host: localhost
     username: user
     password: 1111
 
-rabbitmq:
-  queue_json: activation_code
-  topic: account_activation
-  routing_key: activation
