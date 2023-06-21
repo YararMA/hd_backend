@@ -1,0 +1,9 @@
+spring:
+  rabbitmq:
+    username: ${RABBITMQ_USERNAME}
+    password: ${RABBITMQ_PASSWORD}
+
+  mail:
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    activation_url: ${MAIL_ACTIVATION_URL}
