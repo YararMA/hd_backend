@@ -18,10 +18,18 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String name;
+    private String firstname;
+    private String lastname;
     private String username;
-
+    private String phone;
+    private String gender;
+    int age;
+    private String country;
+    private String region;
+    private String locality;
+    private String type_of_activity;
     private String password;
-
     private boolean active;
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
