@@ -4,12 +4,10 @@ import com.github.dlism.backend.dto.UserDto;
 import com.github.dlism.backend.exceptions.DuplicateRecordException;
 import com.github.dlism.backend.exceptions.OrganizationNotFoundException;
 import com.github.dlism.backend.models.Organization;
-import com.github.dlism.backend.models.User;
 import com.github.dlism.backend.services.OrganizationService;
 import com.github.dlism.backend.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -36,7 +34,7 @@ public class MainController {
     }
 
     @GetMapping("/organization-list/{id}")
-    public String organizationPage(@PathVariable Long id, Model model, @AuthenticationPrincipal User user) {
+    public String organizationPage(@PathVariable Long id, Model model) {
         try {
             Organization organization = organizationService.getById(id);
             model.addAttribute("organization", organization);
@@ -51,6 +49,31 @@ public class MainController {
     public String registrationPage(Model model) {
         model.addAttribute("registrationForm", new UserDto());
         return "forms/registration";
+    }
+
+    @GetMapping("/registration-organization")
+    public String organizationRegistrationPage(Model model) {
+        model.addAttribute("registrationForm", new UserDto());
+        return "forms/registration-organization";
+    }
+
+    @PostMapping("/registration-organization")
+    public String registrationOrganization(@Valid @ModelAttribute("registrationForm") UserDto userDto, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            return "forms/registration";
+        }
+
+        try {
+            userService.createOrganizer(userDto);
+        } catch (DuplicateRecordException e) {
+            model.addAttribute("userExists", e.getMessage());
+            return "forms/registration";
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("passIsNotConfirm", e.getMessage());
+            return "forms/registration";
+        }
+
+        return "redirect:login";
     }
 
     @PostMapping("/registration")
