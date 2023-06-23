@@ -1,4 +1,4 @@
-name: HD CI Maven
+name: Check code
 on:
   push:
     branches: [ "dev" ]
