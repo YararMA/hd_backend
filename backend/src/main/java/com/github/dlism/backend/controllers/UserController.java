@@ -1,14 +1,14 @@
 package com.github.dlism.backend.controllers;
 
-import com.github.dlism.backend.dto.UserDto;
+import com.github.dlism.backend.dto.user.UserUpdateDto;
+import com.github.dlism.backend.dto.user.UserUpdatePasswordDto;
 import com.github.dlism.backend.exceptions.DuplicateRecordException;
-import com.github.dlism.backend.mappers.UserMapper;
+import com.github.dlism.backend.exceptions.UpdateException;
 import com.github.dlism.backend.models.Organization;
 import com.github.dlism.backend.models.User;
 import com.github.dlism.backend.services.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,8 +20,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @RequestMapping("/user")
 public class UserController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @GetMapping("")
     public String index(@AuthenticationPrincipal User user, Model model) {
@@ -31,28 +34,51 @@ public class UserController {
 
     @GetMapping("/edit")
     public String editForm(@AuthenticationPrincipal User user, Model model) {
-        model.addAttribute("user", UserMapper.INSTANCE.entityToDto(user));
-        return "forms/editUserProfile";
+        model.addAttribute("user", userService.getById(user.getId()));
+        return "user/forms/editUserProfile";
     }
 
     @PostMapping("/edit")
-    public String edit(@AuthenticationPrincipal User user, @Valid @ModelAttribute("user") UserDto userDto, BindingResult bindingResult, Model model) {
-
-        if(bindingResult.hasErrors()){
-            return "forms/editUserProfile";
+    public String edit(@AuthenticationPrincipal User user,
+                       @Valid @ModelAttribute("user") UserUpdateDto userUpdateDto,
+                       BindingResult bindingResult, Model model
+    ) {
+        if (bindingResult.hasErrors()) {
+            return "user/forms/editUserProfile";
         }
 
         try {
-            model.addAttribute("user", userService.update(user, userDto));
+            userService.update(user, userUpdateDto);
+            model.addAttribute("user", userService.getById(user.getId()));
             model.addAttribute("updateSuccess", "Данные успешно обновлены");
         } catch (DuplicateRecordException e) {
             model.addAttribute("userExists", e.getMessage());
-        } catch (IllegalArgumentException e) {
-            model.addAttribute("passIsNotConfirm", e.getMessage());
-            return "forms/editUserProfile";
+        }
+        return "user/forms/editUserProfile";
+    }
+
+    @GetMapping("/password")
+    public String changePassword(@AuthenticationPrincipal User user, Model model) {
+        model.addAttribute("user", new UserUpdatePasswordDto());
+        return "user/forms/changePassword";
+    }
+
+    @PostMapping("/password")
+    public String changePassword(@AuthenticationPrincipal User user,
+                                 @Valid @ModelAttribute("user") UserUpdatePasswordDto userUpdatePasswordDto,
+                                 BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            return "user/forms/changePassword";
         }
 
-        return "forms/editUserProfile";
+        try {
+            userService.changePassword(user, userUpdatePasswordDto);
+            model.addAttribute("user", new UserUpdatePasswordDto());
+            model.addAttribute("message", "Пароль изменен!");
+        } catch (IllegalArgumentException | UpdateException e) {
+            model.addAttribute("errorMessage", e.getMessage());
+        }
+        return "user/forms/changePassword";
     }
 
     @GetMapping("/join/{organization}")

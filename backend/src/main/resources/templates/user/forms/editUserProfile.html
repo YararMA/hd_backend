@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <meta th:replace="~{template-part/header :: header}">
+</head>
+<body>
+<div th:replace="~{template-part/menu :: menu}"></div>
+<div class="container">
+    <div class="row d-flex justify-content-center">
+        <div class="col-6 ">
+            <h2>Редактировать профиль</h2>
+            <form name="registrationForm" th:action="@{/user/edit}" th:method="POST" th:object="${user}">
+                <div class="mb-3">
+                    <div th:if="${userExists}" th:text="${userExists}" class="alert alert-danger">
+                    </div>
+                    <div th:if="${updateSuccess}" th:text="${updateSuccess}" class="alert alert-success">
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputName" class="form-label">Имя*</label>
+                    <input type="text" th:field="*{name}" class="form-control" id="exampleInputName">
+                    <div id="validationServerName" class="invalid-feedback">
+                        Пожалуйста, введите имю.
+                    </div>
+                    <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputFirstname" class="form-label">Фамилия*</label>
+                    <input type="text" th:field="*{firstname}" class="form-control" id="exampleInputFirstname">
+                    <div id="validationServerFirstname" class="invalid-feedback">
+                        Пожалуйста, введите фамилию.
+                    </div>
+                    <div th:if="${#fields.hasErrors('firstname')}" th:errors="*{firstname}"></div>
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputLastname" class="form-label">Отчество</label>
+                    <input type="text" th:field="*{lastname}" class="form-control" id="exampleInputLastname">
+                    <div id="validationServerExampleInputLastname" class="invalid-feedback">
+                        Пожалуйста, введите отчество.
+                    </div>
+                    <div th:if="${#fields.hasErrors('lastname')}" th:errors="*{lastname}"></div>
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputPhone" class="form-label">Телефон</label>
+                    <input type="text" th:field="*{phone}" class="form-control" id="exampleInputPhone">
+                    <div id="validationServerExampleInputPhone" class="invalid-feedback">
+                        Пожалуйста, введите телефон.
+                    </div>
+                    <div th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></div>
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputGender" class="form-label">Пол</label>
+                    <input type="text" th:field="*{gender}" class="form-control" id="exampleInputGender">
+                    <div id="validationServerExampleInputGender" class="invalid-feedback">
+                        Пожалуйста, введите пол.
+                    </div>
+                    <div th:if="${#fields.hasErrors('gender')}" th:errors="*{gender}"></div>
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputAge" class="form-label">Возрасть</label>
+                    <input type="text" th:field="*{age}" class="form-control" id="exampleInputAge">
+                    <div id="validationServerExampleInputAge" class="invalid-feedback">
+                        Пожалуйста, введите пол.
+                    </div>
+                    <div th:if="${#fields.hasErrors('age')}" th:errors="*{age}"></div>
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputUserName" class="form-label">Email*</label>
+                    <input type="text" th:field="*{username}" class="form-control"
+                           th:classappend="${userExists} ? 'is-invalid'" id="exampleInputUserName">
+                    <div id="validationServerUsernameFeedback" class="invalid-feedback">
+                        Пользовател с таким email уже зарегистрирован
+                    </div>
+                    <div th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>
+                </div>
+                <button type="submit" class="btn btn-primary">Обновить</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

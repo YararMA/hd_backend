@@ -1,8 +1,11 @@
 package com.github.dlism.backend.services;
 
 import com.github.dlism.backend.dto.RabbitmqDto;
-import com.github.dlism.backend.dto.UserDto;
+import com.github.dlism.backend.dto.user.UserDto;
+import com.github.dlism.backend.dto.user.UserUpdateDto;
+import com.github.dlism.backend.dto.user.UserUpdatePasswordDto;
 import com.github.dlism.backend.exceptions.DuplicateRecordException;
+import com.github.dlism.backend.exceptions.UpdateException;
 import com.github.dlism.backend.mappers.UserMapper;
 import com.github.dlism.backend.models.Organization;
 import com.github.dlism.backend.models.Role;
@@ -18,7 +21,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -91,21 +97,14 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public UserDto update(User user, UserDto userDto) throws DuplicateRecordException, IllegalArgumentException {
-
-        if (!userDto.getPassword().equals(userDto.getPasswordConfirmation())) {
-            throw new IllegalArgumentException("Пароль и подтверждение пароля не совпадают!");
-        }
-        user.setUsername(userDto.getUsername());
-        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
-
+    public void update(User user, UserUpdateDto userDto) throws DuplicateRecordException, IllegalArgumentException {
         try {
-            user = userRepository.save(user);
+            User userForUpdate = UserMapper.INSTANCE.dtoToEntity(userDto);
+            userForUpdate.setId(user.getId());
+            userRepository.update(userForUpdate);
         } catch (DataIntegrityViolationException e) {
             throw new DuplicateRecordException("Пользовател с таким именим уже существует");
         }
-
-        return UserMapper.INSTANCE.entityToDto(user);
     }
 
     @Transactional
@@ -118,16 +117,33 @@ public class UserService implements UserDetailsService {
             userRepository.save(user);
             userRepository.deleteActivationCodeByCode(activationCode);
         }
-
         return userOptional;
     }
 
     @Transactional
-    public void subscribeToOrganization(Organization organization, User user){
+    public void subscribeToOrganization(Organization organization, User user) {
         try {
             userRepository.joinToOrganization(user.getId(), organization.getId());
-        }catch (DataIntegrityViolationException e){
+        } catch (DataIntegrityViolationException e) {
             throw new DuplicateRecordException("Вы уже подписаны на эту организацию");
+        }
+    }
+
+    public UserDto getById(Long id) {
+        return UserMapper.INSTANCE.entityToDto(userRepository.getReferenceById(id));
+    }
+
+    @Transactional
+    public void changePassword(User user, UserUpdatePasswordDto userUpdatePasswordDto) {
+        if (!userUpdatePasswordDto.getNewPassword().equals(userUpdatePasswordDto.getNewPasswordConfirmation())) {
+            throw new IllegalArgumentException("Пароль и подтверждение пароля не совпадают!");
+        }
+
+        try {
+            userRepository.changePassword(user.getId(), passwordEncoder.encode(userUpdatePasswordDto.getNewPassword()));
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new UpdateException("Ошибка при изминения пароля!");
         }
     }
 }
