@@ -1,8 +1,11 @@
 package com.github.dlism.backend.services;
 
 import com.github.dlism.backend.dto.RabbitmqDto;
-import com.github.dlism.backend.dto.UserDto;
+import com.github.dlism.backend.dto.user.UserDto;
+import com.github.dlism.backend.dto.user.UserUpdateDto;
+import com.github.dlism.backend.dto.user.UserUpdatePasswordDto;
 import com.github.dlism.backend.exceptions.DuplicateRecordException;
+import com.github.dlism.backend.exceptions.UpdateException;
 import com.github.dlism.backend.mappers.UserMapper;
 import com.github.dlism.backend.models.Organization;
 import com.github.dlism.backend.models.Role;
@@ -94,7 +97,7 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public void update(User user, UserDto userDto) throws DuplicateRecordException, IllegalArgumentException {
+    public void update(User user, UserUpdateDto userDto) throws DuplicateRecordException, IllegalArgumentException {
         try {
             User userForUpdate = UserMapper.INSTANCE.dtoToEntity(userDto);
             userForUpdate.setId(user.getId());
@@ -128,5 +131,19 @@ public class UserService implements UserDetailsService {
 
     public UserDto getById(Long id) {
         return UserMapper.INSTANCE.entityToDto(userRepository.getReferenceById(id));
+    }
+
+    @Transactional
+    public void changePassword(User user, UserUpdatePasswordDto userUpdatePasswordDto) {
+        if (!userUpdatePasswordDto.getNewPassword().equals(userUpdatePasswordDto.getNewPasswordConfirmation())) {
+            throw new IllegalArgumentException("Пароль и подтверждение пароля не совпадают!");
+        }
+
+        try {
+            userRepository.changePassword(user.getId(), passwordEncoder.encode(userUpdatePasswordDto.getNewPassword()));
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new UpdateException("Ошибка при изминения пароля!");
+        }
     }
 }

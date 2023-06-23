@@ -1,6 +1,6 @@
 package com.github.dlism.backend.controllers;
 
-import com.github.dlism.backend.dto.UserDto;
+import com.github.dlism.backend.dto.user.UserDto;
 import com.github.dlism.backend.exceptions.DuplicateRecordException;
 import com.github.dlism.backend.exceptions.OrganizationNotFoundException;
 import com.github.dlism.backend.models.Organization;

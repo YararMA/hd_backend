@@ -1,4 +1,4 @@
-package com.github.dlism.backend.dto;
+package com.github.dlism.backend.dto.user;
 
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
@@ -10,7 +10,7 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDto {
+public class UserUpdateDto {
     @NotEmpty(message = "Имя не должен быть пустым")
     @Size(min = 3, max = 100, message = "Имя пользователя должно содержать от 3 до 100 символов")
     private String name;
@@ -32,13 +32,4 @@ public class UserDto {
     @Size(min = 3, max = 30, message = "Имя пользователя должно содержать от 3 до 30 символов")
     @Email(message = "Введите валидный e-mail")
     private String username;
-
-   // @NotEmpty(message = "Пароль не должен быть пустым")
-    @Size(min = 8, max = 50, message = "Пароль должно содержать минимум 8 символов")
-    private String password;
-
- //   @NotEmpty(message = "Пароль не должен быть пустым")
-    @Size(min = 8, max = 50, message = "Пароль должно содержать минимум 8 символов")
-    private String passwordConfirmation;
-
 }
