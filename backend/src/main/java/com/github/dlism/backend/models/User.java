@@ -48,7 +48,9 @@ public class User implements UserDetails {
     )
     private Set<Organization> subscribeOrganizations;
 
-
+    public void setId(Long id){
+        this.id=id;
+    }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return getRoles();

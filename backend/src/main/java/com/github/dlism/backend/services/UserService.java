@@ -18,7 +18,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -91,21 +94,14 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public UserDto update(User user, UserDto userDto) throws DuplicateRecordException, IllegalArgumentException {
-
-        if (!userDto.getPassword().equals(userDto.getPasswordConfirmation())) {
-            throw new IllegalArgumentException("Пароль и подтверждение пароля не совпадают!");
-        }
-        user.setUsername(userDto.getUsername());
-        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
-
+    public void update(User user, UserDto userDto) throws DuplicateRecordException, IllegalArgumentException {
         try {
-            user = userRepository.save(user);
+            User userForUpdate = UserMapper.INSTANCE.dtoToEntity(userDto);
+            userForUpdate.setId(user.getId());
+            userRepository.update(userForUpdate);
         } catch (DataIntegrityViolationException e) {
             throw new DuplicateRecordException("Пользовател с таким именим уже существует");
         }
-
-        return UserMapper.INSTANCE.entityToDto(user);
     }
 
     @Transactional
@@ -118,16 +114,19 @@ public class UserService implements UserDetailsService {
             userRepository.save(user);
             userRepository.deleteActivationCodeByCode(activationCode);
         }
-
         return userOptional;
     }
 
     @Transactional
-    public void subscribeToOrganization(Organization organization, User user){
+    public void subscribeToOrganization(Organization organization, User user) {
         try {
             userRepository.joinToOrganization(user.getId(), organization.getId());
-        }catch (DataIntegrityViolationException e){
+        } catch (DataIntegrityViolationException e) {
             throw new DuplicateRecordException("Вы уже подписаны на эту организацию");
         }
+    }
+
+    public UserDto getById(Long id) {
+        return UserMapper.INSTANCE.entityToDto(userRepository.getReferenceById(id));
     }
 }

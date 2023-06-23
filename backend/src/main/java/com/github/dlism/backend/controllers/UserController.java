@@ -2,7 +2,6 @@ package com.github.dlism.backend.controllers;
 
 import com.github.dlism.backend.dto.UserDto;
 import com.github.dlism.backend.exceptions.DuplicateRecordException;
-import com.github.dlism.backend.mappers.UserMapper;
 import com.github.dlism.backend.models.Organization;
 import com.github.dlism.backend.models.User;
 import com.github.dlism.backend.services.UserService;
@@ -31,27 +30,26 @@ public class UserController {
 
     @GetMapping("/edit")
     public String editForm(@AuthenticationPrincipal User user, Model model) {
-        model.addAttribute("user", UserMapper.INSTANCE.entityToDto(user));
+        model.addAttribute("user", userService.getById(user.getId()));
         return "forms/editUserProfile";
     }
 
     @PostMapping("/edit")
-    public String edit(@AuthenticationPrincipal User user, @Valid @ModelAttribute("user") UserDto userDto, BindingResult bindingResult, Model model) {
-
-        if(bindingResult.hasErrors()){
+    public String edit(@AuthenticationPrincipal User user,
+                       @Valid @ModelAttribute("user") UserDto userDto,
+                       BindingResult bindingResult, Model model
+    ) {
+        if (bindingResult.hasErrors()) {
             return "forms/editUserProfile";
         }
 
         try {
-            model.addAttribute("user", userService.update(user, userDto));
+            userService.update(user, userDto);
+            model.addAttribute("user", userService.getById(user.getId()));
             model.addAttribute("updateSuccess", "Данные успешно обновлены");
         } catch (DuplicateRecordException e) {
             model.addAttribute("userExists", e.getMessage());
-        } catch (IllegalArgumentException e) {
-            model.addAttribute("passIsNotConfirm", e.getMessage());
-            return "forms/editUserProfile";
         }
-
         return "forms/editUserProfile";
     }
 
