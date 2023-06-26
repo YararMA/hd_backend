@@ -20,20 +20,20 @@
                     </div>
                 </div>
                 <div class="mb-3">
-                    <label for="exampleInputName" class="form-label">Имя*</label>
-                    <input type="text" th:field="*{name}" class="form-control" id="exampleInputName">
-                    <div id="validationServerName" class="invalid-feedback">
-                        Пожалуйста, введите имю.
-                    </div>
-                    <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
-                </div>
-                <div class="mb-3">
                     <label for="exampleInputfirstname" class="form-label">Фамилия*</label>
                     <input type="text" th:field="*{firstname}" class="form-control" id="exampleInputfirstname">
                     <div id="validationServerfirstname" class="invalid-feedback">
                         Пожалуйста, введите фамилию.
                     </div>
                     <div th:if="${#fields.hasErrors('firstname')}" th:errors="*{firstname}"></div>
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputName" class="form-label">Имя*</label>
+                    <input type="text" th:field="*{name}" class="form-control" id="exampleInputName">
+                    <div id="validationServerName" class="invalid-feedback">
+                        Пожалуйста, введите имю.
+                    </div>
+                    <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
                 </div>
                 <div class="mb-3">
                     <label for="exampleInputlastname" class="form-label">Отчество</label>

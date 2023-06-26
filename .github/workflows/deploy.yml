@@ -20,4 +20,4 @@ jobs:
             cd /var/www/hd_backend/
             GIT_SSH_COMMAND="ssh -i ~/.ssh/yarar" git pull origin main
             git status
-            docker-compose -f docker-compose-dev.yml up -d
+            docker-compose -f docker-compose-dev.yml up --build -d
