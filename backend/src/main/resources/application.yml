@@ -4,10 +4,6 @@ spring:
   config:
     import: optional:file:.env[.properties]
 
-  datasource:
-    username: postgres
-    password: postgres
-
   jpa:
     show-sql: true
     hibernate:
