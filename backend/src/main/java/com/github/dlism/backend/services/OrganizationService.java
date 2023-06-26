@@ -14,7 +14,10 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class OrganizationService {
@@ -26,7 +29,7 @@ public class OrganizationService {
     private UserRepository userRepository;
 
     @Transactional
-    public void create(OrganizationDto organizationDto, User user) throws DuplicateRecordException{
+    public void create(OrganizationDto organizationDto, User user) throws DuplicateRecordException {
 
         Organization organization = OrganizationMapper.INSTANCE.dtoToEntity(organizationDto);
         organization.setAuth(user);
@@ -82,30 +85,34 @@ public class OrganizationService {
         organization.ifPresent(o -> organizationRepository.save(o));
     }
 
-    public OrganizationDto update(User user, OrganizationDto organizationDto) throws DuplicateRecordException{
+    public OrganizationDto update(User user, OrganizationDto organizationDto) throws DuplicateRecordException {
 
         Organization organization = organizationRepository
-                                            .findByUserId(user.getId())
-                                            .orElseThrow(() -> new IllegalArgumentException("Организация не найдена"));
+                .findByUserId(user.getId())
+                .orElseThrow(() -> new IllegalArgumentException("Организация не найдена"));
 
         organization.setName(organizationDto.getName());
         organization.setDescription(organizationDto.getDescription());
+        organization.setParticipantsMaxCount(organizationDto.getParticipantsMaxCount());
+        organization.setCountry(organizationDto.getCountry());
+        organization.setRegion(organizationDto.getRegion());
+        organization.setCity(organizationDto.getCity());
+        organization.setAddress(organizationDto.getAddress());
 
         try {
-            organization = organizationRepository.save(organization);
+            return OrganizationMapper.INSTANCE.entityToDto(organizationRepository.save(organization));
         } catch (DataIntegrityViolationException e) {
             throw new DuplicateRecordException("Организация уже существует!");
         }
 
-        return OrganizationMapper.INSTANCE.entityToDto(organization);
     }
 
-    public OrganizationDto update(Long organizationId, OrganizationDto organizationDto){
+    public OrganizationDto update(Long organizationId, OrganizationDto organizationDto) {
 
         Organization organization =
                 organizationRepository
                         .findById(organizationId)
-                        .orElseThrow(()->new IllegalArgumentException("Организация не найдена"));
+                        .orElseThrow(() -> new IllegalArgumentException("Организация не найдена"));
 
         organization.setName(organizationDto.getName());
         organization.setDescription(organizationDto.getDescription());

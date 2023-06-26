@@ -2,18 +2,19 @@ package com.github.dlism.backend.controllers;
 
 import com.github.dlism.backend.dto.OrganizationDto;
 import com.github.dlism.backend.exceptions.DuplicateRecordException;
-import com.github.dlism.backend.models.Organization;
 import com.github.dlism.backend.models.User;
 import com.github.dlism.backend.services.OrganizationService;
 import com.github.dlism.backend.services.UserService;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Optional;
@@ -47,7 +48,7 @@ public class OrganizationController {
         }
 
         model.addAttribute("organizationForm", new OrganizationDto());
-        return "forms/organization";
+        return "organization/forms/create";
     }
 
     @PostMapping("/create")
@@ -58,14 +59,14 @@ public class OrganizationController {
             Model model) {
 
         if (bindingResult.hasErrors()) {
-            return "forms/organization";
+            return "organization/forms/create";
         }
 
         try {
             organizationService.create(organizationDto, user);
         } catch (DuplicateRecordException e) {
             model.addAttribute("organizationExists", e.getMessage());
-            return "forms/organization";
+            return "organization/forms/create";
         }
         return "redirect:/organization";
     }
@@ -73,7 +74,7 @@ public class OrganizationController {
     @GetMapping("/edit")
     public String editForm(@AuthenticationPrincipal User user, Model model) {
         model.addAttribute("organizationForm", organizationService.searchOrganization(user));
-        return "forms/editOrganizationProfile";
+        return "organization/forms/edit";
     }
 
     @PostMapping("/edit")
@@ -83,13 +84,14 @@ public class OrganizationController {
             Model model) {
 
         try {
+            var organization =organizationService.update(user, organizationDto);
+            System.out.println(organization);
             model.addAttribute("organizationForm", organizationService.update(user, organizationDto));
             model.addAttribute("organizationCreateSuccess", "Организация успешно обновлена");
         } catch (DuplicateRecordException | IllegalArgumentException e) {
             model.addAttribute("organizationExists", e.getMessage());
         }
-        return "forms/editOrganizationProfile";
+        return "organization/forms/edit";
     }
-
 
 }

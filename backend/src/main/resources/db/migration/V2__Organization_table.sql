@@ -7,5 +7,10 @@ create table organization
     description varchar(1000)       NOT NULL,
     active      boolean default false,
     owner_id    int8 UNIQUE,
+    participants_max_count int CHECK ( participants_max_count >= 0 ) default 1,
+    country varchar(255),
+    region varchar(255),
+    city varchar(255),
+    address varchar(500),
     primary key (id)
 );
