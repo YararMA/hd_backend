@@ -12,11 +12,6 @@ spring:
     hibernate:
       ddl-auto: validate
 
-  flyway:
-    baselineOnMigrate: true
-    validateOnMigrate: false
-    locations: classpath:db/migration
-
   rabbitmq:
     host: localhost
     username: user
