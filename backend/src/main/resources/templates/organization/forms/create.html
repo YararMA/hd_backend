@@ -29,8 +29,32 @@
                 <div class="mb-3">
                     <label for="exampleInputPassword1" class="form-label">Описание</label>
                     <textarea type="password" th:field="*{description}" class="form-control " id="exampleInputPassword1"></textarea>
-
                     <div th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputParticipant" class="form-label">Количество участников</label>
+                    <textarea type="password" th:field="*{participantsMaxCount}" class="form-control " id="exampleInputParticipant"></textarea>
+                    <div th:if="${#fields.hasErrors('participantsMaxCount')}" th:errors="*{participantsMaxCount}"></div>
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputCountry" class="form-label">Страна</label>
+                    <textarea type="password" th:field="*{country}" class="form-control " id="exampleInputCountry"></textarea>
+                    <div th:if="${#fields.hasErrors('country')}" th:errors="*{country}"></div>
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputRegion" class="form-label">Регион</label>
+                    <textarea type="password" th:field="*{region}" class="form-control " id="exampleInputRegion"></textarea>
+                    <div th:if="${#fields.hasErrors('region')}" th:errors="*{region}"></div>
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputCity" class="form-label">Город</label>
+                    <textarea type="password" th:field="*{city}" class="form-control " id="exampleInputCity"></textarea>
+                    <div th:if="${#fields.hasErrors('city')}" th:errors="*{city}"></div>
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputAddress" class="form-label">Город</label>
+                    <textarea type="password" th:field="*{address}" class="form-control " id="exampleInputAddress"></textarea>
+                    <div th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></div>
                 </div>
                 <button type="submit" class="btn btn-primary">Создать</button>
             </form>

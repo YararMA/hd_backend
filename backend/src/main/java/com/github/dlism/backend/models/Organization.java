@@ -31,4 +31,14 @@ public class Organization {
 
     @ManyToMany(mappedBy = "subscribeOrganizations")
     private Set<User> users;
+
+    private int participantsMaxCount;
+
+    private String country;
+
+    private String region;
+
+    private String city;
+
+    private String address;
 }

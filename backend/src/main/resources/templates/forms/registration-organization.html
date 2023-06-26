@@ -20,21 +20,47 @@
           </div>
         </div>
         <div class="mb-3">
-          <label for="exampleInputUserName" class="form-label"> Имя пользователя</label>
-          <input type="text" th:field="*{username}"  class="form-control"  th:classappend="${userExists} ? 'is-invalid'" id="exampleInputUserName" >
+          <label for="exampleInputfirstname" class="form-label">Фамилия*</label>
+          <input type="text" th:field="*{firstname}" class="form-control" id="exampleInputfirstname">
+          <div id="validationServerfirstname" class="invalid-feedback">
+            Пожалуйста, введите фамилию.
+          </div>
+          <div th:if="${#fields.hasErrors('firstname')}" th:errors="*{firstname}"></div>
+        </div>
+        <div class="mb-3">
+          <label for="exampleInputName" class="form-label">Имя*</label>
+          <input type="text" th:field="*{name}" class="form-control" id="exampleInputName">
+          <div id="validationServerName" class="invalid-feedback">
+            Пожалуйста, введите имю.
+          </div>
+          <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+        </div>
+        <div class="mb-3">
+          <label for="exampleInputlastname" class="form-label">Отчество</label>
+          <input type="text" th:field="*{lastname}" class="form-control" id="exampleInputlastname">
+          <div id="validationServerexampleInputlastname" class="invalid-feedback">
+            Пожалуйста, введите отчество.
+          </div>
+          <div th:if="${#fields.hasErrors('lastname')}" th:errors="*{lastname}"></div>
+        </div>
+        <div class="mb-3">
+          <label for="exampleInputUserName" class="form-label">Email*</label>
+          <input type="text" th:field="*{username}" class="form-control"
+                 th:classappend="${userExists} ? 'is-invalid'" id="exampleInputUserName">
           <div id="validationServerUsernameFeedback" class="invalid-feedback">
-            Пожалуйста, выберите имя пользователя.
+            Пользовател с таким email уже зарегистрирован
           </div>
           <div th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>
         </div>
         <div class="mb-3">
-          <label for="exampleInputPassword1" class="form-label">Пароль</label>
+          <label for="exampleInputPassword1" class="form-label">Пароль*</label>
           <input type="password" th:field="*{password}" class="form-control " id="exampleInputPassword1">
           <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
         </div>
         <div class="mb-3">
-          <label for="exampleInputPassword2" class="form-label">Подтверждение пароля</label>
-          <input type="password" th:field="*{passwordConfirmation}" class="form-control " th:classappend="${passIsNotConfirm} ? 'is-invalid'" id="exampleInputPassword2">
+          <label for="exampleInputPassword2" class="form-label">Подтверждение пароля*</label>
+          <input type="password" th:field="*{passwordConfirmation}" class="form-control "
+                 th:classappend="${passIsNotConfirm} ? 'is-invalid'" id="exampleInputPassword2">
           <div id="validationPass" class="invalid-feedback">
             Пароли не совподают
           </div>
