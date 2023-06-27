@@ -68,6 +68,7 @@ public class OrganizationService {
             organization.setDescription((String) result.get("description"));
             organization.setActive((boolean) result.get("active"));
             organization.setSubscribers((Long) result.get("subscribers"));
+            organization.setParticipantsMaxCount((int) result.get("participants_max_count"));
             organizations.add(organization);
         }
 
