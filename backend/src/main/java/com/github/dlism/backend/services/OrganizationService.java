@@ -89,7 +89,7 @@ public class OrganizationService {
 
         Organization organization = organizationRepository
                 .findByUserId(user.getId())
-                .orElseThrow(() -> new IllegalArgumentException("Организация не найдена"));
+                .orElseThrow(() -> new OrganizationNotFoundException("Организация не найдена"));
 
         organization.setName(organizationDto.getName());
         organization.setDescription(organizationDto.getDescription());
@@ -98,6 +98,7 @@ public class OrganizationService {
         organization.setRegion(organizationDto.getRegion());
         organization.setCity(organizationDto.getCity());
         organization.setAddress(organizationDto.getAddress());
+        organization.setType(organizationDto.getType());
 
         try {
             return OrganizationMapper.INSTANCE.entityToDto(organizationRepository.save(organization));

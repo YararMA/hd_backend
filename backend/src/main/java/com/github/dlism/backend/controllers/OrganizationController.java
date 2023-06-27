@@ -2,6 +2,7 @@ package com.github.dlism.backend.controllers;
 
 import com.github.dlism.backend.dto.OrganizationDto;
 import com.github.dlism.backend.exceptions.DuplicateRecordException;
+import com.github.dlism.backend.exceptions.OrganizationNotFoundException;
 import com.github.dlism.backend.models.User;
 import com.github.dlism.backend.services.OrganizationService;
 import com.github.dlism.backend.services.UserService;
@@ -84,11 +85,9 @@ public class OrganizationController {
             Model model) {
 
         try {
-            var organization =organizationService.update(user, organizationDto);
-            System.out.println(organization);
             model.addAttribute("organizationForm", organizationService.update(user, organizationDto));
             model.addAttribute("organizationCreateSuccess", "Организация успешно обновлена");
-        } catch (DuplicateRecordException | IllegalArgumentException e) {
+        } catch (DuplicateRecordException | OrganizationNotFoundException e) {
             model.addAttribute("organizationExists", e.getMessage());
         }
         return "organization/forms/edit";
