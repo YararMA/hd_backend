@@ -17,7 +17,7 @@
         <java.version>17</java.version>
         <thymeleaf.extras.version>3.1.1.RELEASE</thymeleaf.extras.version>
         <lombok.version>1.18.22</lombok.version>
-        <mupStruct.version>1.5.3.Final</mupStruct.version>
+        <mapStruct.version>1.5.3.Final</mapStruct.version>
     </properties>
     <dependencies>
         <dependency>
@@ -37,12 +37,12 @@
         <dependency>
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct</artifactId>
-            <version>${mupStruct.version}</version>
+            <version>${mapStruct.version}</version>
         </dependency>
         <dependency>
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct-processor</artifactId>
-            <version>${mupStruct.version}</version>
+            <version>${mapStruct.version}</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -142,9 +142,8 @@
                         <path>
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok</artifactId>
-                            <version>1.18.22</version>
+                            <version>${lombok.version}</version>
                         </path>
-                        <!-- This is needed when using Lombok 1.18.16 and above -->
                         <path>
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok-mapstruct-binding</artifactId>
@@ -153,7 +152,7 @@
                         <path>
                             <groupId>org.mapstruct</groupId>
                             <artifactId>mapstruct-processor</artifactId>
-                            <version>1.5.3.Final</version>
+                            <version>${mapStruct.version}</version>
                         </path>
                     </annotationProcessorPaths>
                 </configuration>

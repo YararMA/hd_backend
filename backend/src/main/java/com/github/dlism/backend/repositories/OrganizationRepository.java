@@ -22,11 +22,8 @@ public interface OrganizationRepository extends JpaRepository<Organization, Long
     @Query("select new com.github.dlism.backend.pojo.OrganizationPojo(o.id, o.name, o.description, o.active) from Organization o")
     List<OrganizationPojo> getAll();
 
-    @Query(value = "select count(*) from subscribing_user_organization where organization_id=:id", nativeQuery = true)
-    String subscribersCount(@Param("id") Long id);
-
-    @Query(value = "select o.id, o.name, o.active, o.description, count(suo.user_id) as subscribers from organization o\n" +
-            " left join subscribing_user_organization suo on o.id = suo.organization_id\n" +
+    @Query(value = "select o.id, o.name, o.active, o.description, o.participants_max_count, count(suo.user_id) as subscribers from organization o\n" +
+            "left join subscribing_user_organization suo on o.id = suo.organization_id where o.active=true\n" +
             "group by o.name, o.id", nativeQuery = true)
     List<Map<String, Object>> getAllActiveWithSubscribers();
 }

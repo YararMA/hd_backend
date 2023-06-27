@@ -41,4 +41,6 @@ public class Organization {
     private String city;
 
     private String address;
+
+    private String type;
 }

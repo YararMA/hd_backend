@@ -28,11 +28,9 @@ public class SecurityConfiguration {
                                 "/registration-organization",
                                 "/login",
                                 "/static/**",
-                                "/organization-list",
+                                "/organization-list/**",
                                 "/active/**").permitAll()
-                        .requestMatchers("/control").hasRole("ADMIN")
                         .requestMatchers("/control/**").hasRole("ADMIN")
-                        .requestMatchers("/organization").hasRole("ORGANIZER")
                         .requestMatchers("/organization/**").hasRole("ORGANIZER")
                         .anyRequest().authenticated()
                 )

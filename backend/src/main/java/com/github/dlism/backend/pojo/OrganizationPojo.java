@@ -10,6 +10,7 @@ public class OrganizationPojo {
     private boolean active;
     private String description;
     private Long subscribers;
+    private int participantsMaxCount;
 
     public OrganizationPojo(){}
     public OrganizationPojo(Long id, String name, String description, boolean active) {

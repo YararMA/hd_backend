@@ -42,7 +42,7 @@ public class MainController {
             model.addAttribute("message", e.getMessage());
             return "helpers/not-found";
         }
-        return "organization/profile";
+        return "organization/view";
     }
 
     @GetMapping("/registration")
@@ -60,17 +60,17 @@ public class MainController {
     @PostMapping("/registration-organization")
     public String registrationOrganization(@Valid @ModelAttribute("registrationForm") UserDto userDto, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
-            return "forms/registration";
+            return "forms/registration-organization";
         }
 
         try {
             userService.createOrganizer(userDto);
         } catch (DuplicateRecordException e) {
             model.addAttribute("userExists", e.getMessage());
-            return "forms/registration";
+            return "forms/registration-organization";
         } catch (IllegalArgumentException e) {
             model.addAttribute("passIsNotConfirm", e.getMessage());
-            return "forms/registration";
+            return "forms/registration-organization";
         }
 
         return "redirect:login";

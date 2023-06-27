@@ -25,4 +25,6 @@ public class OrganizationDto {
     private String city;
 
     private String address;
+
+    private String type;
 }

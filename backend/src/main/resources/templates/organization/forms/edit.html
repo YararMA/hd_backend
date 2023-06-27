@@ -58,7 +58,12 @@
                     <textarea type="password" th:field="*{address}" class="form-control " id="exampleInputAddress"></textarea>
                     <div th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></div>
                 </div>
-                <button type="submit" class="btn btn-primary">Создать</button>
+                <div class="mb-3">
+                    <label for="exampleInputType" class="form-label">Тип площадки</label>
+                    <textarea type="password" th:field="*{type}" class="form-control " id="exampleInputType"></textarea>
+                    <div th:if="${#fields.hasErrors('type')}" th:errors="*{type}"></div>
+                </div>
+                <button type="submit" class="btn btn-primary">Обновить</button>
             </form>
         </div>
     </div>
