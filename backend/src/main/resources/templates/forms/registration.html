@@ -6,74 +6,79 @@
     <meta th:replace="~{template-part/header :: header}">
 </head>
 <body>
-<div class="wrapper">
+<div class="wrapper bg-primary-override">
     <div th:replace="~{template-part/menu :: menu}"></div>
     <div class="content">
         <div class="container">
             <div class="row d-flex justify-content-center">
-                <div class="col-6 ">
-                    <h2>Регистрация</h2>
-                    <form name="registrationForm" th:action="@{/registration}" th:method="POST"
-                          th:object="${registrationForm}">
-                        <div class="mb-3">
-                            <div th:if="${param.logout}" class="alert alert-success">
-                                Вы вышли из системы.
-                            </div>
-                            <div th:if="${userExists}" th:text="${userExists}" class="alert alert-error">
-                            </div>
+                <h2 class="text-center">Регистрация</h2>
+                <form class="form" name="registrationForm" th:action="@{/registration}" th:method="POST"
+                      th:object="${registrationForm}">
+                    <div class="col-12">
+                        <div th:if="${param.logout}" class="alert alert-success">
+                            Вы вышли из системы.
                         </div>
-                        <div class="mb-3">
-                            <label for="exampleInputfirstname" class="form-label">Фамилия*</label>
-                            <input type="text" th:field="*{firstname}" class="form-control" id="exampleInputfirstname">
-                            <div id="validationServerfirstname" class="invalid-feedback">
-                                Пожалуйста, введите фамилию.
-                            </div>
-                            <div th:if="${#fields.hasErrors('firstname')}" th:errors="*{firstname}"></div>
+                        <div th:if="${userExists}" th:text="${userExists}" class="alert alert-error">
                         </div>
-                        <div class="mb-3">
-                            <label for="exampleInputName" class="form-label">Имя*</label>
-                            <input type="text" th:field="*{name}" class="form-control" id="exampleInputName">
-                            <div id="validationServerName" class="invalid-feedback">
-                                Пожалуйста, введите имю.
-                            </div>
-                            <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+                    </div>
+                    <div class="col-12">
+                        <input type="text" th:field="*{firstname}" class="form-control" placeholder="Фамилия">
+                        <div id="validationServerfirstname" class="invalid-feedback">
+                            Пожалуйста, введите фамилию.
                         </div>
-                        <div class="mb-3">
-                            <label for="exampleInputlastname" class="form-label">Отчество</label>
-                            <input type="text" th:field="*{lastname}" class="form-control" id="exampleInputlastname">
-                            <div id="validationServerexampleInputlastname" class="invalid-feedback">
-                                Пожалуйста, введите отчество.
-                            </div>
-                            <div th:if="${#fields.hasErrors('lastname')}" th:errors="*{lastname}"></div>
+                        <div th:if="${#fields.hasErrors('firstname')}" th:errors="*{firstname}"></div>
+                    </div>
+                    <div class="col-12">
+                        <input type="text" th:field="*{name}" class="form-control" id="exampleInputName"
+                               placeholder="Имя">
+                        <div id="validationServerName" class="invalid-feedback">
+                            Пожалуйста, введите имю.
                         </div>
-                        <div class="mb-3">
-                            <label for="exampleInputUserName" class="form-label">Email*</label>
-                            <input type="text" th:field="*{username}" class="form-control"
-                                   th:classappend="${userExists} ? 'is-invalid'" id="exampleInputUserName">
-                            <div id="validationServerUsernameFeedback" class="invalid-feedback">
-                                Пользовател с таким email уже зарегистрирован
-                            </div>
-                            <div th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>
+                        <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+                    </div>
+                    <div class="col-12">
+                        <input type="text" th:field="*{lastname}" class="form-control" id="exampleInputlastname"
+                               placeholder="Отчество">
+                        <div id="validationServerexampleInputlastname" class="invalid-feedback">
+                            Пожалуйста, введите отчество.
                         </div>
-                        <div class="mb-3">
-                            <label for="exampleInputPassword1" class="form-label">Пароль*</label>
-                            <input type="password" th:field="*{password}" class="form-control "
-                                   id="exampleInputPassword1">
-                            <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+                        <div th:if="${#fields.hasErrors('lastname')}" th:errors="*{lastname}"></div>
+                    </div>
+                    <div class="col-12">
+                        <input type="text" th:field="*{username}" class="form-control"
+                               th:classappend="${userExists} ? 'is-invalid'" id="exampleInputUserName"
+                               placeholder="Email">
+                        <div id="validationServerUsernameFeedback" class="invalid-feedback">
+                            Пользовател с таким email уже зарегистрирован
                         </div>
-                        <div class="mb-3">
-                            <label for="exampleInputPassword2" class="form-label">Подтверждение пароля*</label>
-                            <input type="password" th:field="*{passwordConfirmation}" class="form-control "
-                                   th:classappend="${passIsNotConfirm} ? 'is-invalid'" id="exampleInputPassword2">
-                            <div id="validationPass" class="invalid-feedback">
-                                Пароли не совподают
-                            </div>
-                            <div th:if="${#fields.hasErrors('passwordConfirmation')}"
-                                 th:errors="*{passwordConfirmation}"></div>
+                        <div th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>
+                    </div>
+                    <div class="col-12">
+                        <input type="password" th:field="*{password}" class="form-control "
+                               id="exampleInputPassword1" placeholder="Пароль">
+                        <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+                    </div>
+                    <div class="col-12">
+                        <input type="password" th:field="*{passwordConfirmation}" class="form-control"
+                               th:classappend="${passIsNotConfirm} ? 'is-invalid'" id="exampleInputPassword2"
+                               placeholder="Подтверждение пароля">
+                        <div id="validationPass" class="invalid-feedback">
+                            Пароли не совподают
                         </div>
-                        <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
-                    </form>
-                </div>
+                        <div th:if="${#fields.hasErrors('passwordConfirmation')}"
+                             th:errors="*{passwordConfirmation}"></div>
+                    </div>
+                    <button type="submit" class="btn btn-outline-dark">Зарегистрироваться</button>
+
+                    <div class="privacy-policy">
+                        Нажимая на кнопку, вы соглашаетесь на условия <a href="">Пользовательского соглашения</a> и
+                        <a href="">Политики обработки персональных данных</a>
+                    </div>
+
+                    <div class="login-href">
+                        У вас уже есть аккаунт? <a href="">Войти</a>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
