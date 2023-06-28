@@ -6,8 +6,14 @@
     <meta th:replace="~{template-part/header :: header}">
 </head>
 <body>
-<div th:replace="~{template-part/menu :: menu}"></div>
-<h1>Главная страница</h1>
-
+<div class="wrapper">
+    <div th:replace="~{template-part/menu :: menu}"></div>
+    <div class="content">
+        <div class="container">
+            <h1>Главная страница</h1>
+        </div>
+    </div>
+    <div th:replace="~{template-part/footer :: footer}"></div>
+</div>
 </body>
 </html>
