@@ -22,9 +22,6 @@
           <li class="nav-item active">
             <a class="nav-link" href="/organization-list">Площадки</a>
           </li>
-          <li class="nav-item" sec:authorize="hasRole('ROLE_ORGANIZER')">
-            <a class="nav-link" href="/organization">Организация</a>
-          </li>
           <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">
             <a class="nav-link" href="/control">Панель админстратора</a>
           </li>
@@ -34,13 +31,13 @@
     <div class="navbar-nav">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item active" sec:authorize="isAuthenticated()">
-          <a class="nav-link btn btn-outline-light" href="/user" th:text="${#authentication.name}">Профиль пользователя</a>
+          <a class="nav-link btn btn-outline-light" href="/user">Личный кабинет</a>
         </li>
         <li class="nav-item active" sec:authorize="isAuthenticated()">
-          <a class="nav-link btn btn-outline-light" href="/logout" >Выйти</a>
+          <a class="nav-link btn btn-outline-light" href="/logout" >Выйти <img src="/static/img/icons/logout.svg" alt=""></a>
         </li>
         <li class="nav-item active" sec:authorize="!isAuthenticated()">
-          <a class="nav-link btn btn-outline-light" href="/login" >Зарегистрироваться</a>
+          <a class="nav-link btn btn-outline-light" href="/registration" >Зарегистрироваться</a>
         </li>
       </ul>
     </div>

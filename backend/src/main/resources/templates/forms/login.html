@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <meta th:replace="~{template-part/header :: header}">
+</head>
+<body>
+<div class="wrapper bg-primary-override">
+    <div th:replace="~{template-part/menu :: menu}"></div>
+    <div class="content">
+        <div class="container">
+            <div class="row d-flex justify-content-center">
+                <h2 class="text-center">Регистрация</h2>
+                <form class="form" name="registrationForm" th:action="@{/perform-login}" th:method="POST">
+                    <div class="col-12">
+                        <div th:if="${param.logout}" class="alert alert-success">
+                            Вы вышли из системы.
+                        </div>
+                        <div th:if="${param.error}" class="alert alert-error">
+                            Неправильные имя и пароль.
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <input type="text" name="username" class="form-control" placeholder="Email">
+                    </div>
+                    <div class="col-12">
+                        <input type="password" name="password" class="form-control" id="exampleInputName" placeholder="Пароль">
+                    </div>
+
+                    <button type="submit" class="btn btn-outline-dark">Войти</button>
+                    <div class="login-href">
+                        Нет аккаунта? <a href="/registration">Зарегистрироваться</a>
+                    </div>
+                    <div class="login-href">
+                        <a href="">Не помню пароль</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div th:replace="~{template-part/footer :: footer}"></div>
+</div>
+</body>
+</html>
