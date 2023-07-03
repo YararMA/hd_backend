@@ -8,7 +8,6 @@ import com.github.dlism.backend.models.Organization;
 import com.github.dlism.backend.models.User;
 import com.github.dlism.backend.pojo.OrganizationPojo;
 import com.github.dlism.backend.repositories.OrganizationRepository;
-import com.github.dlism.backend.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -25,28 +24,24 @@ public class OrganizationService {
     @Autowired
     private OrganizationRepository organizationRepository;
 
-    @Autowired
-    private UserRepository userRepository;
 
     @Transactional
     public void create(OrganizationDto organizationDto, User user) throws DuplicateRecordException {
-
-        Organization organization = OrganizationMapper.INSTANCE.dtoToEntity(organizationDto);
-        organization.setAuth(user);
-        user.setOrganization(organization);
-
         try {
-            userRepository.save(user);
+            Organization organization = OrganizationMapper.INSTANCE.dtoToEntity(organizationDto);
+            organization.setAuth(user);
+            organizationRepository.save(organization);
         } catch (DataIntegrityViolationException e) {
             throw new DuplicateRecordException("Организация уже существует!");
         }
     }
 
     public Optional<OrganizationDto> searchOrganization(User user) {
-        Optional<Organization> organization = organizationRepository.findByUserId(user.getId());
+        Optional<Organization> organization = organizationRepository.findByAuth(user);
 
         return organization
                 .map(OrganizationMapper.INSTANCE::entityToDto);
+
     }
 
     public long count() {
@@ -89,7 +84,7 @@ public class OrganizationService {
     public OrganizationDto update(User user, OrganizationDto organizationDto) throws DuplicateRecordException {
 
         Organization organization = organizationRepository
-                .findByUserId(user.getId())
+                .findByAuth(user)
                 .orElseThrow(() -> new OrganizationNotFoundException("Организация не найдена"));
 
         organization.setName(organizationDto.getName());
@@ -132,5 +127,9 @@ public class OrganizationService {
         return organizationRepository
                 .findById(id)
                 .orElseThrow(() -> new OrganizationNotFoundException("Организация не найдена"));
+    }
+
+    public boolean existsOrganizationsByAuth(User user) {
+        return organizationRepository.existsOrganizationsByAuth(user);
     }
 }

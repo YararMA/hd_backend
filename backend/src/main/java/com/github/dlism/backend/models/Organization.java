@@ -29,7 +29,7 @@ public class Organization {
     @JoinColumn(name = "owner_id")
     private User auth;
 
-    @ManyToMany(mappedBy = "subscribeOrganizations")
+    @OneToMany(mappedBy = "organization")
     private Set<User> users;
 
     private int participantsMaxCount;

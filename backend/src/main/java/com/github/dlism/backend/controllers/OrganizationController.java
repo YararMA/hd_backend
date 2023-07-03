@@ -5,7 +5,6 @@ import com.github.dlism.backend.exceptions.DuplicateRecordException;
 import com.github.dlism.backend.exceptions.OrganizationNotFoundException;
 import com.github.dlism.backend.models.User;
 import com.github.dlism.backend.services.OrganizationService;
-import com.github.dlism.backend.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -26,8 +25,6 @@ public class OrganizationController {
     @Autowired
     private OrganizationService organizationService;
 
-    @Autowired
-    private UserService userService;
 
     @GetMapping("")
     public String profile(@AuthenticationPrincipal User user, Model model) {
@@ -43,7 +40,7 @@ public class OrganizationController {
     @GetMapping("/create")
     public String index(@AuthenticationPrincipal User user, Model model, RedirectAttributes redirectAttributes) {
 
-        if (userService.hasOrganization(user)) {
+        if (organizationService.existsOrganizationsByAuth(user)) {
             redirectAttributes.addFlashAttribute("organizationExists", "Организация уже создана!");
             return "redirect:/organization";
         }

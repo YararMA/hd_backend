@@ -24,7 +24,7 @@ public class User implements UserDetails {
     private String username;
     private String phone;
     private String gender;
-    int age;
+    private int age;
     private String country;
     private String region;
     private String locality;
@@ -37,16 +37,9 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    @JoinColumn(name = "organization_id")
     private Organization organization;
-
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "subscribing_user_organization",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "organization_id")
-    )
-    private Set<Organization> subscribeOrganizations;
 
     public void setId(Long id){
         this.id=id;
