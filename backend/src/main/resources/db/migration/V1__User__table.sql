@@ -26,7 +26,7 @@ create table usr
     type_of_activity varchar(100),
     password         varchar(255)        NOT NULL,
     organization_id  int8,
-    active           boolean default false,
+    active           boolean default true,
     primary key (id)
 );
 

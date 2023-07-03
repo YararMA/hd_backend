@@ -3,8 +3,8 @@ package com.github.dlism.backend.services;
 import com.github.dlism.backend.dto.RabbitmqDto;
 import com.github.dlism.backend.dto.user.UserDto;
 import com.github.dlism.backend.dto.user.UserProfileDto;
-import com.github.dlism.backend.dto.user.UserUpdateProfileDto;
 import com.github.dlism.backend.dto.user.UserUpdatePasswordDto;
+import com.github.dlism.backend.dto.user.UserUpdateProfileDto;
 import com.github.dlism.backend.exceptions.DuplicateRecordException;
 import com.github.dlism.backend.exceptions.UpdateException;
 import com.github.dlism.backend.exceptions.UserNotFoundException;
@@ -15,7 +15,6 @@ import com.github.dlism.backend.models.User;
 import com.github.dlism.backend.models.UserActivationCode;
 import com.github.dlism.backend.repositories.UserActivationCodeRepository;
 import com.github.dlism.backend.repositories.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -24,24 +23,28 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 @Service
 public class UserService implements UserDetailsService {
-    @Autowired
-    private UserRepository userRepository;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private ProduceService produceService;
+    private final PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private UserActivationCodeRepository activationCodeRepository;
+    private final ProduceService produceService;
+
+    private final UserActivationCodeRepository activationCodeRepository;
+
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, ProduceService produceService, UserActivationCodeRepository activationCodeRepository) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.produceService = produceService;
+        this.activationCodeRepository = activationCodeRepository;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -74,7 +77,9 @@ public class UserService implements UserDetailsService {
         try {
             User user = UserMapper.INSTANCE.dtoToEntity(userDto);
             user.setPassword(passwordEncoder.encode(userDto.getPassword()));
-            user.setRoles(Collections.singleton(role));
+
+            user.setRoles(new HashSet<>(List.of(new Role[]{role, Role.ROLE_NOT_ACTIVE})));
+            user.setActive(true);
 
             UUID code = UUID.randomUUID();
             userRepository.save(user);
@@ -156,7 +161,12 @@ public class UserService implements UserDetailsService {
         }
 
         try {
-            userRepository.changePassword(user.getId(), passwordEncoder.encode(userUpdatePasswordDto.getNewPassword()));
+            Optional<User> userOptional = userRepository.findById(user.getId());
+            if (userOptional.isPresent()) {
+                User updateUser = userOptional.get();
+                updateUser.setPassword(passwordEncoder.encode(userUpdatePasswordDto.getNewPassword()));
+                userRepository.save(updateUser);
+            }
         } catch (Exception e) {
             e.printStackTrace();
             throw new UpdateException("Ошибка при изминения пароля!");
