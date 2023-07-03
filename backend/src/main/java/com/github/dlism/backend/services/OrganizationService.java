@@ -6,24 +6,21 @@ import com.github.dlism.backend.exceptions.OrganizationNotFoundException;
 import com.github.dlism.backend.mappers.OrganizationMapper;
 import com.github.dlism.backend.models.Organization;
 import com.github.dlism.backend.models.User;
-import com.github.dlism.backend.pojo.OrganizationPojo;
 import com.github.dlism.backend.repositories.OrganizationRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Service
 public class OrganizationService {
+    private final OrganizationRepository organizationRepository;
 
-    @Autowired
-    private OrganizationRepository organizationRepository;
-
+    public OrganizationService(OrganizationRepository organizationRepository) {
+        this.organizationRepository = organizationRepository;
+    }
 
     @Transactional
     public void create(OrganizationDto organizationDto, User user) throws DuplicateRecordException {
@@ -48,26 +45,12 @@ public class OrganizationService {
         return organizationRepository.count();
     }
 
-    public List<OrganizationPojo> getAllOrganizations() {
-        return organizationRepository.getAll();
+    public List<Organization> getAllOrganizations() {
+        return organizationRepository.findAll();
     }
 
-    public List<OrganizationPojo> getAllActiveOrganizations() {
-        List<Map<String, Object>> results = organizationRepository.getAllActiveWithSubscribers();
-
-        List<OrganizationPojo> organizations = new ArrayList<>();
-        for (Map<String, Object> result : results) {
-            OrganizationPojo organization = new OrganizationPojo();
-            organization.setId((Long) result.get("id"));
-            organization.setName((String) result.get("name"));
-            organization.setDescription((String) result.get("description"));
-            organization.setActive((boolean) result.get("active"));
-            organization.setSubscribers((Long) result.get("subscribers"));
-            organization.setParticipantsMaxCount((int) result.get("participants_max_count"));
-            organizations.add(organization);
-        }
-
-        return organizations;
+    public List<Organization> getAllActiveOrganizations() {
+        return organizationRepository.findAllByActive(true);
     }
 
     public void active(Long id) {
@@ -78,7 +61,7 @@ public class OrganizationService {
             return o;
         });
 
-        organization.ifPresent(o -> organizationRepository.save(o));
+        organization.ifPresent(organizationRepository::save);
     }
 
     public OrganizationDto update(User user, OrganizationDto organizationDto) throws DuplicateRecordException {
