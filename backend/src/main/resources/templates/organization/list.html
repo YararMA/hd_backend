@@ -20,7 +20,6 @@
                                 on the card title and make up the bulk of the card's content.</p>
                             <a th:href="@{/organization-list/{id}(id=${organization.getId()})}"
                                class="card-link m-lg-4">Посмотреть</a>
-                            <div>Участники: <i th:text="${organization.getSubscribers()}"></i></div>
                             <div>Количество мест: <i th:text="${organization.getParticipantsMaxCount()}"></i></div>
                         </div>
                     </div>

@@ -5,6 +5,8 @@ import com.github.dlism.backend.models.Organization;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
+import java.util.List;
+
 @Mapper
 public interface OrganizationMapper {
     OrganizationMapper INSTANCE = Mappers.getMapper(OrganizationMapper.class);
@@ -12,4 +14,6 @@ public interface OrganizationMapper {
     OrganizationDto entityToDto(Organization organization);
 
     Organization dtoToEntity(OrganizationDto organizationDto);
+
+    List<OrganizationDto> entityToDto(List<Organization> organizations);
 }

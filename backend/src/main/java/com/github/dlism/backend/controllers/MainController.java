@@ -3,11 +3,11 @@ package com.github.dlism.backend.controllers;
 import com.github.dlism.backend.dto.user.UserDto;
 import com.github.dlism.backend.exceptions.DuplicateRecordException;
 import com.github.dlism.backend.exceptions.OrganizationNotFoundException;
+import com.github.dlism.backend.exceptions.UserNotFoundException;
 import com.github.dlism.backend.models.Organization;
 import com.github.dlism.backend.services.OrganizationService;
 import com.github.dlism.backend.services.UserService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -16,11 +16,14 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @RequestMapping("/")
 public class MainController {
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
-    @Autowired
-    private OrganizationService organizationService;
+    private final OrganizationService organizationService;
+
+    public MainController(UserService userService, OrganizationService organizationService) {
+        this.userService = userService;
+        this.organizationService = organizationService;
+    }
 
     @GetMapping("")
     public String index() {
@@ -102,11 +105,16 @@ public class MainController {
 
     @GetMapping("/active/{code}")
     public String activationUser(@PathVariable("code") String code, Model model) {
-        if (userService.active(code).isPresent()) {
-            model.addAttribute("message", "Ваш аккаунт успешно активировань");
-        } else {
-            model.addAttribute("message", "Не удалось активировать аккаунт");
+        try {
+            if (userService.active(code).isPresent()) {
+                model.addAttribute("message", "Ваш аккаунт успешно активировань");
+            } else {
+                model.addAttribute("message", "Код активации не найден");
+            }
+        }catch (UserNotFoundException e){
+            model.addAttribute("message", e.getMessage());
         }
+
         return "helpers/activation-user";
     }
 }
