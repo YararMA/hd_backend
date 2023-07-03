@@ -4,6 +4,7 @@ import com.github.dlism.backend.dto.OrganizationDto;
 import com.github.dlism.backend.exceptions.DuplicateRecordException;
 import com.github.dlism.backend.exceptions.OrganizationNotFoundException;
 import com.github.dlism.backend.mappers.OrganizationMapper;
+import com.github.dlism.backend.mappers.UserMapper;
 import com.github.dlism.backend.models.Organization;
 import com.github.dlism.backend.models.User;
 import com.github.dlism.backend.repositories.OrganizationRepository;
@@ -45,12 +46,12 @@ public class OrganizationService {
         return organizationRepository.count();
     }
 
-    public List<Organization> getAllOrganizations() {
-        return organizationRepository.findAll();
+    public List<OrganizationDto> getAllOrganizations() {
+        return OrganizationMapper.INSTANCE.entityToDto(organizationRepository.findAll());
     }
 
-    public List<Organization> getAllActiveOrganizations() {
-        return organizationRepository.findAllByActive(true);
+    public List<OrganizationDto> getAllActiveOrganizations() {
+        return OrganizationMapper.INSTANCE.entityToDto(organizationRepository.findAllByActive(true));
     }
 
     public void active(Long id) {
