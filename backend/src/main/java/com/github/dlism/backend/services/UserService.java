@@ -2,6 +2,7 @@ package com.github.dlism.backend.services;
 
 import com.github.dlism.backend.dto.RabbitmqDto;
 import com.github.dlism.backend.dto.user.UserDto;
+import com.github.dlism.backend.dto.user.UserProfileDto;
 import com.github.dlism.backend.dto.user.UserUpdateDto;
 import com.github.dlism.backend.dto.user.UserUpdatePasswordDto;
 import com.github.dlism.backend.exceptions.DuplicateRecordException;
@@ -12,7 +13,6 @@ import com.github.dlism.backend.models.Organization;
 import com.github.dlism.backend.models.Role;
 import com.github.dlism.backend.models.User;
 import com.github.dlism.backend.models.UserActivationCode;
-import com.github.dlism.backend.pojo.UserPojo;
 import com.github.dlism.backend.repositories.UserActivationCodeRepository;
 import com.github.dlism.backend.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,18 +86,12 @@ public class UserService implements UserDetailsService {
         }
     }
 
-    public boolean hasOrganization(User user) {
-        return userRepository.findByUsername(user.getUsername())
-                .map(User::getOrganization)
-                .isPresent();
-    }
-
     public long count() {
         return userRepository.count();
     }
 
-    public List<UserPojo> getAllUsers() {
-        return userRepository.all();
+    public List<UserProfileDto> getAllUsers() {
+        return UserMapper.INSTANCE.entityToDto(userRepository.findAll());
     }
 
     @Transactional
@@ -128,7 +122,8 @@ public class UserService implements UserDetailsService {
     @Transactional
     public void subscribeToOrganization(Organization organization, User user) {
         try {
-            userRepository.joinToOrganization(user.getId(), organization.getId());
+            user.setOrganization(organization);
+            userRepository.save(user);
         } catch (DataIntegrityViolationException e) {
             throw new DuplicateRecordException("Вы уже подписаны на эту организацию");
         }
