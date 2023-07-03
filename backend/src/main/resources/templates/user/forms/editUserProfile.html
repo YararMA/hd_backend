@@ -64,9 +64,41 @@
                             <label for="exampleInputAge" class="form-label">Возрасть</label>
                             <input type="text" th:field="*{age}" class="form-control" id="exampleInputAge">
                             <div id="validationServerExampleInputAge" class="invalid-feedback">
-                                Пожалуйста, введите пол.
+                                Пожалуйста, введите возраст.
                             </div>
                             <div th:if="${#fields.hasErrors('age')}" th:errors="*{age}"></div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="exampleTypeOfActivity" class="form-label">Вид деятельности</label>
+                            <input type="text" th:field="*{typeOfActivity}" class="form-control" id="exampleTypeOfActivity">
+                            <div id="validationServerExampleInputTypeOfActivity" class="invalid-feedback">
+                                Пожалуйста, введите вид деятельности.
+                            </div>
+                            <div th:if="${#fields.hasErrors('typeOfActivity')}" th:errors="*{typeOfActivity}"></div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="exampleCountry" class="form-label">Страна</label>
+                            <input type="text" th:field="*{country}" class="form-control" id="exampleCountry">
+                            <div id="validationServerExampleCountry" class="invalid-feedback">
+                                Пожалуйста, введите страну.
+                            </div>
+                            <div th:if="${#fields.hasErrors('country')}" th:errors="*{country}"></div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="exampleRegion" class="form-label">Регион</label>
+                            <input type="text" th:field="*{region}" class="form-control" id="exampleRegion">
+                            <div id="validationServerRegion" class="invalid-feedback">
+                                Пожалуйста, введите регион.
+                            </div>
+                            <div th:if="${#fields.hasErrors('region')}" th:errors="*{region}"></div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="exampleLocally" class="form-label">Населеный пункт</label>
+                            <input type="text" th:field="*{locality}" class="form-control" id="exampleLocally">
+                            <div id="validationExampleLocally" class="invalid-feedback">
+                                Пожалуйста, введите населеный пункт.
+                            </div>
+                            <div th:if="${#fields.hasErrors('locality')}" th:errors="*{locality}"></div>
                         </div>
                         <div class="mb-3">
                             <label for="exampleInputUserName" class="form-label">Email*</label>

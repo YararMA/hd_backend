@@ -10,7 +10,8 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserUpdateDto {
+public class UserProfileDto {
+    private Long id;
     @NotEmpty(message = "Имя не должен быть пустым")
     @Size(min = 3, max = 100, message = "Имя пользователя должно содержать от 3 до 100 символов")
     private String name;
@@ -32,4 +33,13 @@ public class UserUpdateDto {
     @Size(min = 3, max = 30, message = "Имя пользователя должно содержать от 3 до 30 символов")
     @Email(message = "Введите валидный e-mail")
     private String username;
+
+    @NotEmpty(message = "Пароль не должен быть пустым")
+    @Size(min = 8, max = 50, message = "Пароль должно содержать минимум 8 символов")
+    private String password;
+
+    @NotEmpty(message = "Пароль не должен быть пустым")
+    @Size(min = 8, max = 50, message = "Пароль должно содержать минимум 8 символов")
+    private String passwordConfirmation;
+
 }

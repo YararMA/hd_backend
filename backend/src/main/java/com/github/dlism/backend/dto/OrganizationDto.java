@@ -1,9 +1,12 @@
 package com.github.dlism.backend.dto;
 
+import com.github.dlism.backend.models.User;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+
+import java.util.Set;
 
 @Data
 public class OrganizationDto {
@@ -27,4 +30,8 @@ public class OrganizationDto {
     private String address;
 
     private String type;
+
+    private boolean active;
+
+    private Set<User> users;
 }

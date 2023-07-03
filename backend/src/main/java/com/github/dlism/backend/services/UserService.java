@@ -2,17 +2,19 @@ package com.github.dlism.backend.services;
 
 import com.github.dlism.backend.dto.RabbitmqDto;
 import com.github.dlism.backend.dto.user.UserDto;
-import com.github.dlism.backend.dto.user.UserUpdateDto;
+import com.github.dlism.backend.dto.user.UserProfileDto;
 import com.github.dlism.backend.dto.user.UserUpdatePasswordDto;
+import com.github.dlism.backend.dto.user.UserUpdateProfileDto;
 import com.github.dlism.backend.exceptions.DuplicateRecordException;
 import com.github.dlism.backend.exceptions.UpdateException;
+import com.github.dlism.backend.exceptions.UserNotFoundException;
 import com.github.dlism.backend.mappers.UserMapper;
 import com.github.dlism.backend.models.Organization;
 import com.github.dlism.backend.models.Role;
 import com.github.dlism.backend.models.User;
-import com.github.dlism.backend.pojo.UserPojo;
+import com.github.dlism.backend.models.UserActivationCode;
+import com.github.dlism.backend.repositories.UserActivationCodeRepository;
 import com.github.dlism.backend.repositories.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -21,21 +23,28 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 @Service
 public class UserService implements UserDetailsService {
-    @Autowired
-    private UserRepository userRepository;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private ProduceService produceService;
+    private final PasswordEncoder passwordEncoder;
+
+    private final ProduceService produceService;
+
+    private final UserActivationCodeRepository activationCodeRepository;
+
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, ProduceService produceService, UserActivationCodeRepository activationCodeRepository) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.produceService = produceService;
+        this.activationCodeRepository = activationCodeRepository;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -50,11 +59,7 @@ public class UserService implements UserDetailsService {
             throw new IllegalArgumentException("Пароль и подтверждение пароля не совпадают!");
         }
 
-        User user = UserMapper.INSTANCE.dtoToEntity(userDto);
-        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        user.setRoles(Collections.singleton(Role.ROLE_USER));
-
-        saveUser(user);
+        saveUser(userDto, Role.ROLE_USER);
     }
 
     @Transactional
@@ -64,44 +69,58 @@ public class UserService implements UserDetailsService {
             throw new IllegalArgumentException("Пароль и подтверждение пароля не совпадают!");
         }
 
-        User user = UserMapper.INSTANCE.dtoToEntity(userDto);
-        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        user.setRoles(Collections.singleton(Role.ROLE_ORGANIZER));
-
-        saveUser(user);
+        saveUser(userDto, Role.ROLE_ORGANIZER);
     }
 
-    private void saveUser(User user) {
+
+    private void saveUser(UserDto userDto, Role role) {
         try {
+            User user = UserMapper.INSTANCE.dtoToEntity(userDto);
+            user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+
+            user.setRoles(new HashSet<>(List.of(new Role[]{role, Role.ROLE_NOT_ACTIVE})));
+            user.setActive(true);
+
             UUID code = UUID.randomUUID();
             userRepository.save(user);
-            userRepository.saveActivationCode(code.toString(), user.getId());
+            activationCodeRepository.save(UserActivationCode.builder().user(user).code(code.toString()).build());
             produceService.produceAnswer(new RabbitmqDto(user.getUsername(), code));
+
         } catch (DataIntegrityViolationException e) {
             throw new DuplicateRecordException("Пользовател с таким именим уже существует");
         }
-    }
-
-    public boolean hasOrganization(User user) {
-        return userRepository.findByUsername(user.getUsername())
-                .map(User::getOrganization)
-                .isPresent();
     }
 
     public long count() {
         return userRepository.count();
     }
 
-    public List<UserPojo> getAllUsers() {
-        return userRepository.all();
+    public List<UserProfileDto> getAllUsers() {
+        return UserMapper.INSTANCE.entityToDto(userRepository.findAll());
     }
 
     @Transactional
-    public void update(User user, UserUpdateDto userDto) throws DuplicateRecordException, IllegalArgumentException {
+    public void update(User user, UserUpdateProfileDto userDto) throws DuplicateRecordException, IllegalArgumentException {
         try {
-            User userForUpdate = UserMapper.INSTANCE.dtoToEntity(userDto);
-            userForUpdate.setId(user.getId());
-            userRepository.update(userForUpdate);
+            Optional<User> userForUpdateOptional = userRepository.findById(user.getId());
+            if (userForUpdateOptional.isPresent()) {
+                User userForUpdate = userForUpdateOptional.get();
+
+                userForUpdate.setUsername(userDto.getUsername());
+                userForUpdate.setName(userDto.getName());
+                userForUpdate.setFirstname(userDto.getFirstname());
+                userForUpdate.setLastname(userDto.getLastname());
+                userForUpdate.setPhone(userDto.getPhone());
+                userForUpdate.setGender(userDto.getGender());
+                userForUpdate.setAge(userDto.getAge());
+                userForUpdate.setCountry(userDto.getCountry());
+                userForUpdate.setRegion(userDto.getRegion());
+                userForUpdate.setLocality(userDto.getLocality());
+                userForUpdate.setTypeOfActivity(userDto.getTypeOfActivity());
+
+                userRepository.save(userForUpdate);
+            }
+
         } catch (DataIntegrityViolationException e) {
             throw new DuplicateRecordException("Пользовател с таким именим уже существует");
         }
@@ -109,28 +128,30 @@ public class UserService implements UserDetailsService {
 
     @Transactional
     public Optional<User> active(String activationCode) {
-        Optional<User> userOptional = userRepository.getUserByActivationCode(activationCode);
+        Optional<UserActivationCode> userOptional = activationCodeRepository.findByCode(activationCode);
 
         if (userOptional.isPresent()) {
-            User user = userOptional.get();
+            User user = userOptional.orElseThrow(() -> new UserNotFoundException("Пользователь не найден")).getUser();
             user.setActive(true);
             userRepository.save(user);
-            userRepository.deleteActivationCodeByCode(activationCode);
+            activationCodeRepository.deleteByCode(activationCode);
+            return Optional.of(user);
         }
-        return userOptional;
+        return Optional.empty();
     }
 
     @Transactional
     public void subscribeToOrganization(Organization organization, User user) {
         try {
-            userRepository.joinToOrganization(user.getId(), organization.getId());
+            user.setOrganization(organization);
+            userRepository.save(user);
         } catch (DataIntegrityViolationException e) {
             throw new DuplicateRecordException("Вы уже подписаны на эту организацию");
         }
     }
 
-    public UserDto getById(Long id) {
-        return UserMapper.INSTANCE.entityToDto(userRepository.getReferenceById(id));
+    public UserUpdateProfileDto getById(Long id) {
+        return UserMapper.INSTANCE.entityToUpdateProfileDto(userRepository.getReferenceById(id));
     }
 
     @Transactional
@@ -140,7 +161,12 @@ public class UserService implements UserDetailsService {
         }
 
         try {
-            userRepository.changePassword(user.getId(), passwordEncoder.encode(userUpdatePasswordDto.getNewPassword()));
+            Optional<User> userOptional = userRepository.findById(user.getId());
+            if (userOptional.isPresent()) {
+                User updateUser = userOptional.get();
+                updateUser.setPassword(passwordEncoder.encode(userUpdatePasswordDto.getNewPassword()));
+                userRepository.save(updateUser);
+            }
         } catch (Exception e) {
             e.printStackTrace();
             throw new UpdateException("Ошибка при изминения пароля!");

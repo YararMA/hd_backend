@@ -1,6 +1,6 @@
 package com.github.dlism.backend.controllers;
 
-import com.github.dlism.backend.dto.user.UserUpdateDto;
+import com.github.dlism.backend.dto.user.UserUpdateProfileDto;
 import com.github.dlism.backend.dto.user.UserUpdatePasswordDto;
 import com.github.dlism.backend.exceptions.DuplicateRecordException;
 import com.github.dlism.backend.exceptions.UpdateException;
@@ -40,7 +40,7 @@ public class UserController {
 
     @PostMapping("/edit")
     public String edit(@AuthenticationPrincipal User user,
-                       @Valid @ModelAttribute("user") UserUpdateDto userUpdateDto,
+                       @Valid @ModelAttribute("user") UserUpdateProfileDto userUpdateProfileDto,
                        BindingResult bindingResult, Model model
     ) {
         if (bindingResult.hasErrors()) {
@@ -48,7 +48,7 @@ public class UserController {
         }
 
         try {
-            userService.update(user, userUpdateDto);
+            userService.update(user, userUpdateProfileDto);
             model.addAttribute("user", userService.getById(user.getId()));
             model.addAttribute("updateSuccess", "Данные успешно обновлены");
         } catch (DuplicateRecordException e) {
@@ -58,7 +58,7 @@ public class UserController {
     }
 
     @GetMapping("/password")
-    public String changePassword(@AuthenticationPrincipal User user, Model model) {
+    public String changePassword(Model model) {
         model.addAttribute("user", new UserUpdatePasswordDto());
         return "user/forms/changePassword";
     }
