@@ -21,17 +21,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     List<UserPojo> all();
 
     @Modifying
-    @Query(value = "insert into user_activation_code (code, user_id) values(:code, :user_id)", nativeQuery = true)
-    void saveActivationCode(@Param("code") String code, @Param("user_id") Long user_id);
-
-    @Query(value = "select * from usr where id=(select user_id from user_activation_code where code=:code)", nativeQuery = true)
-    Optional<User> getUserByActivationCode(@Param("code") String code);
-
-    @Modifying
-    @Query(value = "DELETE FROM user_activation_code WHERE code=:code", nativeQuery = true)
-    void deleteActivationCodeByCode(@Param("code") String code);
-
-    @Modifying
     @Query(value = "insert into subscribing_user_organization (user_id, organization_id) values(:user_id, :organization_id)", nativeQuery = true)
     void joinToOrganization(@Param("user_id") Long userId, @Param("organization_id") Long organizationId);
 

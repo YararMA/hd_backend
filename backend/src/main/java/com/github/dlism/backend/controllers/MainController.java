@@ -3,6 +3,7 @@ package com.github.dlism.backend.controllers;
 import com.github.dlism.backend.dto.user.UserDto;
 import com.github.dlism.backend.exceptions.DuplicateRecordException;
 import com.github.dlism.backend.exceptions.OrganizationNotFoundException;
+import com.github.dlism.backend.exceptions.UserNotFoundException;
 import com.github.dlism.backend.models.Organization;
 import com.github.dlism.backend.services.OrganizationService;
 import com.github.dlism.backend.services.UserService;
@@ -102,11 +103,16 @@ public class MainController {
 
     @GetMapping("/active/{code}")
     public String activationUser(@PathVariable("code") String code, Model model) {
-        if (userService.active(code).isPresent()) {
-            model.addAttribute("message", "Ваш аккаунт успешно активировань");
-        } else {
-            model.addAttribute("message", "Не удалось активировать аккаунт");
+        try {
+            if (userService.active(code).isPresent()) {
+                model.addAttribute("message", "Ваш аккаунт успешно активировань");
+            } else {
+                model.addAttribute("message", "Код активации не найден");
+            }
+        }catch (UserNotFoundException e){
+            model.addAttribute("message", e.getMessage());
         }
+
         return "helpers/activation-user";
     }
 }

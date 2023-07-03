@@ -6,11 +6,14 @@ import com.github.dlism.backend.dto.user.UserUpdateDto;
 import com.github.dlism.backend.dto.user.UserUpdatePasswordDto;
 import com.github.dlism.backend.exceptions.DuplicateRecordException;
 import com.github.dlism.backend.exceptions.UpdateException;
+import com.github.dlism.backend.exceptions.UserNotFoundException;
 import com.github.dlism.backend.mappers.UserMapper;
 import com.github.dlism.backend.models.Organization;
 import com.github.dlism.backend.models.Role;
 import com.github.dlism.backend.models.User;
+import com.github.dlism.backend.models.UserActivationCode;
 import com.github.dlism.backend.pojo.UserPojo;
+import com.github.dlism.backend.repositories.UserActivationCodeRepository;
 import com.github.dlism.backend.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -37,6 +40,9 @@ public class UserService implements UserDetailsService {
     @Autowired
     private ProduceService produceService;
 
+    @Autowired
+    private UserActivationCodeRepository activationCodeRepository;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findByUsername(username)
@@ -50,11 +56,7 @@ public class UserService implements UserDetailsService {
             throw new IllegalArgumentException("Пароль и подтверждение пароля не совпадают!");
         }
 
-        User user = UserMapper.INSTANCE.dtoToEntity(userDto);
-        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        user.setRoles(Collections.singleton(Role.ROLE_USER));
-
-        saveUser(user);
+        saveUser(userDto, Role.ROLE_USER);
     }
 
     @Transactional
@@ -64,19 +66,21 @@ public class UserService implements UserDetailsService {
             throw new IllegalArgumentException("Пароль и подтверждение пароля не совпадают!");
         }
 
-        User user = UserMapper.INSTANCE.dtoToEntity(userDto);
-        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        user.setRoles(Collections.singleton(Role.ROLE_ORGANIZER));
-
-        saveUser(user);
+        saveUser(userDto, Role.ROLE_ORGANIZER);
     }
 
-    private void saveUser(User user) {
+
+    private void saveUser(UserDto userDto, Role role) {
         try {
+            User user = UserMapper.INSTANCE.dtoToEntity(userDto);
+            user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+            user.setRoles(Collections.singleton(role));
+
             UUID code = UUID.randomUUID();
             userRepository.save(user);
-            userRepository.saveActivationCode(code.toString(), user.getId());
+            activationCodeRepository.save(UserActivationCode.builder().user(user).code(code.toString()).build());
             produceService.produceAnswer(new RabbitmqDto(user.getUsername(), code));
+
         } catch (DataIntegrityViolationException e) {
             throw new DuplicateRecordException("Пользовател с таким именим уже существует");
         }
@@ -109,15 +113,16 @@ public class UserService implements UserDetailsService {
 
     @Transactional
     public Optional<User> active(String activationCode) {
-        Optional<User> userOptional = userRepository.getUserByActivationCode(activationCode);
+        Optional<UserActivationCode> userOptional = activationCodeRepository.findByCode(activationCode);
 
         if (userOptional.isPresent()) {
-            User user = userOptional.get();
+            User user = userOptional.orElseThrow(() -> new UserNotFoundException("Пользователь не найден")).getUser();
             user.setActive(true);
             userRepository.save(user);
-            userRepository.deleteActivationCodeByCode(activationCode);
+            activationCodeRepository.deleteByCode(activationCode);
+            return Optional.of(user);
         }
-        return userOptional;
+        return Optional.empty();
     }
 
     @Transactional
