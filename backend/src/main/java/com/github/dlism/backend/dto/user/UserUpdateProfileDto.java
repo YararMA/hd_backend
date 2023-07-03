@@ -10,7 +10,7 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserUpdateDto {
+public class UserUpdateProfileDto {
     @NotEmpty(message = "Имя не должен быть пустым")
     @Size(min = 3, max = 100, message = "Имя пользователя должно содержать от 3 до 100 символов")
     private String name;
@@ -22,11 +22,11 @@ public class UserUpdateDto {
     private String gender;
     @Max(value = 100, message = "Возраст должен быть меньше 100")
     @Min(value = 0, message = "Возраст должен быть больше 0")
-    int age;
+    private int age;
     private String country;
     private String region;
     private String locality;
-    private String type_of_activity;
+    private String typeOfActivity;
 
     @NotEmpty(message = "Email не должен быть пустым")
     @Size(min = 3, max = 30, message = "Имя пользователя должно содержать от 3 до 30 символов")

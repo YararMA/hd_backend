@@ -3,7 +3,7 @@ package com.github.dlism.backend.services;
 import com.github.dlism.backend.dto.RabbitmqDto;
 import com.github.dlism.backend.dto.user.UserDto;
 import com.github.dlism.backend.dto.user.UserProfileDto;
-import com.github.dlism.backend.dto.user.UserUpdateDto;
+import com.github.dlism.backend.dto.user.UserUpdateProfileDto;
 import com.github.dlism.backend.dto.user.UserUpdatePasswordDto;
 import com.github.dlism.backend.exceptions.DuplicateRecordException;
 import com.github.dlism.backend.exceptions.UpdateException;
@@ -95,11 +95,27 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public void update(User user, UserUpdateDto userDto) throws DuplicateRecordException, IllegalArgumentException {
+    public void update(User user, UserUpdateProfileDto userDto) throws DuplicateRecordException, IllegalArgumentException {
         try {
-            User userForUpdate = UserMapper.INSTANCE.dtoToEntity(userDto);
-            userForUpdate.setId(user.getId());
-            userRepository.update(userForUpdate);
+            Optional<User> userForUpdateOptional = userRepository.findById(user.getId());
+            if (userForUpdateOptional.isPresent()) {
+                User userForUpdate = userForUpdateOptional.get();
+
+                userForUpdate.setUsername(userDto.getUsername());
+                userForUpdate.setName(userDto.getName());
+                userForUpdate.setFirstname(userDto.getFirstname());
+                userForUpdate.setLastname(userDto.getLastname());
+                userForUpdate.setPhone(userDto.getPhone());
+                userForUpdate.setGender(userDto.getGender());
+                userForUpdate.setAge(userDto.getAge());
+                userForUpdate.setCountry(userDto.getCountry());
+                userForUpdate.setRegion(userDto.getRegion());
+                userForUpdate.setLocality(userDto.getLocality());
+                userForUpdate.setTypeOfActivity(userDto.getTypeOfActivity());
+
+                userRepository.save(userForUpdate);
+            }
+
         } catch (DataIntegrityViolationException e) {
             throw new DuplicateRecordException("Пользовател с таким именим уже существует");
         }
@@ -129,8 +145,8 @@ public class UserService implements UserDetailsService {
         }
     }
 
-    public UserDto getById(Long id) {
-        return UserMapper.INSTANCE.entityToDto(userRepository.getReferenceById(id));
+    public UserUpdateProfileDto getById(Long id) {
+        return UserMapper.INSTANCE.entityToUpdateProfileDto(userRepository.getReferenceById(id));
     }
 
     @Transactional

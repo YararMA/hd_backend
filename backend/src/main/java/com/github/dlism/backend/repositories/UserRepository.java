@@ -16,10 +16,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     long count();
 
     @Modifying
-    @Query("update User set username = :#{#user.username}, firstname = :#{#user.firstname}, lastname = :#{#user.lastname}, name = :#{#user.name}, phone = :#{#user.phone}, gender = :#{#user.gender}, age = :#{#user.age} where id = :#{#user.id}")
-    void update(@Param("user") User user);
-
-    @Modifying
     @Query("update User set password = :password where id = :user_id")
     void  changePassword(@Param("user_id") Long user_id, @Param("password") String password);
 }
