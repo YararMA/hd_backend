@@ -25,8 +25,8 @@ create table usr
     locality         varchar(255),
     type_of_activity varchar(100),
     password         varchar(255)        NOT NULL,
-    organization_id  int8 UNIQUE,
-    active           boolean default false,
+    organization_id  int8,
+    active           boolean default true,
     primary key (id)
 );
 

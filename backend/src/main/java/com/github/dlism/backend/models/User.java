@@ -28,7 +28,7 @@ public class User implements UserDetails {
     private String country;
     private String region;
     private String locality;
-    private String type_of_activity;
+    private String typeOfActivity;
     private String password;
     private boolean active;
 
