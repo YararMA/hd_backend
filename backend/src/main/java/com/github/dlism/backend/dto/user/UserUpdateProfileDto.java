@@ -23,9 +23,12 @@ public class UserUpdateProfileDto {
     private String firstname;
     private String lastname;
     private String phone;
+    @Pattern(regexp = "^(Муж|Жен)$", message = "Выберите пол")
     private String gender;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @Past(message = "Дата рождения должна быть в прошлом")
     private LocalDate birthday;
+
     private String country;
     private String region;
     private String locality;

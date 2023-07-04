@@ -284,5 +284,6 @@ body {
     background: url("/static/img/icons/arrow_down.svg") no-repeat right;
 }
 
-.account-change-password-form{
+.login-form .form, .registration-form .form{
+    align-items: center;
 }
