@@ -272,7 +272,7 @@ body {
     color: var(--active-font-color);
 }
 
-.account-edit-form {
+.account-edit-form, .account-change-password-form{
     margin-top: 30px;
 }
 
@@ -282,4 +282,7 @@ body {
 
 .account-edit-form .account-edit-form-wrapper select {
     background: url("/static/img/icons/arrow_down.svg") no-repeat right;
+}
+
+.account-change-password-form{
 }
