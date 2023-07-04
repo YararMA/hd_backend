@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <meta th:replace="~{template-part/header :: header}">
+</head>
+<body>
+<div class="wrapper bg-primary-override">
+    <div th:replace="~{template-part/menu :: menu}"></div>
+    <div class="content">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <h2>Личный кабинет</h2>
+                    <div th:replace="~{account/menu::account-menu}"></div>
+                </div>
+            </div>
+            <div class="row account-grid">
+                <div class="col-sm-12 col-md-6">
+                    <div class="wrapper">
+                        <h3>Личные данные</h3>
+                        <div class="user-data">
+                            <div class="name" th:text="${user.getFullName()}">
+                            </div>
+                            <div class="date" th:text="${user.getBirthday()}">
+                            </div>
+                        </div>
+                        <div class="address" th:text="${user.getFullAddress()}">
+                        </div>
+                        <div class="email" th:text="${user.getUsername()}">
+                        </div>
+                        <div class="phone" th:text="${user.getPhone()}">
+                        </div>
+                        <div class="activity">
+                            <div class="activity-title">
+                                Сфера деятельности:
+                            </div>
+                            <div class="activity-text" th:text="${user.getTypeOfActivity()}">
+                            </div>
+                        </div>
+
+                        <div class="button-wrapper">
+                            <a href="/account/edit" class="btn btn-outline-dark">Редактировать</a>
+                            <a href="/user/password" class="btn btn-outline-dark">Изменить пароль</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-6">
+                    <div class="wrapper">2</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

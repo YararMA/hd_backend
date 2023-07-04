@@ -8,11 +8,19 @@
     src: url("./fonts/Montserrat-VariableFont_wght.ttf") format("truetype");
 }
 
+@media (min-width: 1400px) {
+    .container, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
+        max-width: 1680px !important;
+    }
+}
+
 :root {
     --main-color: #000;
     --white: #fff;
     --bg-primary: #F0F3F6;
     --bg-accent: #82929F;
+    --active-font-color: #298ED7;
+    --base-font-color: #2F4152;
     --main-font: "Montserrat", sans-serif;
     --base-font-size: 16px;
 }
@@ -37,16 +45,17 @@ body {
     background: var(--bg-primary);
 }
 
-.form{
+.form {
     display: flex;
     padding: 40px;
     flex-direction: column;
-    align-items: center;
+    align-items: start;
     gap: 30px;
     align-self: stretch;
     border-radius: 20px;
     background: #FFF;
 }
+
 .content {
     flex: 1 0 auto;
     padding-top: 50px;
@@ -128,21 +137,23 @@ body {
     color: var(--white);
     text-decoration: none;
 }
-.form{
+
+.form {
     max-width: 600px;
 }
-.form .form-control{
+
+.form .form-control {
     border-radius: 0;
     border: none;
     border-bottom: 1px solid #ced4da;
 }
 
-.form .form-control:focus{
+.form .form-control:focus {
     border-bottom: 1px solid var(--main-color);
     box-shadow: none;
 }
 
-.form .privacy-policy, .form .privacy-policy>* {
+.form .privacy-policy, .form .privacy-policy > * {
     color: var(--bg-accent);
     text-align: center;
     font-size: 14px;
@@ -150,7 +161,7 @@ body {
     letter-spacing: 0.14px;
 }
 
-.form .login-href{
+.form .login-href {
     color: var(--bg-accent);
     text-align: center;
     font-size: 14px;
@@ -158,14 +169,117 @@ body {
     letter-spacing: 0.14px;
 }
 
-#menu .navbar-nav .nav-item{
+#menu .navbar-nav .nav-item {
     margin-left: 24px;
 }
 
-#menu .navbar-nav .nav-item .nav-link{
+#menu .navbar-nav .nav-item .nav-link {
     padding: 5px 20px;
 }
 
-#menu .navbar-nav .nav-item .nav-link img{
+#menu .navbar-nav .nav-item .nav-link img {
     margin-right: -15px;
+}
+
+#account-menu .nav-tabs .nav-link {
+    border: none;
+}
+
+#account-menu .nav-item.active {
+    border-bottom: solid 2px var(--active-font-color);
+}
+
+#account-menu .nav-item.active .nav-link {
+    color: var(--active-font-color);
+}
+
+#account-menu .nav-item .nav-link {
+    color: #2F4152;
+}
+
+.account-grid {
+    margin-top: 30px;
+}
+
+.account-grid .wrapper {
+    background: #fff;
+    padding: 30px 40px;
+    border-radius: 20px;
+}
+
+.account-grid > * {
+    color: var(--base-font-color);
+}
+
+.account-grid h3 {
+    font-size: 22px;
+}
+
+.account-grid .user-data {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.account-grid .user-data .name {
+    font-size: 24px;
+}
+
+.account-grid .user-data .date {
+    text-align: right;
+}
+
+.account-grid .address, .account-grid .email, .account-grid .phone {
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 140%;
+    margin-top: 16px;
+}
+
+.account-grid .activity {
+    margin-top: 16px;
+}
+
+.account-grid .activity .activity-title {
+    font-size: 16px;
+    color: #82929F;
+}
+
+.account-grid .activity .activity-text {
+    font-size: 18px;
+}
+
+.account-grid .button-wrapper {
+    margin-top: 30px;
+}
+
+.account-edit-form .account-edit-form-wrapper {
+    background: #fff;
+    border-radius: 20px;
+    padding: 30px 40px;
+}
+
+.account-edit-form .account-edit-form-wrapper input, .account-edit-form .account-edit-form-wrapper select {
+    margin-top: 16px;
+    border-radius: unset;
+    border: none;
+    border-bottom: solid 1px #82929F;
+    box-shadow: none;
+}
+
+.account-edit-form .account-edit-form-wrapper input:focus, .account-edit-form .account-edit-form-wrapper select:focus {
+    border-bottom: solid 1px var(--active-font-color);
+    color: var(--active-font-color);
+}
+
+.account-edit-form {
+    margin-top: 30px;
+}
+
+.account-edit-form .btn {
+    margin-top: 70px;
+}
+
+.account-edit-form .account-edit-form-wrapper select {
+    background: url("/static/img/icons/arrow_down.svg") no-repeat right;
 }

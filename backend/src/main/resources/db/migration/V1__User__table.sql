@@ -19,7 +19,7 @@ create table usr
     username         varchar(100) UNIQUE NOT NULL,
     phone            varchar(100),
     gender           varchar(50),
-    age              int check (age < 100),
+    birthday         date,
     country          varchar(255),
     region           varchar(255),
     locality         varchar(255),

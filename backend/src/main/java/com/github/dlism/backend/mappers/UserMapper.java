@@ -17,6 +17,8 @@ public interface UserMapper {
 
     UserUpdateProfileDto entityToUpdateProfileDto(User user);
 
+    UserProfileDto entityToProfileDto(User user);
+
     User dtoToEntity(UserDto userDto);
 
     User dtoToEntity(UserUpdateProfileDto userUpdateProfileDto);

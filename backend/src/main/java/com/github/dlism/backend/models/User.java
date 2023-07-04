@@ -6,6 +6,7 @@ import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Set;
 
@@ -24,7 +25,7 @@ public class User implements UserDetails {
     private String username;
     private String phone;
     private String gender;
-    private int age;
+    private LocalDate birthday;
     private String country;
     private String region;
     private String locality;

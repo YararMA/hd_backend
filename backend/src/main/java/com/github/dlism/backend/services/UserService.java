@@ -100,7 +100,7 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public void update(User user, UserUpdateProfileDto userDto) throws DuplicateRecordException, IllegalArgumentException {
+    public UserUpdateProfileDto update(User user, UserUpdateProfileDto userDto) throws DuplicateRecordException, IllegalArgumentException {
         try {
             Optional<User> userForUpdateOptional = userRepository.findById(user.getId());
             if (userForUpdateOptional.isPresent()) {
@@ -112,18 +112,19 @@ public class UserService implements UserDetailsService {
                 userForUpdate.setLastname(userDto.getLastname());
                 userForUpdate.setPhone(userDto.getPhone());
                 userForUpdate.setGender(userDto.getGender());
-                userForUpdate.setAge(userDto.getAge());
+                userForUpdate.setBirthday(userDto.getBirthday());
                 userForUpdate.setCountry(userDto.getCountry());
                 userForUpdate.setRegion(userDto.getRegion());
                 userForUpdate.setLocality(userDto.getLocality());
                 userForUpdate.setTypeOfActivity(userDto.getTypeOfActivity());
 
-                userRepository.save(userForUpdate);
+                return UserMapper.INSTANCE.entityToUpdateProfileDto(userRepository.save(userForUpdate));
             }
 
         } catch (DataIntegrityViolationException e) {
             throw new DuplicateRecordException("Пользовател с таким именим уже существует");
         }
+        return userDto;
     }
 
     @Transactional

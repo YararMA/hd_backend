@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.time.LocalDate;
+
 @Data
 @ToString
 @NoArgsConstructor
@@ -21,9 +23,7 @@ public class UserProfileDto {
     private String lastname;
     private String phone;
     private String gender;
-    @Max(value = 100, message = "Возраст должен быть меньше 100")
-    @Min(value = 0, message = "Возраст должен быть больше 0")
-    int age;
+    private LocalDate birthday;
     private String country;
     private String region;
     private String locality;
