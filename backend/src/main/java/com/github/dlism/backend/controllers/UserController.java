@@ -26,60 +26,6 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("")
-    public String index(@AuthenticationPrincipal User user, Model model) {
-        model.addAttribute("user", user);
-        return "user/profile";
-    }
-
-    @GetMapping("/edit")
-    public String editForm(@AuthenticationPrincipal User user, Model model) {
-        model.addAttribute("user", userService.getById(user.getId()));
-        return "user/forms/editUserProfile";
-    }
-
-    @PostMapping("/edit")
-    public String edit(@AuthenticationPrincipal User user,
-                       @Valid @ModelAttribute("user") UserUpdateProfileDto userUpdateProfileDto,
-                       BindingResult bindingResult, Model model
-    ) {
-        if (bindingResult.hasErrors()) {
-            return "user/forms/editUserProfile";
-        }
-
-        try {
-            userService.update(user, userUpdateProfileDto);
-            model.addAttribute("user", userService.getById(user.getId()));
-            model.addAttribute("updateSuccess", "Данные успешно обновлены");
-        } catch (DuplicateRecordException e) {
-            model.addAttribute("userExists", e.getMessage());
-        }
-        return "user/forms/editUserProfile";
-    }
-
-    @GetMapping("/password")
-    public String changePassword(Model model) {
-        model.addAttribute("user", new UserUpdatePasswordDto());
-        return "user/forms/changePassword";
-    }
-
-    @PostMapping("/password")
-    public String changePassword(@AuthenticationPrincipal User user,
-                                 @Valid @ModelAttribute("user") UserUpdatePasswordDto userUpdatePasswordDto,
-                                 BindingResult bindingResult, Model model) {
-        if (bindingResult.hasErrors()) {
-            return "user/forms/changePassword";
-        }
-
-        try {
-            userService.changePassword(user, userUpdatePasswordDto);
-            model.addAttribute("user", new UserUpdatePasswordDto());
-            model.addAttribute("message", "Пароль изменен!");
-        } catch (IllegalArgumentException | UpdateException e) {
-            model.addAttribute("errorMessage", e.getMessage());
-        }
-        return "user/forms/changePassword";
-    }
 
     @GetMapping("/join/{organization}")
     public String join(@PathVariable Organization organization,

@@ -5,6 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.LocalDate;
+import java.util.StringJoiner;
 
 @Data
 @ToString
@@ -19,10 +23,12 @@ public class UserUpdateProfileDto {
     private String firstname;
     private String lastname;
     private String phone;
+    @Pattern(regexp = "^(Муж|Жен)$", message = "Выберите пол")
     private String gender;
-    @Max(value = 100, message = "Возраст должен быть меньше 100")
-    @Min(value = 0, message = "Возраст должен быть больше 0")
-    private int age;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @Past(message = "Дата рождения должна быть в прошлом")
+    private LocalDate birthday;
+
     private String country;
     private String region;
     private String locality;
@@ -32,4 +38,21 @@ public class UserUpdateProfileDto {
     @Size(min = 3, max = 30, message = "Имя пользователя должно содержать от 3 до 30 символов")
     @Email(message = "Введите валидный e-mail")
     private String username;
+
+    public String getFullName(){
+        StringJoiner fullName = new StringJoiner(" ");
+        fullName.add(this.name);
+        fullName.add(this.firstname);
+        fullName.add(this.lastname);
+        return fullName.toString();
+    }
+
+    public String getFullAddress(){
+        StringJoiner fullAddress = new StringJoiner(", ");
+        fullAddress.add(this.country);
+        fullAddress.add(this.region);
+        fullAddress.add(this.locality);
+        return fullAddress.toString();
+    }
+
 }
