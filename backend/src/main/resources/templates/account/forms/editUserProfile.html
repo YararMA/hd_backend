@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <meta th:replace="~{template-part/header :: header}">
+</head>
+<body>
+<div class="wrapper bg-primary-override">
+    <div th:replace="~{template-part/menu :: menu}"></div>
+    <div class="content">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <h2>Профиль</h2>
+                </div>
+            </div>
+            <div class="row d-flex justify-content-center account-edit-form">
+                <div class="col-12">
+                    <form name="registrationForm" th:action="@{/account/edit}" th:method="POST" th:object="${user}">
+                        <div th:if="${userExists}" th:text="${userExists}" class="alert alert-danger">
+                        </div>
+                        <div th:if="${updateSuccess}" th:text="${updateSuccess}" class="alert alert-success">
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="account-edit-form-wrapper">
+                                    <h4>Личные данные</h4>
+                                    <input type="text" th:field="*{name}" class="form-control" placeholder="Имя">
+                                    <div id="validationServerName" class="invalid-feedback">
+                                        Пожалуйста, введите имю.
+                                    </div>
+                                    <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+
+                                    <input type="text" th:field="*{firstname}" class="form-control"
+                                           placeholder="Фамилия">
+                                    <div id="validationServerFirstname" class="invalid-feedback">
+                                        Пожалуйста, введите фамилию.
+                                    </div>
+                                    <div th:if="${#fields.hasErrors('firstname')}" th:errors="*{firstname}"></div>
+
+                                    <input type="text" th:field="*{lastname}" class="form-control"
+                                           placeholder="Отчество">
+                                    <div id="validationServerExampleInputLastname" class="invalid-feedback">
+                                        Пожалуйста, введите отчество.
+                                    </div>
+                                    <div th:if="${#fields.hasErrors('lastname')}" th:errors="*{lastname}"></div>
+
+                                    <input type="date"  class="form-control" placeholder="Дата рождения" th:value="*{getBirthday()}" th:field="*{birthday}"/>
+                                    <div id="validationServerExampleInputAge" class="invalid-feedback">
+                                        Пожалуйста, выберите дату рождения.
+                                    </div>
+                                    <div th:if="${#fields.hasErrors('birthday')}" th:errors="*{birthday}"></div>
+
+                                    <select th:field="*{gender}" class="form-control">
+                                        <option value="">Выберите пол</option>
+                                        <option value="Муж">Муж</option>
+                                        <option value="Жен">Жен</option>
+                                    </select>
+                                    <div id="validationServerExampleInputGender" class="invalid-feedback">
+                                        Пожалуйста, выберите пол.
+                                    </div>
+                                    <div th:if="${#fields.hasErrors('gender')}" th:errors="*{gender}"></div>
+
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="account-edit-form-wrapper">
+                                    <h4>Адрес</h4>
+                                    <input type="text" th:field="*{country}" class="form-control" placeholder="Страна">
+                                    <div id="validationServerExampleCountry" class="invalid-feedback">
+                                        Пожалуйста, введите страну.
+                                    </div>
+                                    <div th:if="${#fields.hasErrors('country')}" th:errors="*{country}"></div>
+
+                                    <input type="text" th:field="*{region}" class="form-control" placeholder="Регион">
+                                    <div id="validationServerRegion" class="invalid-feedback">
+                                        Пожалуйста, введите регион.
+                                    </div>
+                                    <div th:if="${#fields.hasErrors('region')}" th:errors="*{region}"></div>
+
+                                    <input type="text" th:field="*{locality}" class="form-control"
+                                           placeholder="Населеный пункт">
+                                    <div id="validationExampleLocally" class="invalid-feedback">
+                                        Пожалуйста, введите населеный пункт.
+                                    </div>
+                                    <div th:if="${#fields.hasErrors('locality')}" th:errors="*{locality}"></div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="account-edit-form-wrapper">
+                                    <h4>Дополнительно</h4>
+                                    <input type="text" th:field="*{username}" class="form-control"
+                                           th:classappend="${userExists} ? 'is-invalid'" placeholder="Email">
+                                    <div id="validationServerUsernameFeedback" class="invalid-feedback">
+                                        Пользовател с таким email уже зарегистрирован
+                                    </div>
+                                    <div th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>
+
+                                    <input type="text" th:field="*{phone}" class="form-control" placeholder="Телефон">
+                                    <div id="validationServerExampleInputPhone" class="invalid-feedback">
+                                        Пожалуйста, введите телефон.
+                                    </div>
+                                    <div th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></div>
+
+                                    <input type="text" th:field="*{typeOfActivity}" class="form-control"
+                                           placeholder="Вид деятельности">
+                                    <div id="validationServerExampleInputTypeOfActivity" class="invalid-feedback">
+                                        Пожалуйста, введите вид деятельности.
+                                    </div>
+                                    <div th:if="${#fields.hasErrors('typeOfActivity')}"
+                                         th:errors="*{typeOfActivity}"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-outline-dark">Сохранить</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:replace="~{template-part/footer :: footer}"></div>
+</div>
+</body>
+</html>

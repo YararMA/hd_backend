@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <meta th:replace="~{template-part/header :: header}">
+</head>
+<body>
+<div class="wrapper bg-primary-override">
+    <div th:replace="~{template-part/menu :: menu}"></div>
+    <div class="content">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <h2>Профиль площадки</h2>
+                </div>
+            </div>
+            <div class="row d-flex justify-content-center account-edit-form">
+                <div class="col-12">
+                    <form name="registrationForm" th:action="@{/account/organization/edit}" th:method="POST" th:object="${organizationForm}">
+                        <div th:if="${userExists}" th:text="${userExists}" class="alert alert-danger">
+                        </div>
+                        <div th:if="${updateSuccess}" th:text="${updateSuccess}" class="alert alert-success">
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="account-edit-form-wrapper">
+                                    <h4>Основные данные</h4>
+                                    <input type="text" th:field="*{name}" class="form-control" placeholder="Имя">
+                                    <div id="validationServerName" class="invalid-feedback">
+                                        Пожалуйста, введите имю.
+                                    </div>
+                                    <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+
+                                    <input type="text" th:field="*{description}" class="form-control"
+                                           placeholder="Описание">
+                                    <div id="validationServerDescription" class="invalid-feedback">
+                                        Пожалуйста, введите описание.
+                                    </div>
+                                    <div th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
+
+                                    <input type="text" th:field="*{participantsMaxCount}" class="form-control"
+                                           placeholder="Количество участников">
+                                    <div id="validationServerparticipantsMaxCount" class="invalid-feedback">
+                                        Пожалуйста, введите количество участников.
+                                    </div>
+                                    <div th:if="${#fields.hasErrors('participantsMaxCount')}" th:errors="*{participantsMaxCount}"></div>
+
+                                    <input type="text" th:field="*{type}" class="form-control"
+                                           placeholder="Тип площадки">
+                                    <div id="validationServerType" class="invalid-feedback">
+                                        Пожалуйста, выберите тип площадки.
+                                    </div>
+                                    <div th:if="${#fields.hasErrors('type')}" th:errors="*{type}"></div>
+
+                                </div>
+                            </div>
+
+                            <div class="col-sm-4">
+                                <div class="account-edit-form-wrapper">
+                                    <h4>Адрес</h4>
+                                    <input type="text" th:field="*{country}" class="form-control" placeholder="Страна">
+                                    <div id="validationServerName" class="invalid-feedback">
+                                        Пожалуйста, введите страну.
+                                    </div>
+                                    <div th:if="${#fields.hasErrors('country')}" th:errors="*{country}"></div>
+
+                                    <input type="text" th:field="*{region}" class="form-control"
+                                           placeholder="Регион">
+                                    <div id="validationServerRegion" class="invalid-feedback">
+                                        Пожалуйста, введите регион.
+                                    </div>
+                                    <div th:if="${#fields.hasErrors('region')}" th:errors="*{region}"></div>
+
+                                    <input type="text" th:field="*{city}" class="form-control"
+                                           placeholder="Населенный пункт">
+                                    <div id="validationServerparticipantsMaxCount" class="invalid-feedback">
+                                        Пожалуйста, введите населенный пункт.
+                                    </div>
+                                    <div th:if="${#fields.hasErrors('city')}" th:errors="*{city}"></div>
+
+                                    <input type="text" th:field="*{address}" class="form-control"
+                                           placeholder="Адрес">
+                                    <div id="validationServerparticipantsMaxCount" class="invalid-feedback">
+                                        Пожалуйста, введите адрес.
+                                    </div>
+                                    <div th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <button type="submit" class="btn btn-outline-dark">Сохранить</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:replace="~{template-part/footer :: footer}"></div>
+</div>
+</body>
+</html>
