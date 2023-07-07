@@ -28,16 +28,6 @@ public class OrganizationController {
         this.organizationService = organizationService;
     }
 
-    @GetMapping(value = {"", "/"})
-    public String profile(@AuthenticationPrincipal User user, Model model) {
-        Optional<OrganizationDto> organization = organizationService.searchOrganization(user);
-
-        if (organization.isPresent()) {
-            model.addAttribute("organization", organization.orElseGet(OrganizationDto::new));
-            return "organization/index";
-        }
-        return "redirect:/organization/create";
-    }
 
     @GetMapping("/create")
     public String index(@AuthenticationPrincipal User user, Model model, RedirectAttributes redirectAttributes) {
@@ -70,26 +60,4 @@ public class OrganizationController {
         }
         return "redirect:/organization";
     }
-
-    @GetMapping("/edit")
-    public String editForm(@AuthenticationPrincipal User user, Model model) {
-        model.addAttribute("organizationForm", organizationService.searchOrganization(user));
-        return "organization/forms/edit";
-    }
-
-    @PostMapping("/edit")
-    public String edit(
-            @AuthenticationPrincipal User user,
-            @ModelAttribute("organizationForm") OrganizationDto organizationDto,
-            Model model) {
-
-        try {
-            model.addAttribute("organizationForm", organizationService.update(user, organizationDto));
-            model.addAttribute("organizationCreateSuccess", "Организация успешно обновлена");
-        } catch (DuplicateRecordException | OrganizationNotFoundException e) {
-            model.addAttribute("organizationExists", e.getMessage());
-        }
-        return "organization/forms/edit";
-    }
-
 }
