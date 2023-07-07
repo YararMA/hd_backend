@@ -5,10 +5,16 @@
     <meta th:replace="~{template-part/header :: header}">
 </head>
 <body>
-<div class="wrapper">
+<div class="wrapper bg-primary-override">
     <div th:replace="~{template-part/menu :: menu}"></div>
     <div class="content">
         <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <h2>Личный кабинет</h2>
+                    <div th:replace="~{account/menu::account-menu}"></div>
+                </div>
+            </div>
             <div class="row">
                 <div th:if="${message}" class="alert alert-danger" th:text="${message}"></div>
                 <div class="col-12">

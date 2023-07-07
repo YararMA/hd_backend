@@ -2,19 +2,37 @@
 <div th:fragment="account-menu" id="account-menu">
   <ul class="nav nav-tabs">
     <li class="nav-item active">
-      <a class="nav-link " aria-current="page" href="#">Профиль</a>
+      <a class="nav-link " aria-current="page" href="/account">Профиль</a>
     </li>
-    <li class="nav-item">
+    <li class="nav-item" sec:authorize="hasRole('ROLE_USER')">
       <a class="nav-link" href="#">Тестовые диктанты</a>
     </li>
-    <li class="nav-item">
+    <li class="nav-item" sec:authorize="hasRole('ROLE_USER')">
       <a class="nav-link" href="#">Мои результаты</a>
     </li>
-    <li class="nav-item">
-      <a class="nav-link">Моя площадка</a>
+    <li class="nav-item" sec:authorize="hasRole('ROLE_USER')">
+      <a class="nav-link" href="">Моя площадка</a>
     </li>
-    <li class="nav-item">
+    <li class="nav-item" sec:authorize="hasRole('ROLE_USER')">
       <a class="nav-link">Пройти диктант онлайн</a>
+    </li>
+    <li class="nav-item" sec:authorize="hasRole('ROLE_ORGANIZER')">
+      <a class="nav-link">Профиль площадки</a>
+    </li>
+    <li class="nav-item" sec:authorize="hasRole('ROLE_ORGANIZER')">
+      <a class="nav-link">Участники</a>
+    </li>
+    <li class="nav-item" sec:authorize="hasRole('ROLE_ORGANIZER')">
+      <a class="nav-link">Документы</a>
+    </li>
+    <li class="nav-item" sec:authorize="hasRole('ROLE_ORGANIZER')">
+      <a class="nav-link">Вопросы</a>
+    </li>
+    <li class="nav-item" sec:authorize="hasRole('ROLE_ORGANIZER')">
+      <a class="nav-link">Ответы</a>
+    </li>
+    <li class="nav-item" sec:authorize="hasRole('ROLE_ORGANIZER')">
+      <a class="nav-link">Обратная связь</a>
     </li>
   </ul>
 </div>

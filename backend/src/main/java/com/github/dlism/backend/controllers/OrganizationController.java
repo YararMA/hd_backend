@@ -28,13 +28,13 @@ public class OrganizationController {
         this.organizationService = organizationService;
     }
 
-    @GetMapping("")
+    @GetMapping(value = {"", "/"})
     public String profile(@AuthenticationPrincipal User user, Model model) {
         Optional<OrganizationDto> organization = organizationService.searchOrganization(user);
 
         if (organization.isPresent()) {
             model.addAttribute("organization", organization.orElseGet(OrganizationDto::new));
-            return "organization/profile";
+            return "organization/index";
         }
         return "redirect:/organization/create";
     }
