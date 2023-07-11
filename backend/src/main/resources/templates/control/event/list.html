@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <meta th:replace="~{template-part/header :: header}">
+</head>
+<body>
+<div th:replace="~{template-part/menu :: menu}"></div>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <h6 class="display-6">Все событие</h6>
+            <a href="/control/event/create" class="btn btn-primary">Создать новый</a>
+            <div th:text="${message}"></div>
+            <table class="table">
+                <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Названия</th>
+                    <th scope="col">Описания</th>
+                    <th scope="col">Дата</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="event: ${events}">
+                    <td th:text="${event.getName()}"></td>
+                    <td th:text="${event.getDescription()}"></td>
+                    <td th:text="${event.getDate()}"></td>
+                    <th><a th:href="@{/control/event/edit/{id}(id=${event.getId})}">Редактировать</a></th>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>

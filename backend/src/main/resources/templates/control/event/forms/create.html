@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <meta th:replace="~{template-part/header :: header}">
+</head>
+<body>
+<div class="wrapper">
+  <div th:replace="~{template-part/menu :: menu}"></div>
+  <div class="content">
+    <div class="container">
+      <div class="row d-flex justify-content-center">
+        <div class="col-6 ">
+          <h2>Создать событие</h2>
+          <form name="registrationForm" th:action="@{/control/event/create}" th:method="POST"
+                th:object="${eventForm}">
+
+            <div class="mb-3">
+              <label for="exampleInputName" class="form-label">Название событие</label>
+              <input type="text" th:field="*{name}" class="form-control" id="exampleInputName">
+              <div id="validationServerName" class="invalid-feedback">
+                Пожалуйста, выберите название.
+              </div>
+              <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+            </div>
+            <div class="mb-3">
+              <label for="exampleInputDescription" class="form-label">Описание </label>
+              <textarea  th:field="*{description}" class="form-control" id="exampleInputDescription"></textarea>
+              <div id="validationServerDescription" class="invalid-feedback">
+                Пожалуйста, введите описание.
+              </div>
+              <div th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
+            </div>
+            <input type="date"  class="form-control" placeholder="Дата" th:value="*{getDate()}" th:field="*{date}"/>
+            <div id="validationServerExampleInputAge" class="invalid-feedback">
+              Пожалуйста, выберите дату.
+            </div>
+
+            <button type="submit" class="btn btn-primary">Создать</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div th:replace="~{template-part/footer :: footer}"></div>
+</body>
+</html>

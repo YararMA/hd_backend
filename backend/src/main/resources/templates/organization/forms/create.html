@@ -37,39 +37,39 @@
                         </div>
                         <div class="mb-3">
                             <label for="exampleInputParticipant" class="form-label">Количество участников</label>
-                            <textarea type="password" th:field="*{participantsMaxCount}" class="form-control "
-                                      id="exampleInputParticipant"></textarea>
+                            <input type="password" th:field="*{participantsMaxCount}" class="form-control "
+                                      id="exampleInputParticipant"/>
                             <div th:if="${#fields.hasErrors('participantsMaxCount')}"
                                  th:errors="*{participantsMaxCount}"></div>
                         </div>
                         <div class="mb-3">
                             <label for="exampleInputCountry" class="form-label">Страна</label>
-                            <textarea type="password" th:field="*{country}" class="form-control "
-                                      id="exampleInputCountry"></textarea>
+                            <input type="password" th:field="*{country}" class="form-control "
+                                      id="exampleInputCountry">
                             <div th:if="${#fields.hasErrors('country')}" th:errors="*{country}"></div>
                         </div>
                         <div class="mb-3">
                             <label for="exampleInputRegion" class="form-label">Регион</label>
-                            <textarea type="password" th:field="*{region}" class="form-control "
-                                      id="exampleInputRegion"></textarea>
+                            <input type="password" th:field="*{region}" class="form-control "
+                                      id="exampleInputRegion">
                             <div th:if="${#fields.hasErrors('region')}" th:errors="*{region}"></div>
                         </div>
                         <div class="mb-3">
                             <label for="exampleInputCity" class="form-label">Город</label>
-                            <textarea type="password" th:field="*{city}" class="form-control "
-                                      id="exampleInputCity"></textarea>
+                            <input type="password" th:field="*{city}" class="form-control "
+                                      id="exampleInputCity">
                             <div th:if="${#fields.hasErrors('city')}" th:errors="*{city}"></div>
                         </div>
                         <div class="mb-3">
                             <label for="exampleInputAddress" class="form-label">Адрес</label>
-                            <textarea type="password" th:field="*{address}" class="form-control "
-                                      id="exampleInputAddress"></textarea>
+                            <input type="password" th:field="*{address}" class="form-control "
+                                      id="exampleInputAddress">
                             <div th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></div>
                         </div>
                         <div class="mb-3">
                             <label for="exampleInputType" class="form-label">Тип площадки</label>
-                            <textarea type="password" th:field="*{type}" class="form-control "
-                                      id="exampleInputType"></textarea>
+                            <input type="password" th:field="*{type}" class="form-control "
+                                      id="exampleInputType">
                             <div th:if="${#fields.hasErrors('type')}" th:errors="*{type}"></div>
                         </div>
                         <button type="submit" class="btn btn-primary">Создать</button>
