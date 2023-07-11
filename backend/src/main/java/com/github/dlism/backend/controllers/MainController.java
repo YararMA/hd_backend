@@ -4,26 +4,31 @@ import com.github.dlism.backend.dto.user.UserDto;
 import com.github.dlism.backend.exceptions.DuplicateRecordException;
 import com.github.dlism.backend.exceptions.OrganizationNotFoundException;
 import com.github.dlism.backend.exceptions.UserNotFoundException;
+import com.github.dlism.backend.models.Event;
 import com.github.dlism.backend.models.Organization;
+import com.github.dlism.backend.models.Result;
+import com.github.dlism.backend.models.User;
+import com.github.dlism.backend.repositories.EventRepository;
+import com.github.dlism.backend.repositories.ResultRepository;
 import com.github.dlism.backend.services.OrganizationService;
 import com.github.dlism.backend.services.UserService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.util.Locale;
+
 @Controller
 @RequestMapping("/")
+@RequiredArgsConstructor
 public class MainController {
     private final UserService userService;
 
     private final OrganizationService organizationService;
-
-    public MainController(UserService userService, OrganizationService organizationService) {
-        this.userService = userService;
-        this.organizationService = organizationService;
-    }
 
     @GetMapping("")
     public String index() {
