@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 
@@ -13,20 +14,29 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserDto {
+
     @NotEmpty(message = "Имя не должен быть пустым")
     @Size(min = 3, max = 100, message = "Имя пользователя должно содержать от 3 до 100 символов")
     private String name;
+
     @NotEmpty(message = "Фамилия не должен быть пустым")
     @Size(min = 3, max = 100, message = "Фамилия пользователя должно содержать от 3 до 100 символов")
     private String firstname;
     private String lastname;
+
+    @Pattern(regexp = "^\\+?[1-9]\\d{1,14}$|^(\\+?[1-9]\\d{0,2}[-.\\s]?)(\\([1-9]\\d{0,2}\\)|[1-9]\\d{0,2})[-.\\s]?\\d{1,4}[-.\\s]?\\d{1,4}$", message = "Неверный формат телефона")
     private String phone;
+
+    @Pattern(regexp = "^(Муж|Жен)$", message = "Выберите пол")
     private String gender;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @Past(message = "Дата рождения должна быть в прошлом")
     private LocalDate birthday;
     private String country;
     private String region;
     private String locality;
-    private String type_of_activity;
+    private String typeOfActivity;
 
     @NotEmpty(message = "Email не должен быть пустым")
     @Size(min = 3, max = 30, message = "Имя пользователя должно содержать от 3 до 30 символов")

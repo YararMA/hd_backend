@@ -5,6 +5,7 @@ import com.github.dlism.backend.exceptions.DuplicateRecordException;
 import com.github.dlism.backend.exceptions.OrganizationNotFoundException;
 import com.github.dlism.backend.exceptions.UserNotFoundException;
 import com.github.dlism.backend.models.Organization;
+import com.github.dlism.backend.services.DictionaryService;
 import com.github.dlism.backend.services.OrganizationService;
 import com.github.dlism.backend.services.SecurityService;
 import com.github.dlism.backend.services.UserService;
@@ -26,6 +27,8 @@ public class MainController {
     private final OrganizationService organizationService;
 
     private final SecurityService securityService;
+
+    private final DictionaryService dictionaryService;
 
     @GetMapping("")
     public String index() {
@@ -50,16 +53,13 @@ public class MainController {
         return "organization/view";
     }
 
-    @GetMapping("/registration")
-    public String registrationPage(Model model) {
-        model.addAttribute("registrationForm", new UserDto());
-        return "forms/registration";
-    }
-
     @GetMapping("/registration-organization")
     public String organizationRegistrationPage(Model model) {
         model.addAttribute("registrationForm", new UserDto());
-        return "forms/registration-organization";
+        model.addAttribute("url", "/registration-organization");
+        model.addAttribute("activities", dictionaryService.activityType());
+
+        return "forms/registration";
     }
 
     @PostMapping("/registration-organization")
@@ -70,8 +70,11 @@ public class MainController {
             HttpServletRequest request,
             HttpServletResponse response
     ) {
+        model.addAttribute("url", "/registration-organization");
+        model.addAttribute("activities", dictionaryService.activityType());
+
         if (bindingResult.hasErrors()) {
-            return "forms/registration-organization";
+            return "forms/registration";
         }
 
         try {
@@ -79,18 +82,32 @@ public class MainController {
             securityService.login(userDto, request, response);
         } catch (DuplicateRecordException e) {
             model.addAttribute("userExists", e.getMessage());
-            return "forms/registration-organization";
+            return "forms/registration";
         } catch (IllegalArgumentException e) {
             model.addAttribute("passIsNotConfirm", e.getMessage());
-            return "forms/registration-organization";
+            return "forms/registration";
         }
 
         return "redirect:/organization/create";
     }
 
+    @GetMapping("/registration")
+    public String registrationPage(Model model) {
+        model.addAttribute("registrationForm", new UserDto());
+        model.addAttribute("url", "/registration");
+        model.addAttribute("activities", dictionaryService.activityType());
+        return "forms/registration";
+    }
 
     @PostMapping("/registration")
-    public String registration(@Valid @ModelAttribute("registrationForm") UserDto userDto, BindingResult bindingResult, Model model) {
+    public String registration(
+            @Valid @ModelAttribute("registrationForm") UserDto userDto,
+            BindingResult bindingResult,
+            Model model
+    ) {
+        model.addAttribute("url", "/registration");
+        model.addAttribute("activities", dictionaryService.activityType());
+
         if (bindingResult.hasErrors()) {
             return "forms/registration";
         }

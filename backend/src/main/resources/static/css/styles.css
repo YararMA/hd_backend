@@ -38,7 +38,7 @@ body {
 .wrapper {
     display: flex;
     flex-direction: column;
-    height: 100%;
+    min-height: 100%;
 }
 
 .bg-primary-override {
@@ -272,7 +272,7 @@ body {
     color: var(--active-font-color);
 }
 
-.account-edit-form, .account-change-password-form{
+.account-edit-form, .account-change-password-form {
     margin-top: 30px;
 }
 
@@ -284,6 +284,26 @@ body {
     background: url("/static/img/icons/arrow_down.svg") no-repeat right;
 }
 
-.login-form .form, .registration-form .form{
+.registration-form select {
+    background: url("/static/img/icons/arrow_down.svg") no-repeat right;
+}
+
+.login-form .form, .registration-form .form {
     align-items: center;
+}
+
+.profile-wrapper .profile-item a {
+    color: var(--active-font-color) !important;
+}
+
+.profile-wrapper .profile-item {
+    border-bottom: solid 2px var(--active-font-color);
+}
+
+.area-wrapper .area-item a {
+    color: var(--active-font-color) !important;
+}
+
+.area-wrapper .area-item {
+    border-bottom: solid 2px var(--active-font-color);
 }

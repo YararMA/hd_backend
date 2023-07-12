@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html>
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -7,30 +7,34 @@
 </head>
 <body>
 <div th:replace="~{template-part/menu :: menu}"></div>
-<div class="container">
-    <div class="row">
-        <div class="col-sm-12">
-            <h6 class="display-6">Все пользователи</h6>
-            <table class="table">
-                <thead class="thead-dark">
-                <tr>
-                    <th scope="col">ID</th>
-                    <th scope="col">Username</th>
-                    <th scope="col">Last</th>
-                    <th scope="col">Handle</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="user: ${users}">
-                    <th scope="row" th:text="${user.getId()}"></th>
-                    <td th:text="${user.getUsername()}"></td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                </tr>
-                </tbody>
-            </table>
+
+<div class="content">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <h6 class="display-6">Все пользователи</h6>
+                <table class="table">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Username</th>
+                        <th scope="col">Last</th>
+                        <th scope="col">Handle</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="user: ${users}">
+                        <th scope="row" th:text="${user.getId()}"></th>
+                        <td th:text="${user.getUsername()}"></td>
+                        <td>Otto</td>
+                        <td>@mdo</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
+
 </body>
 </html>

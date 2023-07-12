@@ -15,16 +15,23 @@ import java.util.StringJoiner;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserUpdateProfileDto {
+
     @NotEmpty(message = "Имя не должен быть пустым")
     @Size(min = 3, max = 100, message = "Имя пользователя должно содержать от 3 до 100 символов")
     private String name;
+
     @NotEmpty(message = "Фамилия не должен быть пустым")
     @Size(min = 3, max = 100, message = "Фамилия пользователя должно содержать от 3 до 100 символов")
     private String firstname;
+
     private String lastname;
+
+    @Pattern(regexp = "^\\+?[1-9]\\d{1,14}$|^(\\+?[1-9]\\d{0,2}[-.\\s]?)(\\([1-9]\\d{0,2}\\)|[1-9]\\d{0,2})[-.\\s]?\\d{1,4}[-.\\s]?\\d{1,4}$", message = "Неверный формат телефона")
     private String phone;
+
     @Pattern(regexp = "^(Муж|Жен)$", message = "Выберите пол")
     private String gender;
+
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Past(message = "Дата рождения должна быть в прошлом")
     private LocalDate birthday;
@@ -39,7 +46,7 @@ public class UserUpdateProfileDto {
     @Email(message = "Введите валидный e-mail")
     private String username;
 
-    public String getFullName(){
+    public String getFullName() {
         StringJoiner fullName = new StringJoiner(" ");
         fullName.add(this.name);
         fullName.add(this.firstname);
@@ -47,11 +54,18 @@ public class UserUpdateProfileDto {
         return fullName.toString();
     }
 
-    public String getFullAddress(){
+    public String getFullAddress() {
         StringJoiner fullAddress = new StringJoiner(", ");
-        fullAddress.add(this.country);
-        fullAddress.add(this.region);
-        fullAddress.add(this.locality);
+        if (this.country != null && !this.country.isEmpty()) {
+            fullAddress.add(this.country);
+        }
+        if (this.region != null && !this.region.isEmpty()) {
+            fullAddress.add(this.region);
+        }
+        if (this.locality != null && !this.locality.isEmpty()) {
+            fullAddress.add(this.locality);
+        }
+
         return fullAddress.toString();
     }
 

@@ -6,7 +6,7 @@
     <meta th:replace="~{template-part/header :: header}">
 </head>
 <body>
-<div class="wrapper bg-primary-override">
+<div class="wrapper bg-primary-override profile-wrapper">
     <div th:replace="~{template-part/menu :: menu}"></div>
     <div class="content">
         <div class="container">
@@ -32,7 +32,7 @@
                         </div>
                         <div class="phone" th:text="${user.getPhone()}">
                         </div>
-                        <div class="activity">
+                        <div class="activity" th:if="${user.getTypeOfActivity()}">
                             <div class="activity-title">
                                 Сфера деятельности:
                             </div>

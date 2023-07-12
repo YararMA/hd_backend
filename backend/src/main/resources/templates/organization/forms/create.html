@@ -68,8 +68,10 @@
                         </div>
                         <div class="mb-3">
                             <label for="exampleInputType" class="form-label">Тип площадки</label>
-                            <input type="text" th:field="*{type}" class="form-control "
-                                      id="exampleInputType">
+                            <select th:field="*{type}" class="form-control" id="exampleInputType">
+                                <option value="">Выберите тип</option>
+                                <option th:each="t: ${types}" th:value="${t}" th:text="${t}"></option>
+                            </select>
                             <div th:if="${#fields.hasErrors('type')}" th:errors="*{type}"></div>
                         </div>
                         <button type="submit" class="btn btn-primary">Создать</button>

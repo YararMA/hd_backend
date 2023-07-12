@@ -12,7 +12,7 @@
         <div class="container">
             <div class="row d-flex justify-content-center registration-form">
                 <h2 class="text-center">Регистрация</h2>
-                <form class="form" name="registrationForm" th:action="@{/registration}" th:method="POST"
+                <form class="form" name="registrationForm" th:action="@{${url}}" th:method="POST"
                       th:object="${registrationForm}">
                     <div class="col-12">
                         <div th:if="${param.logout}" class="alert alert-success">
@@ -52,6 +52,61 @@
                             Пользовател с таким email уже зарегистрирован
                         </div>
                         <div th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>
+                    </div>
+                    <div class="col-12">
+                        <input type="date"  class="form-control" placeholder="Дата рождения" th:value="*{getBirthday()}" th:field="*{birthday}"/>
+                        <div id="validationServerExampleInputAge" class="invalid-feedback">
+                            Пожалуйста, выберите дату рождения.
+                        </div>
+                        <div th:if="${#fields.hasErrors('birthday')}" th:errors="*{birthday}"></div>
+                    </div>
+                    <div class="col-12">
+                        <select th:field="*{gender}" class="form-control">
+                            <option value="" disabled>Выберите пол</option>
+                            <option value="Муж">Муж</option>
+                            <option value="Жен">Жен</option>
+                        </select>
+                        <div id="validationServerExampleInputGender" class="invalid-feedback">
+                            Пожалуйста, выберите пол.
+                        </div>
+                        <div th:if="${#fields.hasErrors('gender')}" th:errors="*{gender}"></div>
+                    </div>
+                    <div class="col-12">
+                        <input type="text" th:field="*{country}" class="form-control" placeholder="Страна">
+                        <div id="validationServerExampleCountry" class="invalid-feedback">
+                            Пожалуйста, введите страну.
+                        </div>
+                        <div th:if="${#fields.hasErrors('country')}" th:errors="*{country}"></div>
+                    </div>
+                    <div class="col-12">
+                        <input type="text" th:field="*{region}" class="form-control" placeholder="Регион">
+                        <div id="validationServerRegion" class="invalid-feedback">
+                            Пожалуйста, введите регион.
+                        </div>
+                        <div th:if="${#fields.hasErrors('region')}" th:errors="*{region}"></div>
+                    </div>
+                    <div class="col-12">
+                        <input type="text" th:field="*{locality}" class="form-control"
+                               placeholder="Населеный пункт">
+                        <div id="validationExampleLocally" class="invalid-feedback">
+                            Пожалуйста, введите населеный пункт.
+                        </div>
+                        <div th:if="${#fields.hasErrors('locality')}" th:errors="*{locality}"></div>
+                    </div>
+                    <div class="col-12">
+                        <input type="text" th:field="*{phone}" class="form-control" placeholder="Телефон">
+                        <div id="validationServerExampleInputPhone" class="invalid-feedback">
+                            Пожалуйста, введите телефон.
+                        </div>
+                        <div th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></div>
+                    </div>
+                    <div class="col-12">
+                        <select th:field="*{typeOfActivity}" class="form-control" id="exampleInputType">
+                            <option value="" disabled>Выберите сферу деятельности</option>
+                            <option th:each="a: ${activities}" th:value="${a}" th:text="${a}"></option>
+                        </select>
+                        <div th:if="${#fields.hasErrors('typeOfActivity')}"
+                             th:errors="*{typeOfActivity}"></div>
                     </div>
                     <div class="col-12">
                         <input type="password" th:field="*{password}" class="form-control "
