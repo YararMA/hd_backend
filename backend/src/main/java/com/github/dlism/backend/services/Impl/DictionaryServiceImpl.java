@@ -10,14 +10,19 @@ import java.util.List;
 public class DictionaryServiceImpl implements DictionaryService {
     @Override
     public List<String> organizationType() {
-        var dictionary = new ArrayList<String>();
-        dictionary.add("Открытая");
-        dictionary.add("Закрытая");
-        return dictionary;
+        var organizationType = new ArrayList<String>();
+        organizationType.add("Открытая");
+        organizationType.add("Закрытая");
+        return organizationType;
     }
 
     @Override
     public List<String> activityType() {
-        return null;
+        var activityTypes = new ArrayList<String>();
+        activityTypes.add("Маркетинг");
+        activityTypes.add("Реклама");
+        activityTypes.add("Оброзование");
+        activityTypes.add("IT");
+        return activityTypes;
     }
 }

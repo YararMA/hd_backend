@@ -5,6 +5,7 @@ import com.github.dlism.backend.exceptions.DuplicateRecordException;
 import com.github.dlism.backend.exceptions.OrganizationNotFoundException;
 import com.github.dlism.backend.exceptions.UserNotFoundException;
 import com.github.dlism.backend.models.Organization;
+import com.github.dlism.backend.services.DictionaryService;
 import com.github.dlism.backend.services.OrganizationService;
 import com.github.dlism.backend.services.SecurityService;
 import com.github.dlism.backend.services.UserService;
@@ -26,6 +27,8 @@ public class MainController {
     private final OrganizationService organizationService;
 
     private final SecurityService securityService;
+
+    private final DictionaryService dictionaryService;
 
     @GetMapping("")
     public String index() {
@@ -54,6 +57,8 @@ public class MainController {
     public String organizationRegistrationPage(Model model) {
         model.addAttribute("registrationForm", new UserDto());
         model.addAttribute("url", "/registration-organization");
+        model.addAttribute("activities", dictionaryService.activityType());
+
         return "forms/registration";
     }
 
@@ -66,6 +71,7 @@ public class MainController {
             HttpServletResponse response
     ) {
         model.addAttribute("url", "/registration-organization");
+        model.addAttribute("activities", dictionaryService.activityType());
 
         if (bindingResult.hasErrors()) {
             return "forms/registration";
@@ -89,6 +95,7 @@ public class MainController {
     public String registrationPage(Model model) {
         model.addAttribute("registrationForm", new UserDto());
         model.addAttribute("url", "/registration");
+        model.addAttribute("activities", dictionaryService.activityType());
         return "forms/registration";
     }
 
@@ -99,6 +106,7 @@ public class MainController {
             Model model
     ) {
         model.addAttribute("url", "/registration");
+        model.addAttribute("activities", dictionaryService.activityType());
 
         if (bindingResult.hasErrors()) {
             return "forms/registration";

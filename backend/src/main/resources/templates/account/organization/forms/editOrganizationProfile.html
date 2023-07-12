@@ -47,7 +47,7 @@
                                     <div th:if="${#fields.hasErrors('participantsMaxCount')}" th:errors="*{participantsMaxCount}"></div>
 
                                     <select th:field="*{type}" class="form-control" id="exampleInputType">
-                                        <option value="">Выберите тип</option>
+                                        <option value="" disabled>Выберите тип</option>
                                         <option th:each="t: ${types}" th:value="${t}" th:text="${t}"></option>
                                     </select>
                                     <div th:if="${#fields.hasErrors('type')}" th:errors="*{type}"></div>

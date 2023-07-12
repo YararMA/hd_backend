@@ -62,7 +62,7 @@
                     </div>
                     <div class="col-12">
                         <select th:field="*{gender}" class="form-control">
-                            <option value="">Выберите пол</option>
+                            <option value="" disabled>Выберите пол</option>
                             <option value="Муж">Муж</option>
                             <option value="Жен">Жен</option>
                         </select>
@@ -101,11 +101,10 @@
                         <div th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></div>
                     </div>
                     <div class="col-12">
-                        <input type="text" th:field="*{typeOfActivity}" class="form-control"
-                               placeholder="Вид деятельности">
-                        <div id="validationServerExampleInputTypeOfActivity" class="invalid-feedback">
-                            Пожалуйста, введите вид деятельности.
-                        </div>
+                        <select th:field="*{typeOfActivity}" class="form-control" id="exampleInputType">
+                            <option value="" disabled>Выберите сферу деятельности</option>
+                            <option th:each="a: ${activities}" th:value="${a}" th:text="${a}"></option>
+                        </select>
                         <div th:if="${#fields.hasErrors('typeOfActivity')}"
                              th:errors="*{typeOfActivity}"></div>
                     </div>

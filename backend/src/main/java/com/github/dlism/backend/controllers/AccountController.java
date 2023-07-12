@@ -40,6 +40,8 @@ public class AccountController {
     @GetMapping("/edit")
     public String editPage(@AuthenticationPrincipal User user, Model model) {
         model.addAttribute("user", userService.getById(user.getId()));
+        model.addAttribute("activities", dictionaryService.activityType());
+
         return "account/forms/editUserProfile";
     }
 
@@ -48,6 +50,7 @@ public class AccountController {
                        @Valid @ModelAttribute("user") UserUpdateProfileDto userUpdateProfileDto,
                        BindingResult bindingResult, Model model
     ) {
+        model.addAttribute("activities", dictionaryService.activityType());
 
         if (bindingResult.hasErrors()) {
             return "account/forms/editUserProfile";
