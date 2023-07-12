@@ -77,7 +77,6 @@ public class UserService implements UserDetailsService {
         try {
             User user = UserMapper.INSTANCE.dtoToEntity(userDto);
             user.setPassword(passwordEncoder.encode(userDto.getPassword()));
-
             user.setRoles(new HashSet<>(List.of(new Role[]{role, Role.ROLE_NOT_ACTIVE})));
             user.setActive(true);
 
@@ -102,29 +101,27 @@ public class UserService implements UserDetailsService {
     @Transactional
     public UserUpdateProfileDto update(User user, UserUpdateProfileDto userDto) throws DuplicateRecordException, IllegalArgumentException {
         try {
-            Optional<User> userForUpdateOptional = userRepository.findById(user.getId());
-            if (userForUpdateOptional.isPresent()) {
-                User userForUpdate = userForUpdateOptional.get();
+            User userForUpdate=
+                    userRepository.findById(user.getId())
+                            .orElseThrow(()->new UserNotFoundException("Пользователь не найден"));
 
-                userForUpdate.setUsername(userDto.getUsername());
-                userForUpdate.setName(userDto.getName());
-                userForUpdate.setFirstname(userDto.getFirstname());
-                userForUpdate.setLastname(userDto.getLastname());
-                userForUpdate.setPhone(userDto.getPhone());
-                userForUpdate.setGender(userDto.getGender());
-                userForUpdate.setBirthday(userDto.getBirthday());
-                userForUpdate.setCountry(userDto.getCountry());
-                userForUpdate.setRegion(userDto.getRegion());
-                userForUpdate.setLocality(userDto.getLocality());
-                userForUpdate.setTypeOfActivity(userDto.getTypeOfActivity());
+            userForUpdate.setUsername(userDto.getUsername());
+            userForUpdate.setName(userDto.getName());
+            userForUpdate.setFirstname(userDto.getFirstname());
+            userForUpdate.setLastname(userDto.getLastname());
+            userForUpdate.setPhone(userDto.getPhone());
+            userForUpdate.setGender(userDto.getGender());
+            userForUpdate.setBirthday(userDto.getBirthday());
+            userForUpdate.setCountry(userDto.getCountry());
+            userForUpdate.setRegion(userDto.getRegion());
+            userForUpdate.setLocality(userDto.getLocality());
+            userForUpdate.setTypeOfActivity(userDto.getTypeOfActivity());
 
-                return UserMapper.INSTANCE.entityToUpdateProfileDto(userRepository.save(userForUpdate));
-            }
+            return UserMapper.INSTANCE.entityToUpdateProfileDto(userRepository.save(userForUpdate));
 
         } catch (DataIntegrityViolationException e) {
             throw new DuplicateRecordException("Пользовател с таким именим уже существует");
         }
-        return userDto;
     }
 
     @Transactional

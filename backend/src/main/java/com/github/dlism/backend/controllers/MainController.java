@@ -50,16 +50,11 @@ public class MainController {
         return "organization/view";
     }
 
-    @GetMapping("/registration")
-    public String registrationPage(Model model) {
-        model.addAttribute("registrationForm", new UserDto());
-        return "forms/registration";
-    }
-
     @GetMapping("/registration-organization")
     public String organizationRegistrationPage(Model model) {
         model.addAttribute("registrationForm", new UserDto());
-        return "forms/registration-organization";
+        model.addAttribute("url", "/registration-organization");
+        return "forms/registration";
     }
 
     @PostMapping("/registration-organization")
@@ -71,29 +66,43 @@ public class MainController {
             HttpServletResponse response
     ) {
         if (bindingResult.hasErrors()) {
-            return "forms/registration-organization";
+            return "forms/registration";
         }
+
+        model.addAttribute("url", "/registration-organization");
 
         try {
             userService.createOrganizer(userDto);
             securityService.login(userDto, request, response);
         } catch (DuplicateRecordException e) {
             model.addAttribute("userExists", e.getMessage());
-            return "forms/registration-organization";
+            return "forms/registration";
         } catch (IllegalArgumentException e) {
             model.addAttribute("passIsNotConfirm", e.getMessage());
-            return "forms/registration-organization";
+            return "forms/registration";
         }
 
         return "redirect:/organization/create";
     }
 
+    @GetMapping("/registration")
+    public String registrationPage(Model model) {
+        model.addAttribute("registrationForm", new UserDto());
+        model.addAttribute("url", "/registration");
+        return "forms/registration";
+    }
 
     @PostMapping("/registration")
-    public String registration(@Valid @ModelAttribute("registrationForm") UserDto userDto, BindingResult bindingResult, Model model) {
+    public String registration(
+            @Valid @ModelAttribute("registrationForm") UserDto userDto,
+            BindingResult bindingResult,
+            Model model
+    ) {
         if (bindingResult.hasErrors()) {
             return "forms/registration";
         }
+
+        model.addAttribute("url", "/registration");
 
         try {
             userService.create(userDto);

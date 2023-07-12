@@ -266,7 +266,6 @@ body {
     border-bottom: solid 1px #82929F;
     box-shadow: none;
 }
-
 .account-edit-form .account-edit-form-wrapper input:focus, .account-edit-form .account-edit-form-wrapper select:focus {
     border-bottom: solid 1px var(--active-font-color);
     color: var(--active-font-color);
@@ -281,6 +280,10 @@ body {
 }
 
 .account-edit-form .account-edit-form-wrapper select {
+    background: url("/static/img/icons/arrow_down.svg") no-repeat right;
+}
+
+.registration-form select {
     background: url("/static/img/icons/arrow_down.svg") no-repeat right;
 }
 
