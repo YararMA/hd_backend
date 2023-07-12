@@ -7,9 +7,11 @@ import com.github.dlism.backend.exceptions.DuplicateRecordException;
 import com.github.dlism.backend.exceptions.OrganizationNotFoundException;
 import com.github.dlism.backend.exceptions.UpdateException;
 import com.github.dlism.backend.models.User;
+import com.github.dlism.backend.services.DictionaryService;
 import com.github.dlism.backend.services.OrganizationService;
 import com.github.dlism.backend.services.UserService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,15 +25,11 @@ import java.util.Optional;
 
 @Controller
 @RequestMapping("/account")
+@RequiredArgsConstructor
 public class AccountController {
-
     private final UserService userService;
     private final OrganizationService organizationService;
-
-    public AccountController(UserService userService, OrganizationService organizationService) {
-        this.userService = userService;
-        this.organizationService = organizationService;
-    }
+    private final DictionaryService dictionaryService;
 
     @GetMapping(value = {"", "/", "/main"})
     public String mainPage(@AuthenticationPrincipal User user, Model model) {
@@ -103,6 +101,8 @@ public class AccountController {
     @GetMapping("/organization/edit")
     public String editForm(@AuthenticationPrincipal User user, Model model) {
         model.addAttribute("organizationForm", organizationService.searchOrganization(user));
+        model.addAttribute("types", dictionaryService.organizationType());
+
         return "account/organization/forms/editOrganizationProfile";
     }
 
@@ -111,7 +111,7 @@ public class AccountController {
             @AuthenticationPrincipal User user,
             @ModelAttribute("organizationForm") OrganizationDto organizationDto,
             Model model) {
-
+        model.addAttribute("types", dictionaryService.organizationType());
         try {
             model.addAttribute("organizationForm", organizationService.update(user, organizationDto));
             model.addAttribute("organizationCreateSuccess", "Организация успешно обновлена");

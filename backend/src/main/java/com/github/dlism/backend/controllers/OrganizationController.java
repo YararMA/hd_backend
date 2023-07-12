@@ -3,6 +3,7 @@ package com.github.dlism.backend.controllers;
 import com.github.dlism.backend.dto.OrganizationDto;
 import com.github.dlism.backend.exceptions.DuplicateRecordException;
 import com.github.dlism.backend.models.User;
+import com.github.dlism.backend.services.DictionaryService;
 import com.github.dlism.backend.services.OrganizationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class OrganizationController {
 
     private final OrganizationService organizationService;
+    private final DictionaryService dictionaryService;
 
     @GetMapping("/create")
     public String index(@AuthenticationPrincipal User user, Model model, RedirectAttributes redirectAttributes) {
@@ -32,6 +34,7 @@ public class OrganizationController {
         }
 
         model.addAttribute("organizationForm", new OrganizationDto());
+        model.addAttribute("types", dictionaryService.organizationType());
         return "organization/forms/create";
     }
 
@@ -41,6 +44,8 @@ public class OrganizationController {
             @Valid @ModelAttribute("organizationForm") OrganizationDto organizationDto,
             BindingResult bindingResult,
             Model model) {
+
+        model.addAttribute("types", dictionaryService.organizationType());
 
         if (bindingResult.hasErrors()) {
             return "organization/forms/create";

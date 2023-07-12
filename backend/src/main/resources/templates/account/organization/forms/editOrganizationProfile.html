@@ -39,18 +39,17 @@
                                     </div>
                                     <div th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
 
-                                    <input type="text" th:field="*{participantsMaxCount}" class="form-control"
+                                    <input type="number" th:field="*{participantsMaxCount}" class="form-control"
                                            placeholder="Количество участников">
                                     <div id="validationServerparticipantsMaxCount" class="invalid-feedback">
                                         Пожалуйста, введите количество участников.
                                     </div>
                                     <div th:if="${#fields.hasErrors('participantsMaxCount')}" th:errors="*{participantsMaxCount}"></div>
 
-                                    <input type="text" th:field="*{type}" class="form-control"
-                                           placeholder="Тип площадки">
-                                    <div id="validationServerType" class="invalid-feedback">
-                                        Пожалуйста, выберите тип площадки.
-                                    </div>
+                                    <select th:field="*{type}" class="form-control" id="exampleInputType">
+                                        <option value="">Выберите тип</option>
+                                        <option th:each="t: ${types}" th:value="${t}" th:text="${t}"></option>
+                                    </select>
                                     <div th:if="${#fields.hasErrors('type')}" th:errors="*{type}"></div>
 
                                 </div>
@@ -60,7 +59,7 @@
                                 <div class="account-edit-form-wrapper">
                                     <h4>Адрес</h4>
                                     <input type="text" th:field="*{country}" class="form-control" placeholder="Страна">
-                                    <div id="validationServerName" class="invalid-feedback">
+                                    <div id="validationServerCountry" class="invalid-feedback">
                                         Пожалуйста, введите страну.
                                     </div>
                                     <div th:if="${#fields.hasErrors('country')}" th:errors="*{country}"></div>
@@ -74,14 +73,14 @@
 
                                     <input type="text" th:field="*{city}" class="form-control"
                                            placeholder="Населенный пункт">
-                                    <div id="validationServerparticipantsMaxCount" class="invalid-feedback">
+                                    <div id="validationServerCity" class="invalid-feedback">
                                         Пожалуйста, введите населенный пункт.
                                     </div>
                                     <div th:if="${#fields.hasErrors('city')}" th:errors="*{city}"></div>
 
                                     <input type="text" th:field="*{address}" class="form-control"
                                            placeholder="Адрес">
-                                    <div id="validationServerparticipantsMaxCount" class="invalid-feedback">
+                                    <div id="validationServerAddress" class="invalid-feedback">
                                         Пожалуйста, введите адрес.
                                     </div>
                                     <div th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></div>

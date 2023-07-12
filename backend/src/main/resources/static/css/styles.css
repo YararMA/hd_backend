@@ -266,12 +266,13 @@ body {
     border-bottom: solid 1px #82929F;
     box-shadow: none;
 }
+
 .account-edit-form .account-edit-form-wrapper input:focus, .account-edit-form .account-edit-form-wrapper select:focus {
     border-bottom: solid 1px var(--active-font-color);
     color: var(--active-font-color);
 }
 
-.account-edit-form, .account-change-password-form{
+.account-edit-form, .account-change-password-form {
     margin-top: 30px;
 }
 
@@ -287,6 +288,22 @@ body {
     background: url("/static/img/icons/arrow_down.svg") no-repeat right;
 }
 
-.login-form .form, .registration-form .form{
+.login-form .form, .registration-form .form {
     align-items: center;
+}
+
+.profile-wrapper .profile-item a {
+    color: var(--active-font-color) !important;
+}
+
+.profile-wrapper .profile-item {
+    border-bottom: solid 2px var(--active-font-color);
+}
+
+.area-wrapper .area-item a {
+    color: var(--active-font-color) !important;
+}
+
+.area-wrapper .area-item {
+    border-bottom: solid 2px var(--active-font-color);
 }

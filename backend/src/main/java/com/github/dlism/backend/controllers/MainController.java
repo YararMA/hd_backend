@@ -65,11 +65,11 @@ public class MainController {
             HttpServletRequest request,
             HttpServletResponse response
     ) {
+        model.addAttribute("url", "/registration-organization");
+
         if (bindingResult.hasErrors()) {
             return "forms/registration";
         }
-
-        model.addAttribute("url", "/registration-organization");
 
         try {
             userService.createOrganizer(userDto);
@@ -98,11 +98,11 @@ public class MainController {
             BindingResult bindingResult,
             Model model
     ) {
+        model.addAttribute("url", "/registration");
+
         if (bindingResult.hasErrors()) {
             return "forms/registration";
         }
-
-        model.addAttribute("url", "/registration");
 
         try {
             userService.create(userDto);

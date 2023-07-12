@@ -1,7 +1,7 @@
 <html xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="ru">
 <div th:fragment="account-menu" id="account-menu">
   <ul class="nav nav-tabs">
-    <li class="nav-item active">
+    <li class="nav-item profile-item">
       <a class="nav-link " aria-current="page" href="/account">Профиль</a>
     </li>
     <li class="nav-item" sec:authorize="hasRole('ROLE_USER')">
@@ -10,13 +10,13 @@
     <li class="nav-item" sec:authorize="hasRole('ROLE_USER')">
       <a class="nav-link" href="#">Мои результаты</a>
     </li>
-    <li class="nav-item" sec:authorize="hasRole('ROLE_USER')">
+    <li class="nav-item " sec:authorize="hasRole('ROLE_USER')">
       <a class="nav-link" href="">Моя площадка</a>
     </li>
     <li class="nav-item" sec:authorize="hasRole('ROLE_USER')">
       <a class="nav-link">Пройти диктант онлайн</a>
     </li>
-    <li class="nav-item" sec:authorize="hasRole('ROLE_ORGANIZER')">
+    <li class="nav-item area-item" sec:authorize="hasRole('ROLE_ORGANIZER')">
       <a class="nav-link" href="/account/organization">Профиль площадки</a>
     </li>
     <li class="nav-item" sec:authorize="hasRole('ROLE_ORGANIZER')">
