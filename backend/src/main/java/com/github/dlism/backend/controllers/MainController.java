@@ -4,23 +4,18 @@ import com.github.dlism.backend.dto.user.UserDto;
 import com.github.dlism.backend.exceptions.DuplicateRecordException;
 import com.github.dlism.backend.exceptions.OrganizationNotFoundException;
 import com.github.dlism.backend.exceptions.UserNotFoundException;
-import com.github.dlism.backend.models.Event;
 import com.github.dlism.backend.models.Organization;
-import com.github.dlism.backend.models.Result;
-import com.github.dlism.backend.models.User;
-import com.github.dlism.backend.repositories.EventRepository;
-import com.github.dlism.backend.repositories.ResultRepository;
 import com.github.dlism.backend.services.OrganizationService;
+import com.github.dlism.backend.services.SecurityService;
 import com.github.dlism.backend.services.UserService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDate;
-import java.util.Locale;
 
 @Controller
 @RequestMapping("/")
@@ -29,6 +24,8 @@ public class MainController {
     private final UserService userService;
 
     private final OrganizationService organizationService;
+
+    private final SecurityService securityService;
 
     @GetMapping("")
     public String index() {
@@ -66,13 +63,20 @@ public class MainController {
     }
 
     @PostMapping("/registration-organization")
-    public String registrationOrganization(@Valid @ModelAttribute("registrationForm") UserDto userDto, BindingResult bindingResult, Model model) {
+    public String registrationOrganization(
+            @Valid @ModelAttribute("registrationForm") UserDto userDto,
+            BindingResult bindingResult,
+            Model model,
+            HttpServletRequest request,
+            HttpServletResponse response
+    ) {
         if (bindingResult.hasErrors()) {
             return "forms/registration-organization";
         }
 
         try {
             userService.createOrganizer(userDto);
+            securityService.login(userDto, request, response);
         } catch (DuplicateRecordException e) {
             model.addAttribute("userExists", e.getMessage());
             return "forms/registration-organization";
@@ -81,8 +85,9 @@ public class MainController {
             return "forms/registration-organization";
         }
 
-        return "redirect:login";
+        return "redirect:/organization/create";
     }
+
 
     @PostMapping("/registration")
     public String registration(@Valid @ModelAttribute("registrationForm") UserDto userDto, BindingResult bindingResult, Model model) {
@@ -116,7 +121,7 @@ public class MainController {
             } else {
                 model.addAttribute("message", "Код активации не найден");
             }
-        }catch (UserNotFoundException e){
+        } catch (UserNotFoundException e) {
             model.addAttribute("message", e.getMessage());
         }
 

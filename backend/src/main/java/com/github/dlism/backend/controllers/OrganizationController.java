@@ -2,10 +2,10 @@ package com.github.dlism.backend.controllers;
 
 import com.github.dlism.backend.dto.OrganizationDto;
 import com.github.dlism.backend.exceptions.DuplicateRecordException;
-import com.github.dlism.backend.exceptions.OrganizationNotFoundException;
 import com.github.dlism.backend.models.User;
 import com.github.dlism.backend.services.OrganizationService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,25 +16,19 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.Optional;
-
 @Controller
 @RequestMapping("/organization")
+@RequiredArgsConstructor
 public class OrganizationController {
 
     private final OrganizationService organizationService;
-
-    public OrganizationController(OrganizationService organizationService) {
-        this.organizationService = organizationService;
-    }
-
 
     @GetMapping("/create")
     public String index(@AuthenticationPrincipal User user, Model model, RedirectAttributes redirectAttributes) {
 
         if (organizationService.existsOrganizationsByAuth(user)) {
             redirectAttributes.addFlashAttribute("organizationExists", "Организация уже создана!");
-            return "redirect:/organization";
+            return "redirect:/account/organization";
         }
 
         model.addAttribute("organizationForm", new OrganizationDto());
@@ -58,6 +52,6 @@ public class OrganizationController {
             model.addAttribute("organizationExists", e.getMessage());
             return "organization/forms/create";
         }
-        return "redirect:/organization";
+        return "redirect:/account/organization";
     }
 }

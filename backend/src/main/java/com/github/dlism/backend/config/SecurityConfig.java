@@ -1,7 +1,7 @@
 package com.github.dlism.backend.config;
 
 import com.github.dlism.backend.services.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -9,18 +9,22 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.context.DelegatingSecurityContextRepository;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
+import org.springframework.security.web.context.RequestAttributeSecurityContextRepository;
+import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfiguration {
-    @Autowired
-    private UserService userDetailsService;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+@RequiredArgsConstructor
+public class SecurityConfig {
+
+    private final UserService userDetailsService;
+    private final PasswordEncoder passwordEncoder;
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http, SecurityContextRepository securityContextRepository) throws Exception {
         http
                 .authorizeHttpRequests((authz) -> authz
                         .requestMatchers("/",
@@ -46,7 +50,10 @@ public class SecurityConfiguration {
                 .rememberMe()
                 .and()
                 .exceptionHandling()
-                .accessDeniedPage("/access-exception");
+                .accessDeniedPage("/access-exception")
+                .and()
+                .securityContext().
+                securityContextRepository(securityContextRepository);
 
         return http.build();
     }
@@ -60,4 +67,12 @@ public class SecurityConfiguration {
         return authenticationManagerBuilder.build();
     }
 
+
+    @Bean
+    public SecurityContextRepository securityContextRepository() {
+        return new DelegatingSecurityContextRepository(
+                new RequestAttributeSecurityContextRepository(),
+                new HttpSessionSecurityContextRepository()
+        );
+    }
 }
