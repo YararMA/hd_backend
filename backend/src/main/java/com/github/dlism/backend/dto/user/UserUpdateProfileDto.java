@@ -26,7 +26,7 @@ public class UserUpdateProfileDto {
 
     private String lastname;
 
-    @Pattern(regexp = "^\\+?[1-9]\\d{1,14}$", message = "Неверный формат телефона")
+    @Pattern(regexp = "^\\+?[1-9]\\d{1,14}$|^(\\+?[1-9]\\d{0,2}[-.\\s]?)(\\([1-9]\\d{0,2}\\)|[1-9]\\d{0,2})[-.\\s]?\\d{1,4}[-.\\s]?\\d{1,4}$", message = "Неверный формат телефона")
     private String phone;
 
     @Pattern(regexp = "^(Муж|Жен)$", message = "Выберите пол")
