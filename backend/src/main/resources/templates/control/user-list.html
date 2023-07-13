@@ -31,6 +31,11 @@
                     </tr>
                     </tbody>
                 </table>
+                <div id="pagination" th:if="${users.totalPages > 1}">
+                    <a th:each="pageNumber : ${#numbers.sequence(1, users.totalPages)}"
+                       th:href="@{users(page=${pageNumber - 1})}"
+                       th:text="${pageNumber}"></a>
+                </div>
             </div>
         </div>
     </div>

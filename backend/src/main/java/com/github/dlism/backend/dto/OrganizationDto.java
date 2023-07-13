@@ -7,6 +7,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 import java.util.Set;
+import java.util.StringJoiner;
 
 @Data
 public class OrganizationDto {
@@ -34,4 +35,13 @@ public class OrganizationDto {
     private boolean active;
 
     private Set<User> users;
+
+    public String getFullAddress(){
+        return new StringJoiner(", ")
+                .add(this.country)
+                .add(this.region)
+                .add(this.city)
+                .add(this.address)
+                .toString();
+    }
 }

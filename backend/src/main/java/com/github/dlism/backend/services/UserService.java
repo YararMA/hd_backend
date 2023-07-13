@@ -2,7 +2,6 @@ package com.github.dlism.backend.services;
 
 import com.github.dlism.backend.dto.RabbitmqDto;
 import com.github.dlism.backend.dto.user.UserDto;
-import com.github.dlism.backend.dto.user.UserProfileDto;
 import com.github.dlism.backend.dto.user.UserUpdatePasswordDto;
 import com.github.dlism.backend.dto.user.UserUpdateProfileDto;
 import com.github.dlism.backend.exceptions.DuplicateRecordException;
@@ -16,6 +15,8 @@ import com.github.dlism.backend.models.UserActivationCode;
 import com.github.dlism.backend.repositories.UserActivationCodeRepository;
 import com.github.dlism.backend.repositories.UserRepository;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -94,8 +95,8 @@ public class UserService implements UserDetailsService {
         return userRepository.count();
     }
 
-    public List<UserProfileDto> getAllUsers() {
-        return UserMapper.INSTANCE.entityToDto(userRepository.findAll());
+    public Page<User> getAllUsers(Pageable page) {
+        return userRepository.findAll(page);
     }
 
     @Transactional

@@ -37,6 +37,53 @@
 
                         <div th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
                     </div>
+                    <div class="mb-3">
+                        <input type="number" th:field="*{participantsMaxCount}" class="form-control"
+                               placeholder="Количество участников">
+                        <div id="validationServerparticipantsMaxCount" class="invalid-feedback">
+                            Пожалуйста, введите количество участников.
+                        </div>
+                        <div th:if="${#fields.hasErrors('participantsMaxCount')}" th:errors="*{participantsMaxCount}"></div>
+
+                    </div>
+                    <div class="mb-3">
+                        <select th:field="*{type}" class="form-control" id="exampleInputType">
+                            <option value="" disabled>Выберите тип</option>
+                            <option th:each="t: ${types}" th:value="${t}" th:text="${t}"></option>
+                        </select>
+                        <div th:if="${#fields.hasErrors('type')}" th:errors="*{type}"></div>
+                    </div>
+                    <div class="mb-3">
+                        <input type="text" th:field="*{country}" class="form-control" placeholder="Страна">
+                        <div id="validationServerCountry" class="invalid-feedback">
+                            Пожалуйста, введите страну.
+                        </div>
+                        <div th:if="${#fields.hasErrors('country')}" th:errors="*{country}"></div>
+                    </div>
+                    <div class="mb-3">
+                        <input type="text" th:field="*{region}" class="form-control"
+                               placeholder="Регион">
+                        <div id="validationServerRegion" class="invalid-feedback">
+                            Пожалуйста, введите регион.
+                        </div>
+                        <div th:if="${#fields.hasErrors('region')}" th:errors="*{region}"></div>
+                    </div>
+                    <div class="mb-3">
+                        <input type="text" th:field="*{city}" class="form-control"
+                               placeholder="Населенный пункт">
+                        <div id="validationServerCity" class="invalid-feedback">
+                            Пожалуйста, введите населенный пункт.
+                        </div>
+                        <div th:if="${#fields.hasErrors('city')}" th:errors="*{city}"></div>
+                    </div>
+                    <div class="mb-3">
+                        <input type="text" th:field="*{address}" class="form-control"
+                               placeholder="Адрес">
+                        <div id="validationServerAddress" class="invalid-feedback">
+                            Пожалуйста, введите адрес.
+                        </div>
+                        <div th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></div>
+                    </div>
                     <button type="submit" class="btn btn-primary">Сохранить</button>
                 </form>
             </div>

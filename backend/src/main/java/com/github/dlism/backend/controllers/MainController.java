@@ -4,7 +4,6 @@ import com.github.dlism.backend.dto.user.UserDto;
 import com.github.dlism.backend.exceptions.DuplicateRecordException;
 import com.github.dlism.backend.exceptions.OrganizationNotFoundException;
 import com.github.dlism.backend.exceptions.UserNotFoundException;
-import com.github.dlism.backend.models.Organization;
 import com.github.dlism.backend.services.DictionaryService;
 import com.github.dlism.backend.services.OrganizationService;
 import com.github.dlism.backend.services.SecurityService;
@@ -13,6 +12,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -36,16 +37,15 @@ public class MainController {
     }
 
     @GetMapping("/organization-list")
-    public String organizationList(Model model) {
-        model.addAttribute("organizations", organizationService.getAllActiveOrganizations());
+    public String organizationList(@PageableDefault(value = 12, page = 0) Pageable pageable, Model model) {
+        model.addAttribute("organizations", organizationService.getAllActiveOrganizations(pageable));
         return "organization/list";
     }
 
     @GetMapping("/organization-list/{id}")
     public String organizationPage(@PathVariable Long id, Model model) {
         try {
-            Organization organization = organizationService.getById(id);
-            model.addAttribute("organization", organization);
+            model.addAttribute("organization", organizationService.getById(id));
         } catch (OrganizationNotFoundException e) {
             model.addAttribute("message", e.getMessage());
             return "helpers/not-found";

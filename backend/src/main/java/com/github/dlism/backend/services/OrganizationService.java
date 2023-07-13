@@ -4,24 +4,22 @@ import com.github.dlism.backend.dto.OrganizationDto;
 import com.github.dlism.backend.exceptions.DuplicateRecordException;
 import com.github.dlism.backend.exceptions.OrganizationNotFoundException;
 import com.github.dlism.backend.mappers.OrganizationMapper;
-import com.github.dlism.backend.mappers.UserMapper;
 import com.github.dlism.backend.models.Organization;
 import com.github.dlism.backend.models.User;
 import com.github.dlism.backend.repositories.OrganizationRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class OrganizationService {
     private final OrganizationRepository organizationRepository;
-
-    public OrganizationService(OrganizationRepository organizationRepository) {
-        this.organizationRepository = organizationRepository;
-    }
 
     @Transactional
     public void create(OrganizationDto organizationDto, User user) throws DuplicateRecordException {
@@ -46,12 +44,12 @@ public class OrganizationService {
         return organizationRepository.count();
     }
 
-    public List<OrganizationDto> getAllOrganizations() {
-        return OrganizationMapper.INSTANCE.entityToDto(organizationRepository.findAll());
+    public Page<Organization> getAllOrganizations(Pageable page) {
+        return organizationRepository.findAll(page);
     }
 
-    public List<OrganizationDto> getAllActiveOrganizations() {
-        return OrganizationMapper.INSTANCE.entityToDto(organizationRepository.findAllByActive(true));
+    public Page<Organization> getAllActiveOrganizations(Pageable pageable) {
+        return organizationRepository.findAllByActive(pageable, true);
     }
 
     public void active(Long id) {
@@ -97,6 +95,12 @@ public class OrganizationService {
 
         organization.setName(organizationDto.getName());
         organization.setDescription(organizationDto.getDescription());
+        organization.setParticipantsMaxCount(organizationDto.getParticipantsMaxCount());
+        organization.setType(organizationDto.getType());
+        organization.setCountry(organizationDto.getCountry());
+        organization.setRegion(organizationDto.getRegion());
+        organization.setCity(organizationDto.getCity());
+        organization.setAddress(organizationDto.getAddress());
 
         try {
             organization = organizationRepository.save(organization);
@@ -107,10 +111,10 @@ public class OrganizationService {
         return OrganizationMapper.INSTANCE.entityToDto(organization);
     }
 
-    public Organization getById(Long id) {
-        return organizationRepository
+    public OrganizationDto getById(Long id) {
+        return OrganizationMapper.INSTANCE.entityToDto(organizationRepository
                 .findById(id)
-                .orElseThrow(() -> new OrganizationNotFoundException("Организация не найдена"));
+                .orElseThrow(() -> new OrganizationNotFoundException("Организация не найдена")));
     }
 
     public boolean existsOrganizationsByAuth(User user) {

@@ -18,6 +18,14 @@
                     <div class="card-body">
                         <h5 class="card-title" th:text="${organization.getName()}"></h5>
                         <p class="card-text" th:text="${organization.getDescription()}"></p>
+                        <p class="card-text">
+                            Максимальное количество участников
+                            <strong th:text="${organization.getParticipantsMaxCount()}"></strong>
+                        </p>
+                        <div class="card-text">
+                            Тип полощадки: <span th:text="${organization.getType()}"></span>
+                        </div>
+                        <div class="card-text" th:text="${organization.getFullAddress()}"></div>
                         <a th:href="@{/control/organizations/edit/{id}(id=${organization.getId()})}"
                            class="btn btn-primary">Редактировать</a>
                     </div>

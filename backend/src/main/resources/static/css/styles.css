@@ -307,3 +307,14 @@ body {
 .area-wrapper .area-item {
     border-bottom: solid 2px var(--active-font-color);
 }
+
+#pagination{
+    display: flex;
+    justify-content: center;
+    padding: 30px 0;
+}
+#pagination a{
+    color: var(--base-font-color);
+    padding: 0 5px;
+    margin: 0 5px;
+}
